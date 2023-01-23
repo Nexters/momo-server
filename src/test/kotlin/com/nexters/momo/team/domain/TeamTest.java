@@ -1,10 +1,16 @@
 package com.nexters.momo.team.domain;
 
+import com.nexters.momo.member.domain.Member;
+import com.nexters.momo.member.domain.Role;
 import com.nexters.momo.team.exception.InvalidTeamNameException;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -33,5 +39,25 @@ class TeamTest {
     public void team_name_invalid_length_test(String teamName) {
         assertThatThrownBy(() -> new Team(teamName, 1234L))
                 .isInstanceOf(InvalidTeamNameException.class);
+    }
+
+    @DisplayName("팀에 성공적으로 멤버를 추가할 수 있다")
+    @Test
+    public void team_add_member_test() {
+        // given
+        Team newTeam = new Team("team_name", 1234L);
+
+        // when
+        newTeam.addMember(createMember(1L, "member_1"));
+        newTeam.addMember(createMember(2L, "member_2"));
+
+        // then
+        Assertions.assertThat(newTeam.getAllMemberId()).containsAll(List.of(1L, 2L));
+    }
+
+    private Member createMember(Long id, String userId) {
+        Member member = new Member(userId, "password", "shine", "010-1234-5678", Role.USER, true);
+        ReflectionTestUtils.setField(member, "id", id);
+        return member;
     }
 }
