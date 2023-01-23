@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,8 +24,8 @@ public class Team {
     @Column(name = "team_id")
     private Long id;
 
-    @Column(name = "team_name", nullable = false)
-    private String teamName;
+    @Embedded
+    private TeamName teamName;
 
     @Column(name = "generation_id", nullable = false)
     private Long generationId;
@@ -35,7 +36,7 @@ public class Team {
     private Set<Long> members = new HashSet<>();
 
     public Team(String teamName, Long generationId) {
-        this.teamName = teamName;
+        this.teamName = new TeamName(teamName);
         this.generationId = generationId;
     }
 }

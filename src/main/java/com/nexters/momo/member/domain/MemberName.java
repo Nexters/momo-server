@@ -19,14 +19,14 @@ public class MemberName {
     private String value;
 
     public MemberName(String value) {
-        if (Objects.isNull(value) || !isValidNickname(value)) {
+        if (Objects.isNull(value) || !isValidName(value)) {
             throw new InvalidUserNameException();
         }
         this.value = value;
     }
 
-    private boolean isValidNickname(String nickname) {
-        return nickname.length() > MIN_LENGTH && nickname.length() < MAX_LENGTH;
+    private boolean isValidName(String name) {
+        return name.length() > MIN_LENGTH && name.length() < MAX_LENGTH;
     }
 }
 
