@@ -3,12 +3,12 @@ package com.nexters.momo.member.domain;
 import com.nexters.momo.member.exception.InvalidUserNameException;
 import com.nexters.momo.member.exception.InvalidUserPhoneException;
 import com.nexters.momo.member.exception.UserNotAgreePolicyException;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -28,7 +28,7 @@ class MemberTest {
         Member member = new Member("unique_id", "password", "shine", "010-1234-5678", Role.USER, true);
 
         // when, then
-        Assertions.assertThat(member.isSamePassword("password")).isTrue();
+        assertThat(member.isSamePassword("password")).isTrue();
     }
 
     @DisplayName("멤버 비밀번호 불일치 테스트")
@@ -38,7 +38,7 @@ class MemberTest {
         Member member = new Member("unique_id", "password", "shine", "010-1234-5678", Role.USER, true);
 
         // when, then
-        Assertions.assertThat(member.isSamePassword("invalid-password")).isFalse();
+        assertThat(member.isSamePassword("invalid-password")).isFalse();
     }
 
     @DisplayName("이름은 1글자 부터 20글자 까지 가능하다")
@@ -78,5 +78,18 @@ class MemberTest {
     public void member_not_agree_policy_test() {
         assertThatThrownBy(() -> new Member("unique_id", "password", "shine", "010-1234-5678", Role.USER, false))
                 .isInstanceOf(UserNotAgreePolicyException.class);
+    }
+
+    @DisplayName("사용자의 활동 상태를 변경한다")
+    @Test
+    public void member_change_status_test() {
+        // given
+        Member member = new Member("unique_id", "password", "name", "010-1234-5678", Role.USER, true);
+
+        // when
+        member.changeStatus(MemberStatus.SUSPEND);
+
+        // then
+        assertThat(member.getStatus()).isEqualTo(MemberStatus.SUSPEND);
     }
 }
