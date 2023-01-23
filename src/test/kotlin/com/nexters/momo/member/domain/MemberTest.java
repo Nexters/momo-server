@@ -2,6 +2,7 @@ package com.nexters.momo.member.domain;
 
 import com.nexters.momo.member.exception.InvalidUserNameException;
 import com.nexters.momo.member.exception.InvalidUserPhoneException;
+import com.nexters.momo.member.exception.UserNotAgreePolicyException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -70,5 +71,12 @@ class MemberTest {
     public void phone_numbers_invalid_length_test(String phone) {
         assertThatThrownBy(() -> new Member("unique_id", "password", "name", phone, Role.USER, true))
                 .isInstanceOf(InvalidUserPhoneException.class);
+    }
+
+    @DisplayName("개인 정보 동의를 하지 않은 멤버는 생성되지 않는다")
+    @Test
+    public void member_not_agree_policy_test() {
+        assertThatThrownBy(() -> new Member("unique_id", "password", "shine", "010-1234-5678", Role.USER, false))
+                .isInstanceOf(UserNotAgreePolicyException.class);
     }
 }
