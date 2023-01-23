@@ -1,6 +1,7 @@
 package com.nexters.momo.member.domain;
 
 import com.nexters.momo.member.exception.InvalidUserNameException;
+import com.nexters.momo.member.exception.InvalidUserPhoneException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class MemberTest {
 
@@ -50,7 +52,23 @@ class MemberTest {
     @ParameterizedTest
     @ValueSource(strings = {"", "김123456789김123456789김"})
     public void member_name_invalid_length_test(String name) {
-        Assertions.assertThatThrownBy(() -> new Member("unique_id", "password", name, "010-1234-5678", Role.USER, true))
+        assertThatThrownBy(() -> new Member("unique_id", "password", name, "010-1234-5678", Role.USER, true))
                         .isInstanceOf(InvalidUserNameException.class);
+    }
+
+    @DisplayName("전화번호는 11글자 부터 13글자 까지 가능하다")
+    @ParameterizedTest
+    @ValueSource(strings = {"02-123-1234", "010-1234-5678"})
+    public void phone_numbers_length_test(String phone) {
+        assertThatCode(() -> new Member("unique_id", "password", "name", phone, Role.USER, true))
+                .doesNotThrowAnyException();
+    }
+
+    @DisplayName("전화번호가 10글자 이하거나 작거나 14글자 이상이면 생성에 실패한다")
+    @ParameterizedTest
+    @ValueSource(strings = {"02-123-123", "010-1234-56789"})
+    public void phone_numbers_invalid_length_test(String phone) {
+        assertThatThrownBy(() -> new Member("unique_id", "password", "name", phone, Role.USER, true))
+                .isInstanceOf(InvalidUserPhoneException.class);
     }
 }
