@@ -36,6 +36,14 @@ public class Team {
         this.generationId = generationId;
     }
 
+    public void addMember(Member member) {
+        this.members.add(member.getId());
+    }
+
+    public void deleteMember(Member member) {
+        this.members.deleteById(member.getId());
+    }
+
     public Long getId() {
         return id;
     }
@@ -50,14 +58,6 @@ public class Team {
 
     public List<Long> getAllMemberId() {
         return members.getAllMemberId();
-    }
-
-    public void addMember(Member member) {
-        this.members.add(member.getId());
-    }
-
-    public void deleteMember(Member member) {
-        this.members.deleteById(member.getId());
     }
 
     @Override

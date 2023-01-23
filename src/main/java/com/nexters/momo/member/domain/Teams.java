@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,6 +26,6 @@ public class Teams {
     }
 
     public List<Long> getAllTeamId() {
-        return new ArrayList<>(teams);
+        return List.copyOf(teams);
     }
 }

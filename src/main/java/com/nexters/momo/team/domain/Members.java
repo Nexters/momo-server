@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,7 +26,7 @@ public class Members {
     }
 
     public List<Long> getAllMemberId() {
-        return new ArrayList<>(members);
+        return List.copyOf(members);
     }
 
     public void deleteById(Long memberId) {
