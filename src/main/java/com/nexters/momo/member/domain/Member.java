@@ -45,25 +45,25 @@ public class Member {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-    @Column(name = "member_status")
+    @Column(name = "member_status", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private MemberStatus memberStatus = MemberStatus.ACTIVE;
 
-    @Column(name = "private_policy_agreed")
-    private Boolean privatePolicyAgreed = Boolean.FALSE;
+    @Embedded
+    private PolicyAgreed policyAgreed;
 
     @ElementCollection
     @CollectionTable(name = "team", joinColumns = @JoinColumn(name = "member_id"))
     @Column(name = "team_id")
     private Set<Long> teams = new HashSet<>();
 
-    public Member(String uniqueId, String password, String name, String phone, Role role, Boolean privatePolicyAgreed) {
+    public Member(String uniqueId, String password, String name, String phone, Role role, Boolean policyAgreed) {
         this.uniqueId = uniqueId;
         this.password = new Password(password);
         this.name = new MemberName(name);
         this.phone = new Phone(phone);
         this.role = role;
-        this.privatePolicyAgreed = privatePolicyAgreed;
+        this.policyAgreed = new PolicyAgreed(policyAgreed);
     }
 
     public boolean isSamePassword(String password) {
