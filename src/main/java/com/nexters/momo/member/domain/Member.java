@@ -53,6 +53,8 @@ public class Member {
     @Embedded
     private Teams teams = new Teams();
 
+    private boolean deleted = false;
+
     public Member(String uniqueId, String password, String name, String phone, Role role, Boolean policyAgreed) {
         this.uniqueId = uniqueId;
         this.password = new Password(password);
@@ -72,6 +74,10 @@ public class Member {
 
     public void addTeam(Team team) {
         this.teams.add(team.getId());
+    }
+
+    public boolean isDeleted() {
+        return deleted;
     }
 
     public MemberStatus getStatus() {
