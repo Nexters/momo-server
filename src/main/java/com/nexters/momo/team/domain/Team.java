@@ -4,20 +4,14 @@ import com.nexters.momo.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -34,10 +28,8 @@ public class Team {
     @Column(name = "generation_id", nullable = false)
     private Long generationId;
 
-    @ElementCollection
-    @CollectionTable(name = "member", joinColumns = @JoinColumn(name = "team_id"))
-    @Column(name = "member_id")
-    private Set<Long> members = new HashSet<>();
+    @Embedded
+    private Members members = new Members();
 
     public Team(String teamName, Long generationId) {
         this.teamName = new TeamName(teamName);
@@ -48,8 +40,16 @@ public class Team {
         return id;
     }
 
+    public String getTeamName() {
+        return teamName.getValue();
+    }
+
+    public Long getGenerationId() {
+        return generationId;
+    }
+
     public List<Long> getAllMemberId() {
-        return members.stream().collect(Collectors.toList());
+        return members.getAllMemberId();
     }
 
     public void addMember(Member member) {
