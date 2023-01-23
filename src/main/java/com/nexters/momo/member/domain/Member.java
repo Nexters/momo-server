@@ -1,5 +1,6 @@
 package com.nexters.momo.member.domain;
 
+import com.nexters.momo.team.domain.Team;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -79,6 +80,10 @@ public class Member {
         return this.memberStatus;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -90,5 +95,9 @@ public class Member {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public void addTeam(Team team) {
+        this.teams.add(team.getId());
     }
 }
