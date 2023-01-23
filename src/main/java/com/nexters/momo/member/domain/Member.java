@@ -69,4 +69,12 @@ public class Member {
     public boolean isSamePassword(String password) {
         return this.password.match(password);
     }
+
+    public void changeStatus(MemberStatus status) {
+        this.memberStatus = status;
+    }
+
+    public MemberStatus getStatus() {
+        return this.memberStatus;
+    }
 }

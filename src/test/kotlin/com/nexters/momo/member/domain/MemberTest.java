@@ -12,6 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@DisplayName("도메인 : Member")
 class MemberTest {
 
     @DisplayName("멤버 생성 테스트")
