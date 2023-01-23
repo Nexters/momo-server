@@ -36,8 +36,8 @@ public class Member {
     @Embedded
     private Password password;
 
-    @Column(length = 16, nullable = false)
-    private String name;
+    @Embedded
+    private MemberName name;
 
     private String phone;
 
@@ -59,7 +59,7 @@ public class Member {
     public Member(String uniqueId, String password, String name, String phone, Role role, Boolean privatePolicyAgreed) {
         this.uniqueId = uniqueId;
         this.password = new Password(password);
-        this.name = name;
+        this.name = new MemberName(name);
         this.phone = phone;
         this.role = role;
         this.privatePolicyAgreed = privatePolicyAgreed;
