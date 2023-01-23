@@ -55,6 +55,23 @@ class TeamTest {
         Assertions.assertThat(newTeam.getAllMemberId()).containsAll(List.of(1L, 2L));
     }
 
+    @DisplayName("팀에서 멤버를 삭제할 수 있다.")
+    @Test
+    public void team_delete_member_test() {
+        // given
+        Team newTeam = new Team("team_name", 1234L);
+        Member member1 = createMember(1L, "member_1");
+        Member member2 = createMember(2L, "member_2");
+        newTeam.addMember(member1);
+        newTeam.addMember(member2);
+
+        // when
+        newTeam.deleteMember(member1);
+
+        // then
+        Assertions.assertThat(newTeam.getAllMemberId()).containsExactly(2L);
+    }
+
     private Member createMember(Long id, String userId) {
         Member member = new Member(userId, "password", "shine", "010-1234-5678", Role.USER, true);
         ReflectionTestUtils.setField(member, "id", id);

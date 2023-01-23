@@ -56,6 +56,10 @@ public class Team {
         this.members.add(member.getId());
     }
 
+    public void deleteMember(Member member) {
+        this.members.deleteById(member.getId());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

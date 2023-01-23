@@ -29,4 +29,8 @@ public class Members {
     public List<Long> getAllMemberId() {
         return new ArrayList<>(members);
     }
+
+    public void deleteById(Long memberId) {
+        this.members.remove(memberId);
+    }
 }
