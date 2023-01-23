@@ -8,6 +8,7 @@ import org.hibernate.annotations.Where;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -32,8 +33,8 @@ public class Member {
     @Column(name = "unique_id", length = 64, nullable = false)
     private String uniqueId;
 
-    @Column(length = 64, nullable = false)
-    private String password;
+    @Embedded
+    private Password password;
 
     @Column(length = 16, nullable = false)
     private String name;
@@ -57,10 +58,14 @@ public class Member {
 
     public Member(String uniqueId, String password, String name, String phone, Role role, Boolean privatePolicyAgreed) {
         this.uniqueId = uniqueId;
-        this.password = password;
+        this.password = new Password(password);
         this.name = name;
         this.phone = phone;
         this.role = role;
         this.privatePolicyAgreed = privatePolicyAgreed;
+    }
+
+    public boolean isSamePassword(String password) {
+        return this.password.match(password);
     }
 }
