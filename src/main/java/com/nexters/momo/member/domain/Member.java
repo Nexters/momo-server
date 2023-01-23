@@ -39,7 +39,8 @@ public class Member {
     @Embedded
     private MemberName name;
 
-    private String phone;
+    @Embedded
+    private Phone phone;
 
     @Enumerated(value = EnumType.STRING)
     private Role role;
@@ -60,7 +61,7 @@ public class Member {
         this.uniqueId = uniqueId;
         this.password = new Password(password);
         this.name = new MemberName(name);
-        this.phone = phone;
+        this.phone = new Phone(phone);
         this.role = role;
         this.privatePolicyAgreed = privatePolicyAgreed;
     }
