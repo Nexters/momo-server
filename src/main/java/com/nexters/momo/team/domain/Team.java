@@ -53,8 +53,7 @@ public class Team {
     }
 
     public void addMember(Member member) {
-        members.add(member.getId());
-        member.addTeam(this);
+        this.members.add(member.getId());
     }
 
     @Override

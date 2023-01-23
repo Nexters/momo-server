@@ -1,4 +1,4 @@
-package com.nexters.momo.team.domain;
+package com.nexters.momo.member.domain;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -15,18 +15,18 @@ import java.util.Set;
 
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Members {
+public class Teams {
 
     @ElementCollection
-    @CollectionTable(name = "member", joinColumns = @JoinColumn(name = "team_id"))
-    @Column(name = "member_id")
-    private Set<Long> members = new HashSet<>();
+    @CollectionTable(name = "team", joinColumns = @JoinColumn(name = "member_id"))
+    @Column(name = "team_id")
+    private Set<Long> teams = new HashSet<>();
 
-    public void add(Long memberId) {
-        this.members.add(memberId);
+    public void add(Long teamId) {
+        this.teams.add(teamId);
     }
 
-    public List<Long> getAllMemberId() {
-        return new ArrayList<>(members);
+    public List<Long> getAllTeamId() {
+        return new ArrayList<>(teams);
     }
 }

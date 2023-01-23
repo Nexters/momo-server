@@ -3,10 +3,15 @@ package com.nexters.momo.member.domain;
 import com.nexters.momo.member.exception.InvalidUserNameException;
 import com.nexters.momo.member.exception.InvalidUserPhoneException;
 import com.nexters.momo.member.exception.UserNotAgreePolicyException;
+import com.nexters.momo.team.domain.Team;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -92,5 +97,25 @@ class MemberTest {
 
         // then
         assertThat(member.getStatus()).isEqualTo(MemberStatus.SUSPEND);
+    }
+
+    @DisplayName("멤버에게 성공적으로 팀을 추가할 수 있다")
+    @Test
+    public void member_join_team_test() {
+        // given
+        Member member = new Member("unique_id", "password", "name", "010-1234-5678", Role.USER, true);
+
+        // when
+        member.addTeam(createTeam(1L));
+        member.addTeam(createTeam(2L));
+
+        // then
+        Assertions.assertThat(member.getAllTeamId()).containsAll(List.of(1L, 2L));
+    }
+
+    private Team createTeam(Long id) {
+        Team team = new Team("team_name", 1234L);
+        ReflectionTestUtils.setField(team, "id", id);
+        return team;
     }
 }

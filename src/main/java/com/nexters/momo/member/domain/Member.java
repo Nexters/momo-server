@@ -6,9 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,10 +14,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -54,10 +50,8 @@ public class Member {
     @Embedded
     private PolicyAgreed policyAgreed;
 
-    @ElementCollection
-    @CollectionTable(name = "team", joinColumns = @JoinColumn(name = "member_id"))
-    @Column(name = "team_id")
-    private Set<Long> teams = new HashSet<>();
+    @Embedded
+    private Teams teams = new Teams();
 
     public Member(String uniqueId, String password, String name, String phone, Role role, Boolean policyAgreed) {
         this.uniqueId = uniqueId;
@@ -76,12 +70,20 @@ public class Member {
         this.memberStatus = status;
     }
 
+    public void addTeam(Team team) {
+        this.teams.add(team.getId());
+    }
+
     public MemberStatus getStatus() {
         return this.memberStatus;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public List<Long> getAllTeamId() {
+        return this.teams.getAllTeamId();
     }
 
     @Override
@@ -95,9 +97,5 @@ public class Member {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    public void addTeam(Team team) {
-        this.teams.add(team.getId());
     }
 }
