@@ -1,6 +1,8 @@
 package com.nexters.momo.session.domain;
 
 import com.nexters.momo.session.dto.PostSessionReqDTO;
+import com.nexters.momo.session.exception.InvalidSessionTimeException;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
@@ -20,7 +22,15 @@ class SessionTest {
     @Test
     public void create_session() {
         assertThatCode(() -> Session.createSession(new PostSessionReqDTO("세션 제목", LocalDateTime.now(),
-                LocalDateTime.now(), "세션 주소"))).doesNotThrowAnyException();
+                LocalDateTime.now().plusMinutes(100), "세션 주소"))).doesNotThrowAnyException();
+    }
+
+    @DisplayName("세션 시각 예외 테스트")
+    @Test
+    public void invalid_session_time() {
+        Assertions.assertThatThrownBy(() -> Session.createSession(new PostSessionReqDTO("세션 제목", LocalDateTime.now(),
+                LocalDateTime.now().minusMinutes(100), "세션 주소")))
+                .isInstanceOf(InvalidSessionTimeException.class);
     }
 
 }
