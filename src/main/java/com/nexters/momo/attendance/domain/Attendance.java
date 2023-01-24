@@ -69,7 +69,7 @@ public class Attendance {
 
         // 1. 아직 출석할 수 없는 시간일 경우 (30분 전)
         // TODO : 몇 분 전부터 출석이 가능하게 해야할지 의논 필요
-        if (compareResult < 30) {
+        if (compareResult > 30) {
             throw new TooFastAttendanceTimeException();
         }
 
