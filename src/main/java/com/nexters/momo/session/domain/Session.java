@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+import static java.time.temporal.ChronoUnit.MINUTES;
+
 /**
  * 각 주차 세션을 나타내는 Session 엔티티입니다.
  * TODO : Generation 엔티티 연관 관계 매핑
@@ -54,6 +56,35 @@ public class Session {
         this.status = SessionStatus.BEFORE;
         this.sessionAddress = sessionAddress;
     }
+
+    /**
+     * 출석 코드가 해당 세션의 출석 코드와 일치하는지 여부를 반환합니다.
+     * @param attendanceCode 출석 코드
+     * @return 해당 세션의 출석 코드와의 일치 여부
+     */
+    public boolean isSameAttendanceCode(int attendanceCode) {
+        if (this.attendanceCode != attendanceCode) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 분 단위 비교를 위해 세션 시작 시간을 Minute 단위로 변환하여 반환합니다.
+     * @return Minute 단위로 변환된 세션 시작 시간
+     */
+    public LocalDateTime getStartTimeByMinute() {
+        return sessionStartTime.truncatedTo(MINUTES);
+    }
+
+    /**
+     * 분 단위 비교를 위해 세션 완료 시간을 Minute 단위로 변환하여 반환합니다.
+     * @return Minute 단위로 변환된 세션 완료 시간
+     */
+    public LocalDateTime getEndTimeByMinute() {
+        return sessionEndTime.truncatedTo(MINUTES);
+    }
+
 
     /**
      * Session 엔티티를 생성하는 static 메서드입니다.

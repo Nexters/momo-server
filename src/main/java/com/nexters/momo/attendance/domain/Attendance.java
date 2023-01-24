@@ -8,8 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.Objects;
+
+import static com.nexters.momo.attendance.domain.AttendanceStatus.*;
 
 /**
  * 각 세션의 출석을 나타내는 Attendance 엔티티입니다.
@@ -57,16 +57,22 @@ public class Attendance {
      * @return 생성된 Attendance 엔티티
      */
     public static Attendance createAttendance(Session session, Integer attendanceCode) {
-        LocalDateTime currentTime = LocalDateTime.now();
-
-        if (!Objects.equals(attendanceCode, session.getAttendanceCode())) {
+        if (!session.isSameAttendanceCode(attendanceCode)) {
             // 출석 코드 불일치
             throw new InvalidAttendanceCodeException();
         }
 
-        LocalDateTime currentTimeByMinute = currentTime.truncatedTo(ChronoUnit.MINUTES);
-        LocalDateTime sessionStartTimeByMinute = session.getSessionStartTime().truncatedTo(ChronoUnit.MINUTES);
-        int compareResult = currentTimeByMinute.compareTo(sessionStartTimeByMinute);
+        return new Attendance(judgeAttendanceStatus(session), session.getId());
+    }
+
+    /**
+     * 현재 시간과 비교하여 지각, 결석 여부 등을 반환합니다.
+     * @param session 비교하고자 하는 세션
+     * @return 현재 시간에서의 출석 상태
+     */
+    private static AttendanceStatus judgeAttendanceStatus(Session session) {
+        LocalDateTime currentTime = LocalDateTime.now();
+        int compareResult = session.getStartTimeByMinute().compareTo(session.getEndTimeByMinute());
 
         // 1. 아직 출석할 수 없는 시간일 경우 (30분 전)
         // TODO : 몇 분 전부터 출석이 가능하게 해야할지 의논 필요
@@ -76,16 +82,15 @@ public class Attendance {
 
         // 2. 세션 종료 후 출석을 시도하는 경우 - 결석
         if (currentTime.isAfter(session.getSessionEndTime())) {
-            return new Attendance(AttendanceStatus.ABSENT, session.getId());
+            return ABSENT;
         }
 
         // 3. 지각
         if (currentTime.isAfter(session.getSessionStartTime())) {
-            return new Attendance(AttendanceStatus.LATE, session.getId());
+            return LATE;
         }
 
         // 4. 정상 출석
-        return new Attendance(AttendanceStatus.ATTENDANCE, session.getId());
-
+        return ATTENDANCE;
     }
 }
