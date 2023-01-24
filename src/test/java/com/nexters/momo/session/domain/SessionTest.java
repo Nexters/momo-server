@@ -14,7 +14,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
  *
  * @author CHO Min Ho
  */
-@DisplayName("세션 생성 테스트")
+@DisplayName("세션 도메인 테스트")
 class SessionTest {
 
     @DisplayName("세션 생성 테스트")

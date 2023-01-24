@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  *
  * @author CHO Min Ho
  */
-@DisplayName("출석 엔티티 테스트")
+@DisplayName("출석 도메인 테스트")
 class AttendanceTest {
 
     Session session;
