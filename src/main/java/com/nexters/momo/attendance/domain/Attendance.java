@@ -26,13 +26,13 @@ public class Attendance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "attendance_id")
+    @Column(name = "attendance_id", nullable = false)
     private Long id;
 
-    @Column(name = "session_id")
+    @Column(name = "session_id", nullable = false)
     private Long sessionId;
 
-    @Column(name = "attendance_status")
+    @Column(name = "attendance_status", nullable = false)
     @Enumerated(EnumType.STRING)
     private AttendanceStatus status;
 

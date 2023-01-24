@@ -22,25 +22,25 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "session_id")
+    @Column(name = "session_id", nullable = false)
     private Long id;
 
     @Column(name = "session_title")
     private String title;
 
-    @Column(name = "start_at")
+    @Column(name = "start_at", nullable = false)
     private LocalDateTime sessionStartTime;
 
-    @Column(name = "end_at")
+    @Column(name = "end_at", nullable = false)
     private LocalDateTime sessionEndTime;
 
-    @Column(name = "attendance_code")
+    @Column(name = "attendance_code", nullable = false)
     private Integer attendanceCode;
 
     @Column(name = "publish_at")
     private LocalDateTime sessionPublishTime;
 
-    @Column(name = "session_status")
+    @Column(name = "session_status", nullable = false)
     @Enumerated(EnumType.STRING)
     private SessionStatus status;
 
