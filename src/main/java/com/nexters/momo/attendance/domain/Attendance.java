@@ -22,6 +22,8 @@ import java.util.Objects;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Attendance {
+    private static final int MINIMUM_ATTENDANCE_TIME = 30;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "attendance_id")
@@ -68,7 +70,7 @@ public class Attendance {
 
         // 1. 아직 출석할 수 없는 시간일 경우 (30분 전)
         // TODO : 몇 분 전부터 출석이 가능하게 해야할지 의논 필요
-        if (compareResult > 30) {
+        if (compareResult > MINIMUM_ATTENDANCE_TIME) {
             throw new TooFastAttendanceTimeException();
         }
 
