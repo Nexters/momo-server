@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 
+import static com.nexters.momo.attendance.domain.AttendanceStatus.ABSENT;
 import static com.nexters.momo.attendance.domain.AttendanceStatus.ATTENDANCE;
 import static com.nexters.momo.session.domain.Session.createSession;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -61,6 +62,25 @@ class AttendanceTest {
         assertThatThrownBy(() ->
                 Attendance.createAttendance(session, attendanceCode + 1)).
                 isInstanceOf(InvalidAttendanceCodeException.class);
+    }
+
+    @DisplayName("결석 테스트")
+    @Test
+    void absentTest() {
+        // given
+        LocalDateTime sessionStartTime = LocalDateTime.now().minusMinutes(100);
+        LocalDateTime sessionEndTime = LocalDateTime.now().minusMinutes(10);
+
+        session = createSession(new PostSessionReqDTO("세션 제목", sessionStartTime, sessionEndTime,
+                "서울시 강남구"));
+
+        attendanceCode = session.getAttendanceCode();
+
+        // when
+        Attendance attendance = Attendance.createAttendance(session, attendanceCode);
+
+        // then
+        assertThat(attendance.getStatus()).isEqualTo(ABSENT);
     }
 
 
