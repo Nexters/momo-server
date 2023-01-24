@@ -68,12 +68,19 @@ public class Member {
         return this.password.match(password);
     }
 
+    public boolean isAlreadyJoinTeam(Team team) {
+        return this.teams.contains(team.getId());
+    }
+
     public void changeStatus(MemberStatus status) {
         this.memberStatus = status;
     }
 
     public void addTeam(Team team) {
         this.teams.add(team.getId());
+        if(!team.isRegisteredMember(this)) {
+            team.addMember(this);
+        }
     }
 
     public boolean isDeleted() {

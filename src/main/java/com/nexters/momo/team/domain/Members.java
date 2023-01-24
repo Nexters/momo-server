@@ -32,4 +32,8 @@ public class Members {
     public void deleteById(Long memberId) {
         this.members.remove(memberId);
     }
+
+    public boolean contains(Long memberId) {
+        return this.members.contains(memberId);
+    }
 }

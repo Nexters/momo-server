@@ -3,7 +3,6 @@ package com.nexters.momo.team.domain;
 import com.nexters.momo.member.domain.Member;
 import com.nexters.momo.member.domain.Role;
 import com.nexters.momo.team.exception.InvalidTeamNameException;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,6 +11,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -52,14 +52,14 @@ class TeamTest {
         newTeam.addMember(createMember(2L, "member_2"));
 
         // then
-        Assertions.assertThat(newTeam.getAllMemberId()).containsAll(List.of(1L, 2L));
+        assertThat(newTeam.getAllMemberId()).containsAll(List.of(1L, 2L));
     }
 
     @DisplayName("팀에서 멤버를 삭제할 수 있다.")
     @Test
     public void team_delete_member_test() {
         // given
-        Team newTeam = new Team("team_name", 1234L);
+        Team newTeam = createTeam(7L);
         Member member1 = createMember(1L, "member_1");
         Member member2 = createMember(2L, "member_2");
         newTeam.addMember(member1);
@@ -69,7 +69,15 @@ class TeamTest {
         newTeam.deleteMember(member1);
 
         // then
-        Assertions.assertThat(newTeam.getAllMemberId()).containsExactly(2L);
+        assertThat(newTeam.getAllMemberId()).containsExactly(2L);
+        assertThat(member1.getAllTeamId()).containsExactly(7L);
+        assertThat(member2.getAllTeamId()).containsExactly(7L);
+    }
+
+    private Team createTeam(Long id) {
+        Team team = new Team("team_name", 1234L);
+        ReflectionTestUtils.setField(team, "id", id);
+        return team;
     }
 
     private Member createMember(Long id, String userId) {

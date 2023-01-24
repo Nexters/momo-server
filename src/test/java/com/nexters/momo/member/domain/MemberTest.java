@@ -4,7 +4,6 @@ import com.nexters.momo.member.exception.InvalidUserNameException;
 import com.nexters.momo.member.exception.InvalidUserPhoneException;
 import com.nexters.momo.member.exception.UserNotAgreePolicyException;
 import com.nexters.momo.team.domain.Team;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -103,19 +102,29 @@ class MemberTest {
     @Test
     public void member_join_team_test() {
         // given
-        Member member = new Member("unique_id", "password", "name", "010-1234-5678", Role.USER, true);
+        Member member = createMember(1L, "member_1");
 
         // when
-        member.addTeam(createTeam(1L));
-        member.addTeam(createTeam(2L));
+        Team team1 = createTeam(1L);
+        Team team2 = createTeam(2L);
+        member.addTeam(team1);
+        member.addTeam(team2);
 
         // then
-        Assertions.assertThat(member.getAllTeamId()).containsAll(List.of(1L, 2L));
+        assertThat(member.getAllTeamId()).containsAll(List.of(1L, 2L));
+        assertThat(team1.getAllMemberId()).containsExactly(1L);
+        assertThat(team2.getAllMemberId()).containsExactly(1L);
     }
 
     private Team createTeam(Long id) {
         Team team = new Team("team_name", 1234L);
         ReflectionTestUtils.setField(team, "id", id);
         return team;
+    }
+
+    private Member createMember(Long id, String userId) {
+        Member member = new Member(userId, "password", "shine", "010-1234-5678", Role.USER, true);
+        ReflectionTestUtils.setField(member, "id", id);
+        return member;
     }
 }

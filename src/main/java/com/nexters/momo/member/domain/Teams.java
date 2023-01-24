@@ -28,4 +28,8 @@ public class Teams {
     public List<Long> getAllTeamId() {
         return List.copyOf(teams);
     }
+
+    public boolean contains(Long teamId) {
+        return this.teams.contains(teamId);
+    }
 }
