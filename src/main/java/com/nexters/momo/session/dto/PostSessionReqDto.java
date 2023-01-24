@@ -1,7 +1,7 @@
 package com.nexters.momo.session.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
@@ -12,15 +12,18 @@ import java.time.LocalDateTime;
  *
  * @author CHO Min Ho
  */
-@Data
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostSessionReqDTO {
+public class PostSessionReqDto {
     private String title;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime startAt;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime endAt;
+
     private String sessionAddress;
 
 }

@@ -1,6 +1,6 @@
 package com.nexters.momo.session.domain;
 
-import com.nexters.momo.session.dto.PostSessionReqDTO;
+import com.nexters.momo.session.dto.PostSessionReqDto;
 import com.nexters.momo.session.exception.InvalidSessionTimeException;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -91,7 +91,7 @@ public class Session {
      * Session 엔티티는 해당 메서드를 이용해서만 생성됩니다.
      * @return 생성된 session 엔티티
      */
-    public static Session createSession(PostSessionReqDTO dto) {
+    public static Session createSession(PostSessionReqDto dto) {
         if (dto.getStartAt().isAfter(dto.getEndAt())) {
             // 세션 종료 시각이 세션 시작 시각보다 앞설 경우
             throw new InvalidSessionTimeException();
