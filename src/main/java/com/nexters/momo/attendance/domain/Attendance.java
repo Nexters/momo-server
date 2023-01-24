@@ -2,6 +2,7 @@ package com.nexters.momo.attendance.domain;
 
 import com.nexters.momo.attendance.exception.InvalidAttendanceCodeException;
 import com.nexters.momo.attendance.exception.TooFastAttendanceTimeException;
+import com.nexters.momo.common.BaseEntity;
 import com.nexters.momo.session.domain.Session;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,7 +22,7 @@ import static com.nexters.momo.attendance.domain.AttendanceStatus.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Attendance {
+public class Attendance extends BaseEntity {
     private static final int MINIMUM_ATTENDANCE_TIME = 30;
 
     @Id
@@ -36,17 +37,9 @@ public class Attendance {
     @Enumerated(EnumType.STRING)
     private AttendanceStatus status;
 
-    @Column(name = "created_at")
-    private LocalDateTime attendanceCreatedTime;
-
-    @Column(name = "last_modified_at")
-    private LocalDateTime attendanceUpdatedTime;
-
     private Attendance(AttendanceStatus status, Long sessionId) {
         this.status = status;
         this.sessionId = sessionId;
-        this.attendanceCreatedTime = LocalDateTime.now();
-        this.attendanceUpdatedTime = LocalDateTime.now();
     }
 
     /**
