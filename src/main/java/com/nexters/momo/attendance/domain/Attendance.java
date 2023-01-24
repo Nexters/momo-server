@@ -27,9 +27,8 @@ public class Attendance {
     @Column(name = "attendance_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "session_id")
-    private Session session;
+    @Column(name = "session_id")
+    private Long sessionId;
 
     @Column(name = "attendance_status")
     @Enumerated(EnumType.STRING)
@@ -41,9 +40,9 @@ public class Attendance {
     @Column(name = "last_modified_at")
     private LocalDateTime attendanceUpdatedTime;
 
-    private Attendance(AttendanceStatus status, Session session) {
+    private Attendance(AttendanceStatus status, Long sessionId) {
         this.status = status;
-        this.session = session;
+        this.sessionId = sessionId;
         this.attendanceCreatedTime = LocalDateTime.now();
         this.attendanceUpdatedTime = LocalDateTime.now();
     }
@@ -75,16 +74,16 @@ public class Attendance {
 
         // 2. 세션 종료 후 출석을 시도하는 경우 - 결석
         if (currentTime.isAfter(session.getSessionEndTime())) {
-            return new Attendance(AttendanceStatus.ABSENT, session);
+            return new Attendance(AttendanceStatus.ABSENT, session.getId());
         }
 
         // 3. 지각
         if (currentTime.isAfter(session.getSessionStartTime())) {
-            return new Attendance(AttendanceStatus.LATE, session);
+            return new Attendance(AttendanceStatus.LATE, session.getId());
         }
 
         // 4. 정상 출석
-        return new Attendance(AttendanceStatus.ATTENDANCE, session);
+        return new Attendance(AttendanceStatus.ATTENDANCE, session.getId());
 
     }
 }
