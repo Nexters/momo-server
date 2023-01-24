@@ -24,21 +24,21 @@ import java.util.Objects;
 public class Attendance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "attd_id")
+    @Column(name = "attendance_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sess_id")
+    @JoinColumn(name = "session_id")
     private Session session;
 
-    @Column(name = "attd_status")
+    @Column(name = "attendance_status")
     @Enumerated(EnumType.STRING)
     private AttendanceStatus status;
 
-    @Column(name = "created_by")
+    @Column(name = "created_at")
     private LocalDateTime attendanceCreatedTime;
 
-    @Column(name = "updated_by")
+    @Column(name = "last_modified_at")
     private LocalDateTime attendanceUpdatedTime;
 
     private Attendance(AttendanceStatus status, Session session) {

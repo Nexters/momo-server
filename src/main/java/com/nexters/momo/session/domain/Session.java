@@ -20,10 +20,10 @@ import java.time.LocalDateTime;
 public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "sess_id")
+    @Column(name = "session_id")
     private Long id;
 
-    @Column(name = "sess_title")
+    @Column(name = "session_title")
     private String title;
 
     @Column(name = "start_at")
@@ -32,17 +32,17 @@ public class Session {
     @Column(name = "end_at")
     private LocalDateTime sessionEndTime;
 
-    @Column(name = "attd_code")
+    @Column(name = "attendance_code")
     private Integer attendanceCode;
 
     @Column(name = "publish_at")
     private LocalDateTime sessionPublishTime;
 
-    @Column(name = "sess_status")
+    @Column(name = "session_status")
     @Enumerated(EnumType.STRING)
     private SessionStatus status;
 
-    @Column(name = "sess_addr", columnDefinition = "TEXT")
+    @Column(name = "session_address", columnDefinition = "TEXT")
     private String sessionAddress;
 
     private Session(String title, LocalDateTime sessionStartTime, LocalDateTime sessionEndTime, String sessionAddress) {
