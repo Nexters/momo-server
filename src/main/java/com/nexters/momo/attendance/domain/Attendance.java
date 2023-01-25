@@ -2,7 +2,7 @@ package com.nexters.momo.attendance.domain;
 
 import com.nexters.momo.attendance.exception.InvalidAttendanceCodeException;
 import com.nexters.momo.attendance.exception.TooFastAttendanceTimeException;
-import com.nexters.momo.common.BaseEntity;
+import com.nexters.momo.common.BaseTimeEntity;
 import com.nexters.momo.session.domain.Session;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -22,7 +22,7 @@ import static com.nexters.momo.attendance.domain.AttendanceStatus.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Attendance extends BaseEntity {
+public class Attendance extends BaseTimeEntity {
     private static final int MINIMUM_ATTENDANCE_TIME = 30;
 
     @Id

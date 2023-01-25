@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-public class BaseEntity {
+public class BaseTimeEntity {
 
     @Column(name = "created_at", updatable = false)
     @CreatedDate
