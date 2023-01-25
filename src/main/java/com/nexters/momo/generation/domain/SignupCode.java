@@ -17,7 +17,7 @@ public class SignupCode {
     private String value;
 
     public static SignupCode from(String value) {
-        Assert.notNull(value, "signupCode value must not be null");
+        Assert.hasText(value, "signupCode value must not be null");
 
         return new SignupCode(value);
     }
