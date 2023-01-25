@@ -1,6 +1,7 @@
 package com.nexters.momo.team.domain;
 
 import com.nexters.momo.member.domain.Member;
+import com.nexters.momo.member.domain.Occupation;
 import com.nexters.momo.member.domain.Role;
 import com.nexters.momo.team.exception.InvalidTeamNameException;
 import org.junit.jupiter.api.DisplayName;
@@ -81,7 +82,7 @@ class TeamTest {
     }
 
     private Member createMember(Long id, String userId) {
-        Member member = new Member(userId, "password", "shine", "010-1234-5678", Role.USER, true);
+        Member member = new Member(userId, "password", "shine", "010-1234-5678", Role.USER, Occupation.DEVELOPER, true);
         ReflectionTestUtils.setField(member, "id", id);
         return member;
     }

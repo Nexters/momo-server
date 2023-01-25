@@ -22,7 +22,7 @@ class MemberTest {
     @DisplayName("멤버 생성 테스트")
     @Test
     public void create_member() {
-        assertThatCode(() -> new Member("unique_id", "password", "shine", "010-1234-5678", Role.USER, true))
+        assertThatCode(() -> new Member("unique_id", "password", "shine", "010-1234-5678", Role.USER, Occupation.DEVELOPER, true))
                 .doesNotThrowAnyException();
     }
 
@@ -30,7 +30,7 @@ class MemberTest {
     @Test
     public void member_password_match_test() {
         // given
-        Member member = new Member("unique_id", "password", "shine", "010-1234-5678", Role.USER, true);
+        Member member = new Member("unique_id", "password", "shine", "010-1234-5678", Role.USER, Occupation.DEVELOPER, true);
 
         // when, then
         assertThat(member.isSamePassword("password")).isTrue();
@@ -40,7 +40,7 @@ class MemberTest {
     @Test
     public void member_password_not_match_test() {
         // given
-        Member member = new Member("unique_id", "password", "shine", "010-1234-5678", Role.USER, true);
+        Member member = new Member("unique_id", "password", "shine", "010-1234-5678", Role.USER, Occupation.DEVELOPER, true);
 
         // when, then
         assertThat(member.isSamePassword("invalid-password")).isFalse();
@@ -50,7 +50,7 @@ class MemberTest {
     @ParameterizedTest
     @ValueSource(strings = {"김", "김23456789김23456789"})
     public void member_name_length_test(String name) {
-        assertThatCode(() -> new Member("unique_id", "password", name, "010-1234-5678", Role.USER, true))
+        assertThatCode(() -> new Member("unique_id", "password", name, "010-1234-5678", Role.USER, Occupation.DEVELOPER, true))
                 .doesNotThrowAnyException();
     }
 
@@ -58,7 +58,7 @@ class MemberTest {
     @ParameterizedTest
     @ValueSource(strings = {"", "김123456789김123456789김"})
     public void member_name_invalid_length_test(String name) {
-        assertThatThrownBy(() -> new Member("unique_id", "password", name, "010-1234-5678", Role.USER, true))
+        assertThatThrownBy(() -> new Member("unique_id", "password", name, "010-1234-5678", Role.USER, Occupation.DEVELOPER, true))
                         .isInstanceOf(InvalidUserNameException.class);
     }
 
@@ -66,7 +66,7 @@ class MemberTest {
     @ParameterizedTest
     @ValueSource(strings = {"02-123-1234", "010-1234-5678"})
     public void phone_numbers_length_test(String phone) {
-        assertThatCode(() -> new Member("unique_id", "password", "name", phone, Role.USER, true))
+        assertThatCode(() -> new Member("unique_id", "password", "name", phone, Role.USER, Occupation.DEVELOPER, true))
                 .doesNotThrowAnyException();
     }
 
@@ -74,14 +74,14 @@ class MemberTest {
     @ParameterizedTest
     @ValueSource(strings = {"02-123-123", "010-1234-56789"})
     public void phone_numbers_invalid_length_test(String phone) {
-        assertThatThrownBy(() -> new Member("unique_id", "password", "name", phone, Role.USER, true))
+        assertThatThrownBy(() -> new Member("unique_id", "password", "name", phone, Role.USER, Occupation.DEVELOPER, true))
                 .isInstanceOf(InvalidUserPhoneException.class);
     }
 
     @DisplayName("개인 정보 동의를 하지 않은 멤버는 생성되지 않는다")
     @Test
     public void member_not_agree_policy_test() {
-        assertThatThrownBy(() -> new Member("unique_id", "password", "shine", "010-1234-5678", Role.USER, false))
+        assertThatThrownBy(() -> new Member("unique_id", "password", "shine", "010-1234-5678", Role.USER, Occupation.DEVELOPER, false))
                 .isInstanceOf(UserNotAgreePolicyException.class);
     }
 
@@ -89,7 +89,7 @@ class MemberTest {
     @Test
     public void member_change_status_test() {
         // given
-        Member member = new Member("unique_id", "password", "name", "010-1234-5678", Role.USER, true);
+        Member member = new Member("unique_id", "password", "name", "010-1234-5678", Role.USER, Occupation.DEVELOPER, true);
 
         // when
         member.changeStatus(MemberStatus.SUSPEND);
@@ -123,7 +123,7 @@ class MemberTest {
     }
 
     private Member createMember(Long id, String userId) {
-        Member member = new Member(userId, "password", "shine", "010-1234-5678", Role.USER, true);
+        Member member = new Member(userId, "password", "shine", "010-1234-5678", Role.USER, Occupation.DEVELOPER, true);
         ReflectionTestUtils.setField(member, "id", id);
         return member;
     }

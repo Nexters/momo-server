@@ -43,6 +43,9 @@ public class Member {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
+    @Enumerated(value = EnumType.STRING)
+    private Occupation occupation;
+
     @Column(name = "member_status", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private MemberStatus memberStatus = MemberStatus.ACTIVE;
@@ -55,12 +58,13 @@ public class Member {
 
     private boolean deleted = false;
 
-    public Member(String uniqueId, String password, String name, String phone, Role role, Boolean policyAgreed) {
+    public Member(String uniqueId, String password, String name, String phone, Role role, Occupation occupation, Boolean policyAgreed) {
         this.uniqueId = uniqueId;
         this.password = new Password(password);
         this.name = new MemberName(name);
         this.phone = new Phone(phone);
         this.role = role;
+        this.occupation = occupation;
         this.policyAgreed = new PolicyAgreed(policyAgreed);
     }
 
