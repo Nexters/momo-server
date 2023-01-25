@@ -1,6 +1,7 @@
 package com.nexters.momo.participation.domain;
 
 import com.nexters.momo.generation.domain.Generation;
+import com.nexters.momo.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,25 +23,18 @@ public class Participation {
     @Column(nullable = false)
     private Long generationId;
 
-    // TODO - Add user
-
-    @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
-    private Position position;
+    private Long memberId;
 
-    enum Position {
-        DESIGNER,
-        DEVELOPER
-    }
 
     public static Participation of(
             Long id,
             Generation generation,
-            Position position
+            Member member
     ) {
         Assert.notNull(generation, "generation must not be null");
-        Assert.notNull(generation, "position must not be null");
+        Assert.notNull(member, "meember must not be null");
 
-        return new Participation(id, generation.getId(), position);
+        return new Participation(id, generation.getId(), member.getId());
     }
 }

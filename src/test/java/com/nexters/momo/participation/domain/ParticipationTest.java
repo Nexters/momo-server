@@ -2,6 +2,9 @@ package com.nexters.momo.participation.domain;
 
 import com.nexters.momo.generation.domain.Generation;
 import com.nexters.momo.generation.domain.SignupCode;
+import com.nexters.momo.member.domain.Member;
+import com.nexters.momo.member.domain.Occupation;
+import com.nexters.momo.member.domain.Role;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -23,8 +26,18 @@ class ParticipationTest {
                 LocalDateTime.now()
         );
 
+        Member member = new Member(
+                "unique_id",
+                "password",
+                "shine",
+                "010-1234-5678",
+                Role.USER,
+                Occupation.DEVELOPER,
+                true
+        );
+
         assertThatCode(() ->
-                Participation.of(0L, generation, Participation.Position.DESIGNER)
+                Participation.of(0L, generation, member)
         ).doesNotThrowAnyException();
     }
 }
