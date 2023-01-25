@@ -22,6 +22,7 @@ class AttendanceTest {
 
     Session session;
     Integer attendanceCode;
+    Integer incorrectAttendanceCode;
 
     @DisplayName("출석 생성 테스트")
     @Test
@@ -53,11 +54,11 @@ class AttendanceTest {
         session = createSession(new PostSessionReqDto("세션 제목", sessionStartTime, sessionEndTime,
                 "서울시 강남구"));
 
-        attendanceCode = session.getAttendanceCode();
+        incorrectAttendanceCode = session.getAttendanceCode() + 1;
 
         // when, then
         assertThatThrownBy(() ->
-                Attendance.createAttendance(session, attendanceCode + 1)).
+                Attendance.createAttendance(session, incorrectAttendanceCode)).
                 isInstanceOf(InvalidAttendanceCodeException.class);
     }
 
