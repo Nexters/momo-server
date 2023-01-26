@@ -28,8 +28,8 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    @Column(name = "unique_id", length = 64, nullable = false)
-    private String uniqueId;
+    @Embedded
+    private Email email;
 
     @Embedded
     private Password password;
@@ -58,8 +58,8 @@ public class Member {
 
     private boolean deleted = false;
 
-    public Member(String uniqueId, String password, String name, String phone, Role role, Occupation occupation, Boolean policyAgreed) {
-        this.uniqueId = uniqueId;
+    public Member(String email, String password, String name, String phone, Role role, Occupation occupation, Boolean policyAgreed) {
+        this.email = new Email(email);
         this.password = new Password(password);
         this.name = new MemberName(name);
         this.phone = new Phone(phone);
