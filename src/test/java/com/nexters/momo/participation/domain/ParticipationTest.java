@@ -27,7 +27,7 @@ class ParticipationTest {
         );
 
         Member member = new Member(
-                "unique_id",
+                "shine@naver.com",
                 "password",
                 "shine",
                 "010-1234-5678",

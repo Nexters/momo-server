@@ -30,6 +30,10 @@ public class Email {
         this.value = email;
     }
 
+    public String getValue() {
+        return value;
+    }
+
     private boolean isValid(String email) {
         return this.patternMatches(email, regexPattern);
     }
