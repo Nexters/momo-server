@@ -49,8 +49,8 @@ class TeamTest {
         Team newTeam = new Team("team_name", 1234L);
 
         // when
-        newTeam.addMember(createMember(1L, "member_1"));
-        newTeam.addMember(createMember(2L, "member_2"));
+        newTeam.addMember(createMember(1L, "shine@naver.com"));
+        newTeam.addMember(createMember(2L, "shine@gamil.com"));
 
         // then
         assertThat(newTeam.getAllMemberId()).containsAll(List.of(1L, 2L));
@@ -61,8 +61,8 @@ class TeamTest {
     public void team_delete_member_test() {
         // given
         Team newTeam = createTeam(7L);
-        Member member1 = createMember(1L, "member_1");
-        Member member2 = createMember(2L, "member_2");
+        Member member1 = createMember(1L, "shine@naver.com");
+        Member member2 = createMember(2L, "shine@gamil.com");
         newTeam.addMember(member1);
         newTeam.addMember(member2);
 
@@ -82,7 +82,7 @@ class TeamTest {
     }
 
     private Member createMember(Long id, String userId) {
-        Member member = new Member(userId, "password", "shine", "010-1234-5678", Role.USER, Occupation.DEVELOPER, true);
+        Member member = new Member(userId, "password", "shine", "device_unique_id", Role.USER, Occupation.DEVELOPER, true);
         ReflectionTestUtils.setField(member, "id", id);
         return member;
     }

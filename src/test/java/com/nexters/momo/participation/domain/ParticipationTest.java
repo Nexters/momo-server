@@ -27,10 +27,10 @@ class ParticipationTest {
         );
 
         Member member = new Member(
-                "unique_id",
+                "shine@naver.com",
                 "password",
                 "shine",
-                "010-1234-5678",
+                "device_unique_id",
                 Role.USER,
                 Occupation.DEVELOPER,
                 true

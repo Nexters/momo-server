@@ -1,7 +1,7 @@
 package com.nexters.momo.member.domain;
 
+import com.nexters.momo.member.exception.InvalidUserEmailException;
 import com.nexters.momo.member.exception.InvalidUserNameException;
-import com.nexters.momo.member.exception.InvalidUserPhoneException;
 import com.nexters.momo.member.exception.UserNotAgreePolicyException;
 import com.nexters.momo.team.domain.Team;
 import org.junit.jupiter.api.DisplayName;
@@ -22,15 +22,23 @@ class MemberTest {
     @DisplayName("멤버 생성 테스트")
     @Test
     public void create_member() {
-        assertThatCode(() -> new Member("unique_id", "password", "shine", "010-1234-5678", Role.USER, Occupation.DEVELOPER, true))
+        assertThatCode(() -> new Member("shine@naver.com", "password", "shine", "device_unique_id", Role.USER, Occupation.DEVELOPER, true))
                 .doesNotThrowAnyException();
+    }
+
+    @DisplayName("멤버 이메일 형식 검증 테스트")
+    @ParameterizedTest
+    @ValueSource(strings = {"shine@navercom", "shine$naver.com", "shinenavercom"})
+    public void member_invalid_email_id(String email) {
+        assertThatThrownBy(() -> new Member(email, "password", "name", "device_unique_id", Role.USER, Occupation.DEVELOPER, true))
+                .isInstanceOf(InvalidUserEmailException.class);
     }
 
     @DisplayName("멤버 비밀번호 일치 테스트")
     @Test
     public void member_password_match_test() {
         // given
-        Member member = new Member("unique_id", "password", "shine", "010-1234-5678", Role.USER, Occupation.DEVELOPER, true);
+        Member member = new Member("shine@naver.com", "password", "shine", "device_unique_id", Role.USER, Occupation.DEVELOPER, true);
 
         // when, then
         assertThat(member.isSamePassword("password")).isTrue();
@@ -40,7 +48,7 @@ class MemberTest {
     @Test
     public void member_password_not_match_test() {
         // given
-        Member member = new Member("unique_id", "password", "shine", "010-1234-5678", Role.USER, Occupation.DEVELOPER, true);
+        Member member = new Member("shine@naver.com", "password", "shine", "device_unique_id", Role.USER, Occupation.DEVELOPER, true);
 
         // when, then
         assertThat(member.isSamePassword("invalid-password")).isFalse();
@@ -50,7 +58,7 @@ class MemberTest {
     @ParameterizedTest
     @ValueSource(strings = {"김", "김23456789김23456789"})
     public void member_name_length_test(String name) {
-        assertThatCode(() -> new Member("unique_id", "password", name, "010-1234-5678", Role.USER, Occupation.DEVELOPER, true))
+        assertThatCode(() -> new Member("shine@naver.com", "password", name, "device_unique_id", Role.USER, Occupation.DEVELOPER, true))
                 .doesNotThrowAnyException();
     }
 
@@ -58,30 +66,14 @@ class MemberTest {
     @ParameterizedTest
     @ValueSource(strings = {"", "김123456789김123456789김"})
     public void member_name_invalid_length_test(String name) {
-        assertThatThrownBy(() -> new Member("unique_id", "password", name, "010-1234-5678", Role.USER, Occupation.DEVELOPER, true))
+        assertThatThrownBy(() -> new Member("shine@naver.com", "password", name, "device_unique_id", Role.USER, Occupation.DEVELOPER, true))
                         .isInstanceOf(InvalidUserNameException.class);
-    }
-
-    @DisplayName("전화번호는 11글자 부터 13글자 까지 가능하다")
-    @ParameterizedTest
-    @ValueSource(strings = {"02-123-1234", "010-1234-5678"})
-    public void phone_numbers_length_test(String phone) {
-        assertThatCode(() -> new Member("unique_id", "password", "name", phone, Role.USER, Occupation.DEVELOPER, true))
-                .doesNotThrowAnyException();
-    }
-
-    @DisplayName("전화번호가 10글자 이하거나 작거나 14글자 이상이면 생성에 실패한다")
-    @ParameterizedTest
-    @ValueSource(strings = {"02-123-123", "010-1234-56789"})
-    public void phone_numbers_invalid_length_test(String phone) {
-        assertThatThrownBy(() -> new Member("unique_id", "password", "name", phone, Role.USER, Occupation.DEVELOPER, true))
-                .isInstanceOf(InvalidUserPhoneException.class);
     }
 
     @DisplayName("개인 정보 동의를 하지 않은 멤버는 생성되지 않는다")
     @Test
     public void member_not_agree_policy_test() {
-        assertThatThrownBy(() -> new Member("unique_id", "password", "shine", "010-1234-5678", Role.USER, Occupation.DEVELOPER, false))
+        assertThatThrownBy(() -> new Member("shine@naver.com", "password", "shine", "device_unique_id", Role.USER, Occupation.DEVELOPER, false))
                 .isInstanceOf(UserNotAgreePolicyException.class);
     }
 
@@ -89,7 +81,7 @@ class MemberTest {
     @Test
     public void member_change_status_test() {
         // given
-        Member member = new Member("unique_id", "password", "name", "010-1234-5678", Role.USER, Occupation.DEVELOPER, true);
+        Member member = new Member("shine@naver.com", "password", "name", "device_unique_id", Role.USER, Occupation.DEVELOPER, true);
 
         // when
         member.changeStatus(MemberStatus.SUSPEND);
@@ -102,7 +94,7 @@ class MemberTest {
     @Test
     public void member_join_team_test() {
         // given
-        Member member = createMember(1L, "member_1");
+        Member member = createMember(1L, "shine@naver.com");
 
         // when
         Team team1 = createTeam(1L);
@@ -122,8 +114,8 @@ class MemberTest {
         return team;
     }
 
-    private Member createMember(Long id, String userId) {
-        Member member = new Member(userId, "password", "shine", "010-1234-5678", Role.USER, Occupation.DEVELOPER, true);
+    private Member createMember(Long id, String email) {
+        Member member = new Member(email, "password", "shine", "device_unique_id", Role.USER, Occupation.DEVELOPER, true);
         ReflectionTestUtils.setField(member, "id", id);
         return member;
     }

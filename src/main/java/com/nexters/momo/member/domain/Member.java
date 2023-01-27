@@ -28,8 +28,8 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    @Column(name = "unique_id", length = 64, nullable = false)
-    private String uniqueId;
+    @Embedded
+    private Email email;
 
     @Embedded
     private Password password;
@@ -37,12 +37,14 @@ public class Member {
     @Embedded
     private MemberName name;
 
-    @Embedded
-    private Phone phone;
+    @Column(name = "device_unique_id")
+    private String deviceUniqueId;
 
+    @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
+    @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Occupation occupation;
 
@@ -58,11 +60,11 @@ public class Member {
 
     private boolean deleted = false;
 
-    public Member(String uniqueId, String password, String name, String phone, Role role, Occupation occupation, Boolean policyAgreed) {
-        this.uniqueId = uniqueId;
+    public Member(String email, String password, String name, String deviceUniqueId, Role role, Occupation occupation, Boolean policyAgreed) {
+        this.email = new Email(email);
         this.password = new Password(password);
         this.name = new MemberName(name);
-        this.phone = new Phone(phone);
+        this.deviceUniqueId = deviceUniqueId;
         this.role = role;
         this.occupation = occupation;
         this.policyAgreed = new PolicyAgreed(policyAgreed);
