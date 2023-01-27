@@ -82,7 +82,7 @@ class TeamTest {
     }
 
     private Member createMember(Long id, String userId) {
-        Member member = new Member(userId, "password", "shine", "010-1234-5678", Role.USER, Occupation.DEVELOPER, true);
+        Member member = new Member(userId, "password", "shine", "device_unique_id", Role.USER, Occupation.DEVELOPER, true);
         ReflectionTestUtils.setField(member, "id", id);
         return member;
     }
