@@ -38,9 +38,6 @@ public class Team {
 
     public void addMember(Member member) {
         this.members.add(member.getId());
-        if(!member.isAlreadyJoinTeam(this)) {
-            member.addTeam(this);
-        }
     }
 
     public void deleteMember(Member member) {

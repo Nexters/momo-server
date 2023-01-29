@@ -3,14 +3,10 @@ package com.nexters.momo.member.domain;
 import com.nexters.momo.member.exception.InvalidUserEmailException;
 import com.nexters.momo.member.exception.InvalidUserNameException;
 import com.nexters.momo.member.exception.UserNotAgreePolicyException;
-import com.nexters.momo.team.domain.Team;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.test.util.ReflectionTestUtils;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -88,35 +84,5 @@ class MemberTest {
 
         // then
         assertThat(member.getStatus()).isEqualTo(MemberStatus.SUSPEND);
-    }
-
-    @DisplayName("멤버에게 성공적으로 팀을 추가할 수 있다")
-    @Test
-    public void member_join_team_test() {
-        // given
-        Member member = createMember(1L, "shine@naver.com");
-
-        // when
-        Team team1 = createTeam(1L);
-        Team team2 = createTeam(2L);
-        member.addTeam(team1);
-        member.addTeam(team2);
-
-        // then
-        assertThat(member.getAllTeamId()).containsAll(List.of(1L, 2L));
-        assertThat(team1.getAllMemberId()).containsExactly(1L);
-        assertThat(team2.getAllMemberId()).containsExactly(1L);
-    }
-
-    private Team createTeam(Long id) {
-        Team team = new Team("team_name", 1234L);
-        ReflectionTestUtils.setField(team, "id", id);
-        return team;
-    }
-
-    private Member createMember(Long id, String email) {
-        Member member = new Member(email, "password", "shine", "device_unique_id", Role.USER, Occupation.DEVELOPER, true);
-        ReflectionTestUtils.setField(member, "id", id);
-        return member;
     }
 }

@@ -71,8 +71,6 @@ class TeamTest {
 
         // then
         assertThat(newTeam.getAllMemberId()).containsExactly(2L);
-        assertThat(member1.getAllTeamId()).containsExactly(7L);
-        assertThat(member2.getAllTeamId()).containsExactly(7L);
     }
 
     private Team createTeam(Long id) {

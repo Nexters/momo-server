@@ -1,6 +1,5 @@
 package com.nexters.momo.member.domain;
 
-import com.nexters.momo.team.domain.Team;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -14,7 +13,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -55,9 +53,6 @@ public class Member {
     @Embedded
     private PolicyAgreed policyAgreed;
 
-    @Embedded
-    private Teams teams = new Teams();
-
     private boolean deleted = false;
 
     public Member(String email, String password, String name, String deviceUniqueId, Role role, Occupation occupation, Boolean policyAgreed) {
@@ -74,19 +69,8 @@ public class Member {
         return this.password.match(password);
     }
 
-    public boolean isAlreadyJoinTeam(Team team) {
-        return this.teams.contains(team.getId());
-    }
-
     public void changeStatus(MemberStatus status) {
         this.memberStatus = status;
-    }
-
-    public void addTeam(Team team) {
-        this.teams.add(team.getId());
-        if(!team.isRegisteredMember(this)) {
-            team.addMember(this);
-        }
     }
 
     public boolean isDeleted() {
@@ -99,10 +83,6 @@ public class Member {
 
     public Long getId() {
         return id;
-    }
-
-    public List<Long> getAllTeamId() {
-        return this.teams.getAllTeamId();
     }
 
     @Override
