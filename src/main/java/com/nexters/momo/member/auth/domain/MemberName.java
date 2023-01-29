@@ -1,6 +1,6 @@
 package com.nexters.momo.member.auth.domain;
 
-import com.nexters.momo.member.exception.InvalidUserNameException;
+import com.nexters.momo.member.auth.exception.InvalidUserNameException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

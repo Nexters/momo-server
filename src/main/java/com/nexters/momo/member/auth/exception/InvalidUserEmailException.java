@@ -1,4 +1,4 @@
-package com.nexters.momo.member.exception;
+package com.nexters.momo.member.auth.exception;
 
 import com.nexters.momo.common.exception.MomoRuntimeException;
 
