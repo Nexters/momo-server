@@ -6,7 +6,6 @@ import com.nexters.momo.member.auth.domain.Occupation;
 import com.nexters.momo.member.auth.domain.Role;
 import com.nexters.momo.member.exception.InvalidUserEmailException;
 import com.nexters.momo.member.exception.InvalidUserNameException;
-import com.nexters.momo.member.exception.UserNotAgreePolicyException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,7 +25,7 @@ class MemberTest {
     @DisplayName("멤버 생성 테스트")
     @Test
     public void create_member() {
-        assertThatCode(() -> new Member("shine@naver.com", "password", "shine", "device_unique_id", Role.USER, Occupation.DEVELOPER, true))
+        assertThatCode(() -> new Member("shine@naver.com", "password", "shine", "device_unique_id", Role.USER, Occupation.DEVELOPER))
                 .doesNotThrowAnyException();
     }
 
@@ -34,7 +33,7 @@ class MemberTest {
     @ParameterizedTest
     @ValueSource(strings = {"shine@navercom", "shine$naver.com", "shinenavercom"})
     public void member_invalid_email_id(String email) {
-        assertThatThrownBy(() -> new Member(email, "password", "name", "device_unique_id", Role.USER, Occupation.DEVELOPER, true))
+        assertThatThrownBy(() -> new Member(email, "password", "name", "device_unique_id", Role.USER, Occupation.DEVELOPER))
                 .isInstanceOf(InvalidUserEmailException.class);
     }
 
@@ -42,7 +41,7 @@ class MemberTest {
     @Test
     public void member_password_match_test() {
         // given
-        Member member = new Member("shine@naver.com", "password", "shine", "device_unique_id", Role.USER, Occupation.DEVELOPER, true);
+        Member member = new Member("shine@naver.com", "password", "shine", "device_unique_id", Role.USER, Occupation.DEVELOPER);
 
         // when, then
         assertThat(member.isSamePassword("password")).isTrue();
@@ -52,7 +51,7 @@ class MemberTest {
     @Test
     public void member_password_not_match_test() {
         // given
-        Member member = new Member("shine@naver.com", "password", "shine", "device_unique_id", Role.USER, Occupation.DEVELOPER, true);
+        Member member = new Member("shine@naver.com", "password", "shine", "device_unique_id", Role.USER, Occupation.DEVELOPER);
 
         // when, then
         assertThat(member.isSamePassword("invalid-password")).isFalse();
@@ -62,7 +61,7 @@ class MemberTest {
     @ParameterizedTest
     @ValueSource(strings = {"김", "김23456789김23456789"})
     public void member_name_length_test(String name) {
-        assertThatCode(() -> new Member("shine@naver.com", "password", name, "device_unique_id", Role.USER, Occupation.DEVELOPER, true))
+        assertThatCode(() -> new Member("shine@naver.com", "password", name, "device_unique_id", Role.USER, Occupation.DEVELOPER))
                 .doesNotThrowAnyException();
     }
 
@@ -70,22 +69,15 @@ class MemberTest {
     @ParameterizedTest
     @ValueSource(strings = {"", "김123456789김123456789김"})
     public void member_name_invalid_length_test(String name) {
-        assertThatThrownBy(() -> new Member("shine@naver.com", "password", name, "device_unique_id", Role.USER, Occupation.DEVELOPER, true))
+        assertThatThrownBy(() -> new Member("shine@naver.com", "password", name, "device_unique_id", Role.USER, Occupation.DEVELOPER))
                         .isInstanceOf(InvalidUserNameException.class);
-    }
-
-    @DisplayName("개인 정보 동의를 하지 않은 멤버는 생성되지 않는다")
-    @Test
-    public void member_not_agree_policy_test() {
-        assertThatThrownBy(() -> new Member("shine@naver.com", "password", "shine", "device_unique_id", Role.USER, Occupation.DEVELOPER, false))
-                .isInstanceOf(UserNotAgreePolicyException.class);
     }
 
     @DisplayName("사용자의 활동 상태를 변경한다")
     @Test
     public void member_change_status_test() {
         // given
-        Member member = new Member("shine@naver.com", "password", "name", "device_unique_id", Role.USER, Occupation.DEVELOPER, true);
+        Member member = new Member("shine@naver.com", "password", "name", "device_unique_id", Role.USER, Occupation.DEVELOPER);
 
         // when
         member.changeActive(true);
@@ -98,7 +90,7 @@ class MemberTest {
     @Test
     public void member_role_test() {
         // given
-        Member member = new Member("shine@naver.com", "password", "name", "device_unique_id", Role.USER, Occupation.DEVELOPER, true);
+        Member member = new Member("shine@naver.com", "password", "name", "device_unique_id", Role.USER, Occupation.DEVELOPER);
 
         // when
         Collection<? extends GrantedAuthority> authorities = member.getAuthorities();
@@ -111,7 +103,7 @@ class MemberTest {
     @Test
     public void member_roles_test() {
         // given
-        Member member = new Member("shine@naver.com", "password", "name", "device_unique_id", Role.USER, Occupation.DEVELOPER, true);
+        Member member = new Member("shine@naver.com", "password", "name", "device_unique_id", Role.USER, Occupation.DEVELOPER);
 
         // when
         member.addRole(Role.ANONYMOUS);

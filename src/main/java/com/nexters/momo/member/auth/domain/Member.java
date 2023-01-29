@@ -62,12 +62,9 @@ public class Member implements UserDetails {
     @Column(nullable = false)
     private boolean active;
 
-    @Embedded
-    private PolicyAgreed policyAgreed;
-
     private boolean deleted = false;
 
-    public Member(String email, String password, String name, String deviceUniqueId, Role role, Occupation occupation, Boolean policyAgreed) {
+    public Member(String email, String password, String name, String deviceUniqueId, Role role, Occupation occupation) {
         this.email = new Email(email);
         this.password = new Password(password);
         this.name = new MemberName(name);
@@ -75,7 +72,6 @@ public class Member implements UserDetails {
         this.memberRoles.add(new Authority(role));
         this.occupation = occupation;
         this.active = false;
-        this.policyAgreed = new PolicyAgreed(policyAgreed);
     }
 
     public boolean isSamePassword(String password) {

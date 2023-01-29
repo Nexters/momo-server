@@ -32,8 +32,7 @@ class ParticipationTest {
                 "shine",
                 "device_unique_id",
                 Role.USER,
-                Occupation.DEVELOPER,
-                true
+                Occupation.DEVELOPER
         );
 
         assertThatCode(() ->
