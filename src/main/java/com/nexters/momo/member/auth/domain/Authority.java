@@ -27,17 +27,15 @@ public class Authority implements GrantedAuthority {
     @Column(name = "authority_id")
     private Long id;
 
-    @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private Role authority;
+    private Role role;
 
-    public Authority(Role authority) {
-        this.authority = authority;
+    public Authority(Role role) {
+        this.role = role;
     }
 
-    @Override
     public String getAuthority() {
-        return authority.getRole();
+        return role.getRole();
     }
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "memberRoles")
@@ -47,12 +45,12 @@ public class Authority implements GrantedAuthority {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Authority authority1 = (Authority) o;
-        return getAuthority() == authority1.getAuthority();
+        Authority authority = (Authority) o;
+        return role == authority.role;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getAuthority());
+        return Objects.hash(role);
     }
 }

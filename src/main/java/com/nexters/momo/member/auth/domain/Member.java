@@ -51,8 +51,8 @@ public class Member implements UserDetails {
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinTable(name = "member_roles",
-            joinColumns = {@JoinColumn(name = "member_id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id")})
+            joinColumns = @JoinColumn(name = "member_id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id"))
     private Set<Authority> memberRoles = new HashSet<>();
 
     @Column(nullable = false)

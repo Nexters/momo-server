@@ -1,5 +1,6 @@
 package com.nexters.momo.member.domain;
 
+import com.nexters.momo.member.auth.domain.Authority;
 import com.nexters.momo.member.auth.domain.Member;
 import com.nexters.momo.member.auth.domain.Occupation;
 import com.nexters.momo.member.auth.domain.Role;
@@ -10,6 +11,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -87,5 +92,32 @@ class MemberTest {
 
         // then
         assertThat(member.isActive()).isEqualTo(true);
+    }
+
+    @DisplayName("사용자는 권한을 Role로 갖는다")
+    @Test
+    public void member_role_test() {
+        // given
+        Member member = new Member("shine@naver.com", "password", "name", "device_unique_id", Role.USER, Occupation.DEVELOPER, true);
+
+        // when
+        Collection<? extends GrantedAuthority> authorities = member.getAuthorities();
+
+        // then
+        assertThat(authorities.contains(new Authority(Role.USER))).isTrue();
+    }
+
+    @DisplayName("사용자는 여러 권한을 Role로 갖을 수 있다")
+    @Test
+    public void member_roles_test() {
+        // given
+        Member member = new Member("shine@naver.com", "password", "name", "device_unique_id", Role.USER, Occupation.DEVELOPER, true);
+
+        // when
+        member.addRole(Role.ANONYMOUS);
+        member.addRole(Role.ADMIN);
+
+        // then
+        assertThat(member.getAuthorities().containsAll(List.of(new Authority(Role.USER), new Authority(Role.ANONYMOUS), new Authority(Role.ADMIN)))).isTrue();
     }
 }
