@@ -1,8 +1,8 @@
 package com.nexters.momo.team.domain;
 
-import com.nexters.momo.member.domain.Member;
-import com.nexters.momo.member.domain.Occupation;
-import com.nexters.momo.member.domain.Role;
+import com.nexters.momo.member.auth.domain.Member;
+import com.nexters.momo.member.auth.domain.Occupation;
+import com.nexters.momo.member.auth.domain.Role;
 import com.nexters.momo.team.exception.InvalidTeamNameException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

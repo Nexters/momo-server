@@ -1,4 +1,4 @@
-package com.nexters.momo.member.domain;
+package com.nexters.momo.member.auth.domain;
 
 import com.nexters.momo.member.exception.InvalidUserEmailException;
 import lombok.AccessLevel;

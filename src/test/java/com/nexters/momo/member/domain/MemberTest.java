@@ -1,5 +1,8 @@
 package com.nexters.momo.member.domain;
 
+import com.nexters.momo.member.auth.domain.Member;
+import com.nexters.momo.member.auth.domain.Occupation;
+import com.nexters.momo.member.auth.domain.Role;
 import com.nexters.momo.member.exception.InvalidUserEmailException;
 import com.nexters.momo.member.exception.InvalidUserNameException;
 import com.nexters.momo.member.exception.UserNotAgreePolicyException;
