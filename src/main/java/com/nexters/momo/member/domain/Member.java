@@ -46,9 +46,8 @@ public class Member {
     @Enumerated(value = EnumType.STRING)
     private Occupation occupation;
 
-    @Column(name = "member_status", nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private MemberStatus memberStatus = MemberStatus.ACTIVE;
+    @Column(nullable = false)
+    private boolean active;
 
     @Embedded
     private PolicyAgreed policyAgreed;
@@ -62,6 +61,7 @@ public class Member {
         this.deviceUniqueId = deviceUniqueId;
         this.role = role;
         this.occupation = occupation;
+        this.active = false;
         this.policyAgreed = new PolicyAgreed(policyAgreed);
     }
 
@@ -69,20 +69,20 @@ public class Member {
         return this.password.match(password);
     }
 
-    public void changeStatus(MemberStatus status) {
-        this.memberStatus = status;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
 
-    public MemberStatus getStatus() {
-        return this.memberStatus;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void changeActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean isActive() {
+        return this.active;
     }
 
     @Override

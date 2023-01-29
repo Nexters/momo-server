@@ -80,9 +80,9 @@ class MemberTest {
         Member member = new Member("shine@naver.com", "password", "name", "device_unique_id", Role.USER, Occupation.DEVELOPER, true);
 
         // when
-        member.changeStatus(MemberStatus.SUSPEND);
+        member.changeActive(true);
 
         // then
-        assertThat(member.getStatus()).isEqualTo(MemberStatus.SUSPEND);
+        assertThat(member.isActive()).isEqualTo(true);
     }
 }
