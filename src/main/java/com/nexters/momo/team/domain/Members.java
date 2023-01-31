@@ -17,7 +17,7 @@ import java.util.Set;
 public class Members {
 
     @ElementCollection
-    @CollectionTable(name = "member", joinColumns = @JoinColumn(name = "team_id"))
+    @CollectionTable(name = "members", joinColumns = @JoinColumn(name = "team_id"))
     @Column(name = "member_id")
     private Set<Long> members = new HashSet<>();
 
