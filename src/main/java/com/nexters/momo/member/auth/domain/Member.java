@@ -74,6 +74,11 @@ public class Member implements UserDetails {
         this.active = false;
     }
 
+    public static Member createWithRoleUser(String email, String password, String name, String uuid, String occupationString) {
+        Occupation occupation = Occupation.valueOf(occupationString.toUpperCase());
+        return new Member(email, password, name, uuid, Role.USER, occupation);
+    }
+
     public boolean isSamePassword(String password) {
         return this.password.match(password);
     }
