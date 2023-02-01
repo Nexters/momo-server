@@ -26,4 +26,10 @@ public class PostSessionReqDto {
 
     private String sessionAddress;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime attendanceStartAt;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime attendanceEndAt;
+
 }

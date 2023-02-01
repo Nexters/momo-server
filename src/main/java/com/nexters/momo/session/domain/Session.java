@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-import static java.time.temporal.ChronoUnit.MINUTES;
 
 /**
  * 각 주차 세션을 나타내는 Session 엔티티입니다.
@@ -47,7 +46,14 @@ public class Session {
     @Column(name = "session_address", columnDefinition = "TEXT")
     private String sessionAddress;
 
-    private Session(String title, LocalDateTime sessionStartTime, LocalDateTime sessionEndTime, String sessionAddress) {
+    @Column(name = "attendance_started_at", nullable = false)
+    private LocalDateTime attendanceStartTime;
+
+    @Column(name = "attendance_closed_at", nullable = false)
+    private LocalDateTime attendanceEndTime;
+
+    private Session(String title, LocalDateTime sessionStartTime, LocalDateTime sessionEndTime, String sessionAddress,
+                    LocalDateTime attendanceStartTime, LocalDateTime attendanceEndTime) {
         this.title = title;
         this.sessionStartTime = sessionStartTime;
         this.sessionEndTime = sessionEndTime;
@@ -55,6 +61,8 @@ public class Session {
         this.sessionPublishTime = LocalDateTime.now();
         this.status = SessionStatus.BEFORE;
         this.sessionAddress = sessionAddress;
+        this.attendanceStartTime = attendanceStartTime;
+        this.attendanceEndTime = attendanceEndTime;
     }
 
     /**
@@ -70,23 +78,6 @@ public class Session {
     }
 
     /**
-     * 분 단위 비교를 위해 세션 시작 시간을 Minute 단위로 변환하여 반환합니다.
-     * @return Minute 단위로 변환된 세션 시작 시간
-     */
-    public LocalDateTime getStartTimeByMinute() {
-        return sessionStartTime.truncatedTo(MINUTES);
-    }
-
-    /**
-     * 분 단위 비교를 위해 세션 완료 시간을 Minute 단위로 변환하여 반환합니다.
-     * @return Minute 단위로 변환된 세션 완료 시간
-     */
-    public LocalDateTime getEndTimeByMinute() {
-        return sessionEndTime.truncatedTo(MINUTES);
-    }
-
-
-    /**
      * Session 엔티티를 생성하는 static 메서드입니다.
      * Session 엔티티는 해당 메서드를 이용해서만 생성됩니다.
      * @return 생성된 session 엔티티
@@ -96,7 +87,8 @@ public class Session {
             // 세션 종료 시각이 세션 시작 시각보다 앞설 경우
             throw new InvalidSessionTimeException();
         }
-        return new Session(dto.getTitle(), dto.getStartAt(), dto.getEndAt(), dto.getSessionAddress());
+        return new Session(dto.getTitle(), dto.getStartAt(), dto.getEndAt(), dto.getSessionAddress(),
+                dto.getAttendanceStartAt(), dto.getAttendanceEndAt());
     }
 
     /**

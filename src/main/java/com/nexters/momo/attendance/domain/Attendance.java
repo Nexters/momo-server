@@ -59,22 +59,20 @@ public class Attendance extends BaseTimeEntity {
     }
 
     /**
-     * 현재 시간과 비교하여 지각, 결석 여부 등을 반환합니다.
+     * 세션 출석 시간과 비교하여 지각, 결석 여부 등을 반환합니다.
      * @param session 비교하고자 하는 세션
      * @return 현재 시간에서의 출석 상태
      */
     private static AttendanceStatus judgeAttendanceStatus(Session session) {
         LocalDateTime currentTime = LocalDateTime.now();
-        int compareResult = session.getStartTimeByMinute().compareTo(session.getEndTimeByMinute());
 
-        // 1. 아직 출석할 수 없는 시간일 경우 (30분 전)
-        // TODO : 몇 분 전부터 출석이 가능하게 해야할지 의논 필요
-        if (compareResult > MINIMUM_ATTENDANCE_TIME) {
+        // 1. 아직 출석할 수 없는 시간일 경우
+        if (session.getAttendanceStartTime().isAfter(currentTime)) {
             throw new TooFastAttendanceTimeException();
         }
 
-        // 2. 세션 종료 후 출석을 시도하는 경우 - 결석
-        if (currentTime.isAfter(session.getSessionEndTime())) {
+        // 2. 출석 마감 시간 이후 출석을 시도하는 경우 - 결석
+        if (currentTime.isAfter(session.getAttendanceEndTime())) {
             return ABSENT;
         }
 
