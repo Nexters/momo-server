@@ -1,8 +1,8 @@
 package com.nexters.momo.team.domain;
 
-import com.nexters.momo.member.domain.Member;
-import com.nexters.momo.member.domain.Occupation;
-import com.nexters.momo.member.domain.Role;
+import com.nexters.momo.member.auth.domain.Member;
+import com.nexters.momo.member.auth.domain.Occupation;
+import com.nexters.momo.member.auth.domain.Role;
 import com.nexters.momo.team.exception.InvalidTeamNameException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -71,8 +71,6 @@ class TeamTest {
 
         // then
         assertThat(newTeam.getAllMemberId()).containsExactly(2L);
-        assertThat(member1.getAllTeamId()).containsExactly(7L);
-        assertThat(member2.getAllTeamId()).containsExactly(7L);
     }
 
     private Team createTeam(Long id) {
@@ -82,7 +80,7 @@ class TeamTest {
     }
 
     private Member createMember(Long id, String userId) {
-        Member member = new Member(userId, "password", "shine", "device_unique_id", Role.USER, Occupation.DEVELOPER, true);
+        Member member = new Member(userId, "password", "shine", "device_unique_id", Role.USER, Occupation.DEVELOPER);
         ReflectionTestUtils.setField(member, "id", id);
         return member;
     }

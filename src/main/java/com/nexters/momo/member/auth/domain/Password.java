@@ -1,4 +1,4 @@
-package com.nexters.momo.member.domain;
+package com.nexters.momo.member.auth.domain;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -18,5 +18,9 @@ public class Password {
 
     public boolean match(String password) {
         return this.value.equals(password);
+    }
+
+    public String getValue() {
+        return this.value;
     }
 }

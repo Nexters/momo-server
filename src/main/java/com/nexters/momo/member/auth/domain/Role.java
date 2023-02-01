@@ -1,4 +1,4 @@
-package com.nexters.momo.member.domain;
+package com.nexters.momo.member.auth.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

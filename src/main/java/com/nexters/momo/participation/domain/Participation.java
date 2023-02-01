@@ -1,7 +1,7 @@
 package com.nexters.momo.participation.domain;
 
 import com.nexters.momo.generation.domain.Generation;
-import com.nexters.momo.member.domain.Member;
+import com.nexters.momo.member.auth.domain.Member;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
