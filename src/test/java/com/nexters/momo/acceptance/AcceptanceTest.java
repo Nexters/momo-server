@@ -1,5 +1,6 @@
 package com.nexters.momo.acceptance;
 
+import com.nexters.momo.testdata.DataLoader;
 import com.nexters.momo.testdata.DatabaseCleanup;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,9 +17,13 @@ public class AcceptanceTest {
     @Autowired
     private DatabaseCleanup databaseCleanup;
 
+    @Autowired
+    private DataLoader dataLoader;
+
     @BeforeEach
     public void setUp() {
         RestAssured.port = port;
         databaseCleanup.execute();
+        dataLoader.loadData();
     }
 }
