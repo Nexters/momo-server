@@ -23,6 +23,7 @@ class AttendanceTest {
     Session session;
     Integer attendanceCode;
     Integer incorrectAttendanceCode;
+    Long generationId = 1L;
 
     @DisplayName("출석 생성 테스트")
     @Test
@@ -34,7 +35,7 @@ class AttendanceTest {
         LocalDateTime attendanceEndTime = sessionEndTime;
 
         session = createSession(new PostSessionReqDto("세션 제목", sessionStartTime, sessionEndTime,
-                "서울시 강남구", attendanceStartTime, attendanceEndTime));
+                "서울시 강남구", attendanceStartTime, attendanceEndTime), generationId);
 
         attendanceCode = session.getAttendanceCode();
 
@@ -56,7 +57,7 @@ class AttendanceTest {
         LocalDateTime attendanceEndTime = sessionEndTime;
 
         session = createSession(new PostSessionReqDto("세션 제목", sessionStartTime, sessionEndTime,
-                "서울시 강남구", attendanceStartTime, attendanceEndTime));
+                "서울시 강남구", attendanceStartTime, attendanceEndTime), generationId);
 
         incorrectAttendanceCode = session.getAttendanceCode() + 1;
 
@@ -76,7 +77,7 @@ class AttendanceTest {
         LocalDateTime attendanceEndTime = sessionEndTime;
 
         session = createSession(new PostSessionReqDto("세션 제목", sessionStartTime, sessionEndTime,
-                "서울시 강남구", attendanceStartTime, attendanceEndTime));
+                "서울시 강남구", attendanceStartTime, attendanceEndTime), generationId);
 
         attendanceCode = session.getAttendanceCode();
 
@@ -97,7 +98,7 @@ class AttendanceTest {
         LocalDateTime attendanceEndTime = sessionEndTime;
 
         session = createSession(new PostSessionReqDto("세션 제목", sessionStartTime, sessionEndTime,
-                "서울시 강남구", attendanceStartTime, attendanceEndTime));
+                "서울시 강남구", attendanceStartTime, attendanceEndTime), generationId);
 
         attendanceCode = session.getAttendanceCode();
 

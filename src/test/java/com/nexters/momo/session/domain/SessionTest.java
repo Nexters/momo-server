@@ -17,19 +17,23 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 @DisplayName("세션 도메인 테스트")
 class SessionTest {
 
+    Long generationId = 1L;
+
     @DisplayName("세션 생성 테스트")
     @Test
     public void create_session() {
         assertThatCode(() -> Session.createSession(new PostSessionReqDto("세션 제목", LocalDateTime.now(),
                 LocalDateTime.now().plusMinutes(100), "세션 주소", LocalDateTime.now(),
-                LocalDateTime.now()))).doesNotThrowAnyException();
+                LocalDateTime.now()), generationId))
+                .doesNotThrowAnyException();
     }
 
     @DisplayName("세션 시각 예외 테스트")
     @Test
     public void invalid_session_time() {
         Assertions.assertThatThrownBy(() -> Session.createSession(new PostSessionReqDto("세션 제목", LocalDateTime.now(),
-                LocalDateTime.now().minusMinutes(100), "세션 주소", LocalDateTime.now(), LocalDateTime.now())))
+                LocalDateTime.now().minusMinutes(100), "세션 주소", LocalDateTime.now(),
+                        LocalDateTime.now()), generationId))
                 .isInstanceOf(InvalidSessionTimeException.class);
     }
 
