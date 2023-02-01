@@ -11,6 +11,11 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AcceptanceTest {
 
+    protected static final String USER_EMAIL = "user@email.com";
+    protected static final String USER_PASSWORD = "password";
+    protected static final String NAME = "user";
+    protected static final String DEVICE_UUID = "device_uuid";
+
     @LocalServerPort
     int port;
 
