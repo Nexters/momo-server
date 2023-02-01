@@ -24,6 +24,7 @@ class AttendanceTest {
     Integer attendanceCode;
     Integer incorrectAttendanceCode;
     Long generationId = 1L;
+    Long memberId = 2L;
 
     @DisplayName("출석 생성 테스트")
     @Test
@@ -40,7 +41,7 @@ class AttendanceTest {
         attendanceCode = session.getAttendanceCode();
 
         // when
-        Attendance attendance = Attendance.createAttendance(session, attendanceCode);
+        Attendance attendance = Attendance.createAttendance(session, memberId, attendanceCode);
 
         // then
         assertThat(attendance.getStatus()).isEqualTo(ATTENDANCE);
@@ -63,7 +64,7 @@ class AttendanceTest {
 
         // when, then
         assertThatThrownBy(() ->
-                Attendance.createAttendance(session, incorrectAttendanceCode)).
+                Attendance.createAttendance(session, memberId, incorrectAttendanceCode)).
                 isInstanceOf(InvalidAttendanceCodeException.class);
     }
 
@@ -82,7 +83,7 @@ class AttendanceTest {
         attendanceCode = session.getAttendanceCode();
 
         // when
-        Attendance attendance = Attendance.createAttendance(session, attendanceCode);
+        Attendance attendance = Attendance.createAttendance(session, memberId, attendanceCode);
 
         // then
         assertThat(attendance.getStatus()).isEqualTo(ABSENT);
@@ -103,7 +104,7 @@ class AttendanceTest {
         attendanceCode = session.getAttendanceCode();
 
         // when
-        Attendance attendance = Attendance.createAttendance(session, attendanceCode);
+        Attendance attendance = Attendance.createAttendance(session, memberId, attendanceCode);
 
         // then
         assertThat(attendance.getStatus()).isEqualTo(LATE);

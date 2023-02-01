@@ -33,13 +33,17 @@ public class Attendance extends BaseTimeEntity {
     @Column(name = "session_id", nullable = false)
     private Long sessionId;
 
+    @Column(name = "member_id", nullable = false)
+    private Long memberId;
+
     @Column(name = "attendance_status", nullable = false)
     @Enumerated(EnumType.STRING)
     private AttendanceStatus status;
 
-    private Attendance(AttendanceStatus status, Long sessionId) {
+    private Attendance(AttendanceStatus status, Long sessionId, Long memberId) {
         this.status = status;
         this.sessionId = sessionId;
+        this.memberId = memberId;
     }
 
     /**
@@ -49,13 +53,13 @@ public class Attendance extends BaseTimeEntity {
      * @param attendanceCode 출석 코드
      * @return 생성된 Attendance 엔티티
      */
-    public static Attendance createAttendance(Session session, Integer attendanceCode) {
+    public static Attendance createAttendance(Session session, Long memberId, Integer attendanceCode) {
         if (!session.isSameAttendanceCode(attendanceCode)) {
             // 출석 코드 불일치
             throw new InvalidAttendanceCodeException();
         }
 
-        return new Attendance(judgeAttendanceStatus(session), session.getId());
+        return new Attendance(judgeAttendanceStatus(session), memberId, session.getId());
     }
 
     /**
