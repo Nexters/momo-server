@@ -1,8 +1,11 @@
 package com.nexters.momo.config;
 
 import com.nexters.momo.member.auth.filter.LoginAuthenticationFilter;
+import com.nexters.momo.member.auth.provider.LoginAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -14,6 +17,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) {
+        auth.authenticationProvider(loginAuthenticationProvider());
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -28,6 +36,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .addFilterAt(loginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+    }
+
+    @Bean
+    public AuthenticationProvider loginAuthenticationProvider() {
+        return new LoginAuthenticationProvider();
     }
 
     @Bean
