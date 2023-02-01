@@ -21,14 +21,15 @@ class SessionTest {
     @Test
     public void create_session() {
         assertThatCode(() -> Session.createSession(new PostSessionReqDto("세션 제목", LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(100), "세션 주소"))).doesNotThrowAnyException();
+                LocalDateTime.now().plusMinutes(100), "세션 주소", LocalDateTime.now(),
+                LocalDateTime.now()))).doesNotThrowAnyException();
     }
 
     @DisplayName("세션 시각 예외 테스트")
     @Test
     public void invalid_session_time() {
         Assertions.assertThatThrownBy(() -> Session.createSession(new PostSessionReqDto("세션 제목", LocalDateTime.now(),
-                LocalDateTime.now().minusMinutes(100), "세션 주소")))
+                LocalDateTime.now().minusMinutes(100), "세션 주소", LocalDateTime.now(), LocalDateTime.now())))
                 .isInstanceOf(InvalidSessionTimeException.class);
     }
 

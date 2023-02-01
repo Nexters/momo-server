@@ -26,13 +26,15 @@ class AttendanceTest {
 
     @DisplayName("출석 생성 테스트")
     @Test
-    void createAttendanceTest() {
+    void create_attendance_test() {
         // given
         LocalDateTime sessionStartTime = LocalDateTime.now().plusMinutes(10);
         LocalDateTime sessionEndTime = LocalDateTime.now().plusMinutes(100);
+        LocalDateTime attendanceStartTime = LocalDateTime.now().minusMinutes(10);
+        LocalDateTime attendanceEndTime = sessionEndTime;
 
         session = createSession(new PostSessionReqDto("세션 제목", sessionStartTime, sessionEndTime,
-                "서울시 강남구"));
+                "서울시 강남구", attendanceStartTime, attendanceEndTime));
 
         attendanceCode = session.getAttendanceCode();
 
@@ -46,13 +48,15 @@ class AttendanceTest {
 
     @DisplayName("출석 코드 불일치 테스트")
     @Test
-    void invalidAttendanceCodeTest() {
+    void invalid_attendanceCode_test() {
         // given
         LocalDateTime sessionStartTime = LocalDateTime.now().plusMinutes(10);
         LocalDateTime sessionEndTime = LocalDateTime.now().plusMinutes(100);
+        LocalDateTime attendanceStartTime = LocalDateTime.now().minusMinutes(10);
+        LocalDateTime attendanceEndTime = sessionEndTime;
 
         session = createSession(new PostSessionReqDto("세션 제목", sessionStartTime, sessionEndTime,
-                "서울시 강남구"));
+                "서울시 강남구", attendanceStartTime, attendanceEndTime));
 
         incorrectAttendanceCode = session.getAttendanceCode() + 1;
 
@@ -64,13 +68,15 @@ class AttendanceTest {
 
     @DisplayName("결석 테스트")
     @Test
-    void absentTest() {
+    void absent_test() {
         // given
         LocalDateTime sessionStartTime = LocalDateTime.now().minusMinutes(100);
         LocalDateTime sessionEndTime = LocalDateTime.now().minusMinutes(10);
+        LocalDateTime attendanceStartTime = LocalDateTime.now().minusMinutes(100);
+        LocalDateTime attendanceEndTime = sessionEndTime;
 
         session = createSession(new PostSessionReqDto("세션 제목", sessionStartTime, sessionEndTime,
-                "서울시 강남구"));
+                "서울시 강남구", attendanceStartTime, attendanceEndTime));
 
         attendanceCode = session.getAttendanceCode();
 
@@ -83,13 +89,15 @@ class AttendanceTest {
 
     @DisplayName("지각 테스트")
     @Test
-    void lateTest() {
+    void late_test() {
         // given
         LocalDateTime sessionStartTime = LocalDateTime.now().minusMinutes(10);
         LocalDateTime sessionEndTime = LocalDateTime.now().plusMinutes(100);
+        LocalDateTime attendanceStartTime = LocalDateTime.now().minusMinutes(50);
+        LocalDateTime attendanceEndTime = sessionEndTime;
 
         session = createSession(new PostSessionReqDto("세션 제목", sessionStartTime, sessionEndTime,
-                "서울시 강남구"));
+                "서울시 강남구", attendanceStartTime, attendanceEndTime));
 
         attendanceCode = session.getAttendanceCode();
 
