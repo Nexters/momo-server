@@ -4,6 +4,7 @@ import com.nexters.momo.member.auth.domain.Member;
 import com.nexters.momo.member.auth.domain.MemberRepository;
 import com.nexters.momo.member.auth.exception.DuplicatedUserDeviceIdException;
 import com.nexters.momo.member.auth.exception.DuplicatedUserEmailException;
+import com.nexters.momo.member.auth.exception.UserNotFoundException;
 import com.nexters.momo.member.auth.presentation.dto.MemberRegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,8 +24,11 @@ public class MemberDetailsService implements UserDetailsService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Member findMember = memberRepository.findByEmail(email)
+                .orElseThrow(UserNotFoundException::new);
+
+        return new MemberContext(findMember, findMember.getAuthorities());
     }
 
     public void register(MemberRegisterRequest memberRegisterRequest) {
