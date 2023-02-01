@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -30,7 +29,7 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "update member set deleted = true where member_id = ?")
 @Where(clause = "deleted = false")
-public class Member implements UserDetails {
+public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -103,39 +102,16 @@ public class Member implements UserDetails {
         memberRoles.add(new Authority(role));
     }
 
-    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return new ArrayList<>(memberRoles);
     }
 
-    @Override
     public String getPassword() {
         return this.password.getValue();
     }
 
-    @Override
-    public String getUsername() {
+    public String getEmail() {
         return this.email.getValue();
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
     }
 
     @Override
