@@ -15,3 +15,13 @@ spring:
 testcontainers:
   reuse:
     enable: true
+
+jwt:
+  expire-length: 1800000 # 30min
+  refresh-length: 259200000 # 30day
+  access:
+    private:
+      testAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKey
+  refresh:
+    private:
+      testPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKey

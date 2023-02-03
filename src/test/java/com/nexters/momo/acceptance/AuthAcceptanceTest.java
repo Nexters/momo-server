@@ -1,21 +1,14 @@
 package com.nexters.momo.acceptance;
 
 import com.nexters.momo.member.auth.presentation.dto.MemberRegisterRequest;
-import io.restassured.RestAssured;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import static com.nexters.momo.acceptance.AuthStep.로그인_요청;
+import static com.nexters.momo.acceptance.AuthStep.로그인_응답_확인;
 import static com.nexters.momo.acceptance.AuthStep.사용자_가입_요청;
 import static com.nexters.momo.acceptance.AuthStep.사용자_가입_응답_확인;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class AuthAcceptanceTest extends AcceptanceTest {
 
@@ -48,23 +41,9 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     @Test
     void bearer_token_login() {
         // when
-        Map<String, String> params = new HashMap<>();
-        params.put("email", USER_EMAIL);
-        params.put("password", USER_PASSWORD);
-
-        ExtractableResponse<Response> response = RestAssured.given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(params)
-                .when().post("/api/auth/login")
-                .then().log().all()
-                .extract();
+        var response = 로그인_요청(USER_EMAIL, USER_PASSWORD);
 
         // then
-        assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(response.jsonPath().getInt("code")).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(response.jsonPath().getString("data.accessToken")).isNotBlank(),
-                () -> assertThat(response.jsonPath().getString("data.refreshToken")).isNotBlank()
-        );
+        로그인_응답_확인(response, HttpStatus.OK);
     }
 }
