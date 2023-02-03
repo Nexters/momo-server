@@ -1,6 +1,7 @@
 package com.nexters.momo.config;
 
 import com.nexters.momo.member.auth.filter.LoginAuthenticationFilter;
+import com.nexters.momo.member.auth.handler.LoginAuthenticationFailureHandler;
 import com.nexters.momo.member.auth.handler.LoginAuthenticationSuccessHandler;
 import com.nexters.momo.member.auth.provider.LoginAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
@@ -44,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter();
         loginAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
         loginAuthenticationFilter.setAuthenticationSuccessHandler(loginAuthenticationSuccessHandler());
+        loginAuthenticationFilter.setAuthenticationFailureHandler(loginAuthenticationFailureHandler());
         return loginAuthenticationFilter;
     }
 
@@ -55,6 +57,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public LoginAuthenticationSuccessHandler loginAuthenticationSuccessHandler() {
         return new LoginAuthenticationSuccessHandler();
+    }
+
+    @Bean
+    public LoginAuthenticationFailureHandler loginAuthenticationFailureHandler() {
+        return new LoginAuthenticationFailureHandler();
     }
 
     @Bean

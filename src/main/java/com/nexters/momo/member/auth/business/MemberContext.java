@@ -14,5 +14,6 @@ public class MemberContext extends User {
 
     public MemberContext(Member member, Collection<? extends GrantedAuthority> authorities) {
         super(member.getEmail(), member.getPassword(), authorities);
+        this.member = member;
     }
 }
