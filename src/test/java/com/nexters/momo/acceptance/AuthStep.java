@@ -42,10 +42,11 @@ public class AuthStep {
         );
     }
 
-    public static ExtractableResponse<Response> 로그인_요청(String email, String password) {
+    public static ExtractableResponse<Response> 로그인_요청(String email, String password, String uuid) {
         Map<String, String> params = new HashMap<>();
         params.put("email", email);
         params.put("password", password);
+        params.put("uuid", uuid);
 
         return RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

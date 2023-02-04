@@ -41,7 +41,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     @Test
     void bearer_token_login() {
         // when
-        var response = 로그인_요청(USER_EMAIL, USER_PASSWORD);
+        var response = 로그인_요청(USER_EMAIL, USER_PASSWORD, DEVICE_UUID);
 
         // then
         로그인_응답_확인(response, HttpStatus.OK);
