@@ -13,6 +13,7 @@ import static com.nexters.momo.acceptance.AuthStep.로그인_응답_확인;
 import static com.nexters.momo.acceptance.AuthStep.사용자_가입_요청;
 import static com.nexters.momo.acceptance.AuthStep.사용자_가입_응답_확인;
 
+@DisplayName("인수 : 로그인")
 public class AuthAcceptanceTest extends AcceptanceTest {
 
     @Autowired
@@ -41,7 +42,27 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         var 사용자_가입_응답 = 사용자_가입_요청(memberRegisterRequest);
 
         // then
-        사용자_가입_응답_확인(사용자_가입_응답, HttpStatus.CREATED);
+        사용자_가입_응답_확인(사용자_가입_응답, HttpStatus.CREATED, "유저 생성에 성공했습니다");
+    }
+
+    /**
+     * Given 해당 서비스에 회원가입이 되어있지 않은 이메일이 있다.
+     * When 잘못된 이메일을 통해 회원가입을 한다.
+     * Then 사용자의 회원 가입이 실패한다.
+     */
+    @DisplayName("잘못된 사용자 이메일로 회원 가입 테스트")
+    @Test
+    void user_register_fail_because_invalid_email() {
+        // given
+        String invalidEmail = "@naver.com";
+        MemberRegisterRequest memberRegisterRequest = new MemberRegisterRequest(invalidEmail,
+                "password", "Shine", 22, "developer", "uuid");
+
+        // when
+        var 사용자_가입_응답 = 사용자_가입_요청(memberRegisterRequest);
+
+        // then
+        사용자_가입_응답_확인(사용자_가입_응답, HttpStatus.BAD_REQUEST, "유저 생성에 실패했습니다");
     }
 
     /**
