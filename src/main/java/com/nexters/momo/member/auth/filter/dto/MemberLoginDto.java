@@ -11,4 +11,6 @@ public class MemberLoginDto {
 
     private String email;
     private String password;
+
+    private String uuid;
 }

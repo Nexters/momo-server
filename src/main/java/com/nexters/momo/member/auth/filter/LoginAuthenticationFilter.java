@@ -36,13 +36,15 @@ public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingF
             throw new IllegalArgumentException("UserId is empty");
         }
 
-        LoginAuthenticationToken authenticationToken = new LoginAuthenticationToken(memberLoginDto.getEmail(), memberLoginDto.getPassword());
+        LoginAuthenticationToken authenticationToken = new LoginAuthenticationToken(memberLoginDto, memberLoginDto.getPassword());
 
         return getAuthenticationManager().authenticate(authenticationToken);
     }
 
     private boolean isNoUserInformation(MemberLoginDto memberLoginDto) {
-        return ObjectUtils.isEmpty(memberLoginDto.getEmail()) || ObjectUtils.isEmpty(memberLoginDto.getPassword());
+        return ObjectUtils.isEmpty(memberLoginDto.getEmail()) ||
+                ObjectUtils.isEmpty(memberLoginDto.getPassword()) ||
+                ObjectUtils.isEmpty(memberLoginDto.getUuid());
     }
 
     private boolean isContentTypeJson(HttpServletRequest request) {

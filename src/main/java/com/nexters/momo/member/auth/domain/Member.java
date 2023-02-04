@@ -114,6 +114,10 @@ public class Member {
         return this.email.getValue();
     }
 
+    public boolean isSameDeviceId(String uuid) {
+        return this.deviceUniqueId.equals(uuid);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
