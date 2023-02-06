@@ -3,8 +3,10 @@ package com.nexters.momo.common.response;
 import org.springframework.http.HttpStatus;
 
 public enum ResponseCodeAndMessages {
-    /* USER */
-    USER_CREATE_SUCCESS(HttpStatus.CREATED.value(), "유저 생성에 성공했습니다.");
+
+    /* MEMBER */
+    MEMBER_CREATE_SUCCESS(HttpStatus.CREATED.value(), "유저 생성에 성공했습니다"),
+    USER_LOGIN_SUCCESS(HttpStatus.OK.value(), "로그인에 성공했습니다.");
 
     private final int code;
     private final String message;
@@ -21,5 +23,4 @@ public enum ResponseCodeAndMessages {
     public String getMessage() {
         return message;
     }
-
 }

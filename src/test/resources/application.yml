@@ -1,1 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:tc:mysql:8:///momo?TC_REUSABLE=true
+    username: test
+    password: test1234
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 
+testcontainers:
+  reuse:
+    enable: true
+
+jwt:
+  access-length: 1800000 # 30min
+  refresh-length: 259200000 # 30day
+  access-key:
+      testAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKey
+  refresh-key:
+      testPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKey
