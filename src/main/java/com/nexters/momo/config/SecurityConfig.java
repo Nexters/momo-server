@@ -1,9 +1,13 @@
 package com.nexters.momo.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nexters.momo.member.auth.business.MemberDetailsService;
 import com.nexters.momo.member.auth.filter.LoginAuthenticationFilter;
 import com.nexters.momo.member.auth.handler.LoginAuthenticationFailureHandler;
 import com.nexters.momo.member.auth.handler.LoginAuthenticationSuccessHandler;
+import com.nexters.momo.member.auth.jwt.JwtTokenFactory;
 import com.nexters.momo.member.auth.provider.LoginAuthenticationProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -16,13 +20,19 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final MemberDetailsService memberDetailsService;
+    private final ObjectMapper objectMapper;
+    private final JwtTokenFactory jwtTokenFactory;
+
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) {
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(loginAuthenticationProvider());
+        auth.userDetailsService(memberDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -51,17 +61,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationProvider loginAuthenticationProvider() {
-        return new LoginAuthenticationProvider();
+        return new LoginAuthenticationProvider(memberDetailsService, passwordEncoder());
     }
 
     @Bean
     public LoginAuthenticationSuccessHandler loginAuthenticationSuccessHandler() {
-        return new LoginAuthenticationSuccessHandler();
+        return new LoginAuthenticationSuccessHandler(objectMapper, jwtTokenFactory);
     }
 
     @Bean
     public LoginAuthenticationFailureHandler loginAuthenticationFailureHandler() {
-        return new LoginAuthenticationFailureHandler();
+        return new LoginAuthenticationFailureHandler(objectMapper);
     }
 
     @Bean

@@ -6,7 +6,7 @@ import com.nexters.momo.common.response.ResponseCodeAndMessages;
 import com.nexters.momo.member.auth.domain.Member;
 import com.nexters.momo.member.auth.jwt.JwtToken;
 import com.nexters.momo.member.auth.jwt.JwtTokenFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseCookie;
@@ -22,13 +22,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private JwtTokenFactory tokenProvider;
+    private final ObjectMapper objectMapper;
+    private final JwtTokenFactory tokenProvider;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {

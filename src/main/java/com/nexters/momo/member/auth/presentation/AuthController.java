@@ -1,7 +1,7 @@
 package com.nexters.momo.member.auth.presentation;
 
 import com.nexters.momo.common.response.BaseResponse;
-import com.nexters.momo.member.auth.business.MemberDetailsService;
+import com.nexters.momo.member.auth.business.MemberService;
 import com.nexters.momo.member.auth.presentation.dto.MemberRegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,11 +20,11 @@ import static com.nexters.momo.common.response.ResponseCodeAndMessages.MEMBER_CR
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final MemberDetailsService memberDetailsService;
+    private final MemberService memberService;
 
     @PostMapping("/register")
     public ResponseEntity<BaseResponse<Void>> registerUser(@Valid @RequestBody MemberRegisterRequest memberRegisterRequest) {
-        memberDetailsService.register(memberRegisterRequest);
+        memberService.register(memberRegisterRequest);
         return new ResponseEntity<>(new BaseResponse<>(MEMBER_CREATE_SUCCESS), HttpStatus.CREATED);
     }
 }

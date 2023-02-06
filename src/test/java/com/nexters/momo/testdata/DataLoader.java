@@ -1,6 +1,6 @@
 package com.nexters.momo.testdata;
 
-import com.nexters.momo.member.auth.business.MemberDetailsService;
+import com.nexters.momo.member.auth.business.MemberService;
 import com.nexters.momo.member.auth.presentation.dto.MemberRegisterRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,16 +18,16 @@ public class DataLoader {
     private static final String NAME = "user";
     private static final String DEVICE_UUID = "device_uuid";
 
-    private final MemberDetailsService memberDetailsService;
+    private final MemberService memberService;
 
-    public DataLoader(MemberDetailsService memberDetailsService) {
-        this.memberDetailsService = memberDetailsService;
+    public DataLoader(MemberService memberService) {
+        this.memberService = memberService;
     }
 
     @Transactional
     public void loadData() {
         log.debug("[call DataLoader]");
-        memberDetailsService.register(new MemberRegisterRequest(USER_EMAIL, USER_PASSWORD, NAME, 22, "developer", DEVICE_UUID));
+        memberService.register(new MemberRegisterRequest(USER_EMAIL, USER_PASSWORD, NAME, 22, "developer", DEVICE_UUID));
 
         log.info("[init complete DataLoader]");
     }

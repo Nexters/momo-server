@@ -4,25 +4,20 @@ import com.nexters.momo.member.auth.business.MemberContext;
 import com.nexters.momo.member.auth.business.MemberDetailsService;
 import com.nexters.momo.member.auth.filter.dto.MemberLoginDto;
 import com.nexters.momo.member.auth.token.LoginAuthenticationToken;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.transaction.Transactional;
-
+@RequiredArgsConstructor
 public class LoginAuthenticationProvider implements AuthenticationProvider {
 
-    @Autowired
-    private MemberDetailsService memberDetailsService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final MemberDetailsService memberDetailsService;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
-    @Transactional
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         MemberLoginDto principal = (MemberLoginDto) authentication.getPrincipal();
         String password = (String) authentication.getCredentials();
