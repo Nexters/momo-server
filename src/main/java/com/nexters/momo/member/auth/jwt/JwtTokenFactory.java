@@ -5,7 +5,6 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,19 +27,14 @@ public class JwtTokenFactory {
 
     private final Key accessPrivateKey;
     private final Key refreshPrivateKey;
+    private final Long accessExpirationMillis;
+    private final Long refreshExpirationMillis;
 
-    @Value("${jwt.expire-length}")
-    private Long accessExpirationMillis;
-
-    @Value("${jwt.refresh-length}")
-    private Long refreshExpirationMillis;
-
-    public JwtTokenFactory(
-            @Value("${jwt.access.private}") String accessPrivateKey,
-            @Value("${jwt.refresh.private}") String refreshPrivateKey)
-            throws NoSuchAlgorithmException, InvalidKeySpecException {
-        this.accessPrivateKey = getPrivateKey(accessPrivateKey);
-        this.refreshPrivateKey = getPrivateKey(refreshPrivateKey);
+    public JwtTokenFactory(JwtProperties jwtProperties) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        this.accessPrivateKey = getPrivateKey(jwtProperties.getAccessKey());
+        this.refreshPrivateKey = getPrivateKey(jwtProperties.getRefreshKey());
+        this.accessExpirationMillis = jwtProperties.getAccessLength();
+        this.refreshExpirationMillis = jwtProperties.getRefreshLength();
     }
 
     public JwtToken issue(String userId, List<String> roles) {

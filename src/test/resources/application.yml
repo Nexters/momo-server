@@ -17,11 +17,9 @@ testcontainers:
     enable: true
 
 jwt:
-  expire-length: 1800000 # 30min
+  access-length: 1800000 # 30min
   refresh-length: 259200000 # 30day
-  access:
-    private:
+  access-key:
       testAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKey
-  refresh:
-    private:
+  refresh-key:
       testPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKey
