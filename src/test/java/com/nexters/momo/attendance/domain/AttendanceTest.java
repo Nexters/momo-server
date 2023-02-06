@@ -9,8 +9,7 @@ import java.time.LocalDateTime;
 
 import static com.nexters.momo.attendance.domain.AttendanceStatus.*;
 import static com.nexters.momo.session.domain.Session.createSession;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * Attendance 엔티티 관련 테스트 클래스입니다.
@@ -35,8 +34,8 @@ class AttendanceTest {
         LocalDateTime attendanceStartTime = LocalDateTime.now().minusMinutes(10);
         LocalDateTime attendanceEndTime = sessionEndTime;
 
-        session = createSession(new PostSessionReqDto("세션 제목", sessionStartTime, sessionEndTime,
-                "서울시 강남구", attendanceStartTime, attendanceEndTime), generationId);
+        session = createSession(new PostSessionReqDto("세션 키워드", "세션 내용", sessionStartTime, sessionEndTime,
+                "서울시 강남구", attendanceStartTime, attendanceEndTime), 1, generationId);
 
         attendanceCode = session.getAttendanceCode();
 
@@ -57,8 +56,8 @@ class AttendanceTest {
         LocalDateTime attendanceStartTime = LocalDateTime.now().minusMinutes(10);
         LocalDateTime attendanceEndTime = sessionEndTime;
 
-        session = createSession(new PostSessionReqDto("세션 제목", sessionStartTime, sessionEndTime,
-                "서울시 강남구", attendanceStartTime, attendanceEndTime), generationId);
+        session = createSession(new PostSessionReqDto("세션 키워드", "세션 내용", sessionStartTime, sessionEndTime,
+                "서울시 강남구", attendanceStartTime, attendanceEndTime), 1, generationId);
 
         incorrectAttendanceCode = session.getAttendanceCode() + 1;
 
@@ -77,8 +76,8 @@ class AttendanceTest {
         LocalDateTime attendanceStartTime = LocalDateTime.now().minusMinutes(100);
         LocalDateTime attendanceEndTime = sessionEndTime;
 
-        session = createSession(new PostSessionReqDto("세션 제목", sessionStartTime, sessionEndTime,
-                "서울시 강남구", attendanceStartTime, attendanceEndTime), generationId);
+        session = createSession(new PostSessionReqDto("세션 키워드", "세션 내용", sessionStartTime, sessionEndTime,
+                "서울시 강남구", attendanceStartTime, attendanceEndTime), 1, generationId);
 
         attendanceCode = session.getAttendanceCode();
 
@@ -98,8 +97,8 @@ class AttendanceTest {
         LocalDateTime attendanceStartTime = LocalDateTime.now().minusMinutes(50);
         LocalDateTime attendanceEndTime = sessionEndTime;
 
-        session = createSession(new PostSessionReqDto("세션 제목", sessionStartTime, sessionEndTime,
-                "서울시 강남구", attendanceStartTime, attendanceEndTime), generationId);
+        session = createSession(new PostSessionReqDto("세션 키워드", "세션 내용", sessionStartTime, sessionEndTime,
+                "서울시 강남구", attendanceStartTime, attendanceEndTime), 1, generationId);
 
         attendanceCode = session.getAttendanceCode();
 
