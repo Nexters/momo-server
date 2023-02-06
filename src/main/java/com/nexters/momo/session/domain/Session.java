@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 
 /**
  * 각 주차 세션을 나타내는 Session 엔티티입니다.
+ * TODO : 타임라인 이미지 추가
  *
  * @author CHO Min Ho
  */
@@ -26,8 +27,14 @@ public class Session {
     @Column(name = "generation_id", nullable = false)
     private Long generationId;
 
-    @Column(name = "session_title")
-    private String title;
+    @Column(name = "session_keyword")
+    private String sessionKeyword;
+
+    @Column(name = "session_order", nullable = false)
+    private int sessionOrder;
+
+    @Column(name = "session_content", columnDefinition = "TEXT")
+    private String sessionContent;
 
     @Column(name = "start_at", nullable = false)
     private LocalDateTime sessionStartTime;
@@ -43,7 +50,7 @@ public class Session {
 
     @Column(name = "session_status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private SessionStatus status;
+    private SessionStatus sessionStatus;
 
     @Column(name = "session_address", columnDefinition = "TEXT")
     private String sessionAddress;
@@ -54,15 +61,19 @@ public class Session {
     @Column(name = "attendance_closed_at", nullable = false)
     private LocalDateTime attendanceEndTime;
 
-    private Session(Long generationId, String title, LocalDateTime sessionStartTime, LocalDateTime sessionEndTime,
-                    String sessionAddress, LocalDateTime attendanceStartTime, LocalDateTime attendanceEndTime) {
+    private Session(Long generationId, String sessionKeyword, int sessionOrder,
+                    String sessionContent, LocalDateTime sessionStartTime, LocalDateTime sessionEndTime,
+                    String sessionAddress, LocalDateTime attendanceStartTime,
+                    LocalDateTime attendanceEndTime) {
         this.generationId = generationId;
-        this.title = title;
+        this.sessionKeyword = sessionKeyword;
+        this.sessionOrder = sessionOrder;
+        this.sessionContent = sessionContent;
         this.sessionStartTime = sessionStartTime;
         this.sessionEndTime = sessionEndTime;
         this.attendanceCode = generateAttendanceCode();
         this.sessionPublishTime = LocalDateTime.now();
-        this.status = SessionStatus.BEFORE;
+        this.sessionStatus = SessionStatus.BEFORE;
         this.sessionAddress = sessionAddress;
         this.attendanceStartTime = attendanceStartTime;
         this.attendanceEndTime = attendanceEndTime;
@@ -85,12 +96,13 @@ public class Session {
      * Session 엔티티는 해당 메서드를 이용해서만 생성됩니다.
      * @return 생성된 session 엔티티
      */
-    public static Session createSession(PostSessionReqDto dto, Long generationId) {
+    public static Session createSession(PostSessionReqDto dto, int sessionOrder, Long generationId) {
         if (dto.getStartAt().isAfter(dto.getEndAt())) {
             // 세션 종료 시각이 세션 시작 시각보다 앞설 경우
             throw new InvalidSessionTimeException();
         }
-        return new Session(generationId, dto.getTitle(), dto.getStartAt(), dto.getEndAt(), dto.getSessionAddress(),
+        return new Session(generationId, dto.getKeyword(), sessionOrder, dto.getContent(),
+                dto.getStartAt(), dto.getEndAt(), dto.getSessionAddress(),
                 dto.getAttendanceStartAt(), dto.getAttendanceEndAt());
     }
 
