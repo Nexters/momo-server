@@ -1,8 +1,11 @@
 package com.nexters.momo.acceptance;
 
+import com.nexters.momo.member.auth.domain.MemberRepository;
 import com.nexters.momo.member.auth.presentation.dto.MemberRegisterRequest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import static com.nexters.momo.acceptance.AuthStep.로그인_요청;
@@ -11,6 +14,16 @@ import static com.nexters.momo.acceptance.AuthStep.사용자_가입_요청;
 import static com.nexters.momo.acceptance.AuthStep.사용자_가입_응답_확인;
 
 public class AuthAcceptanceTest extends AcceptanceTest {
+
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Override
+    @BeforeEach
+    public void setUp() {
+        super.setUp();
+        this.memberRepository.deleteAll();
+    }
 
     /**
      * Given 해당 서비스에 회원가입이 되어있지 않은 이메일이 있다.
@@ -40,8 +53,12 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     @DisplayName("사용자 로그인 테스트")
     @Test
     void bearer_token_login() {
+        // given
+        사용자_가입_요청(new MemberRegisterRequest("user@email.com",
+                "password", "shine", 22, "developer", "device_uuid"));
+
         // when
-        var response = 로그인_요청(USER_EMAIL, USER_PASSWORD, DEVICE_UUID);
+        var response = 로그인_요청("user@email.com", "password", "device_uuid");
 
         // then
         로그인_응답_확인(response, HttpStatus.OK);
