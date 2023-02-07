@@ -8,15 +8,17 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
- * Session 엔티티를 생성할 때 사용되는 DTO 클래스입니다.
- * TODO : validation 처리
+ * Session 엔티티를 수정할 때 사용되는 DTO 클래스입니다.
  *
  * @author CHO Min Ho
  */
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostSessionReqDto {
+public class UpdateSessionReqDto {
+    @NotNull(message = "세션 ID를 적어주세요!")
+    private Long sessionId;
+
     private String keyword;
 
     private String content;
@@ -39,5 +41,4 @@ public class PostSessionReqDto {
     @NotNull(message = "출석 가능 마감 시간을 적어주세요!")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime attendanceEndAt;
-
 }

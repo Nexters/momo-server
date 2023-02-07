@@ -1,6 +1,7 @@
 package com.nexters.momo.session.domain;
 
 import com.nexters.momo.session.dto.PostSessionReqDto;
+import com.nexters.momo.session.dto.UpdateSessionReqDto;
 import com.nexters.momo.session.exception.InvalidSessionTimeException;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -89,6 +90,20 @@ public class Session {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Session 을 수정하는 메서드입니다.
+     * @param dto 수정할 정보
+     */
+    public void updateSession(UpdateSessionReqDto dto) {
+        this.sessionKeyword = dto.getKeyword();
+        this.sessionContent = dto.getContent();
+        this.sessionStartTime = dto.getStartAt();
+        this.sessionEndTime = dto.getEndAt();
+        this.sessionAddress = dto.getSessionAddress();
+        this.attendanceStartTime = dto.getAttendanceStartAt();
+        this.sessionEndTime = dto.getAttendanceEndAt();
     }
 
     /**
