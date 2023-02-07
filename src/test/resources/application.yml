@@ -20,6 +20,6 @@ jwt:
   access-length: 1800000 # 30min
   refresh-length: 259200000 # 30day
   access-key:
-      testAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKey
+    testAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKey
   refresh-key:
-      testPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKey
+    testPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKey
