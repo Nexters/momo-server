@@ -10,7 +10,8 @@ import com.nexters.momo.session.repository.SessionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +56,7 @@ public class SessionService {
      * 전체 세션 리스트를 조회하는 메서드입니다.
      * @return 세션 리스트
      */
+    @Transactional(readOnly = true)
     public List<MultipleSessionResDto> getSessionList() {
         List<Session> findSessions = sessionRepository.getSessionByGenerationId(getCurrentGenerationId());
         List<MultipleSessionResDto> resultSessions = new ArrayList<>();
@@ -72,14 +74,13 @@ public class SessionService {
      * @param sessionId 조회하려는 세션 ID
      * @return 해당 세션의 정보
      */
+    @Transactional(readOnly = true)
     public SingleSessionResDto getSingleSession(Long sessionId) {
         Session findSession =
                 sessionRepository.findById(sessionId).orElseThrow(InvalidSessionIdException::new);
 
-        return new SingleSessionResDto(findSession.getSessionKeyword(), findSession.getSessionContent(),
-                findSession.getSessionOrder(), findSession.getSessionStartTime(), findSession.getSessionEndTime(),
-                findSession.getSessionAddress(), findSession.getAttendanceStartTime(),
-                findSession.getAttendanceEndTime());
+        return SingleSessionResDto.from(findSession);
+
     }
 
     /**
