@@ -25,11 +25,11 @@ public class LoginAuthenticationProvider implements AuthenticationProvider {
         MemberContext memberContext = (MemberContext) memberDetailsService.loadUserByUsername(principal.getEmail());
 
         if (isNotMatchPassword(password, memberContext)) {
-            throw new BadCredentialsException("Invalid password");
+            throw new BadCredentialsException("Invalid Password");
         }
 
         if (isNotMatchDeviceId(principal, memberContext)) {
-            throw new BadCredentialsException("Invalid device uuid");
+            throw new BadCredentialsException("Invalid Device Id");
         }
 
         return new LoginAuthenticationToken(memberContext.getMember(), null, memberContext.getAuthorities());

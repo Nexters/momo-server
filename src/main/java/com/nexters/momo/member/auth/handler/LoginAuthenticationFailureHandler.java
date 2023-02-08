@@ -5,6 +5,7 @@ import com.nexters.momo.common.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
@@ -16,14 +17,18 @@ import java.nio.charset.StandardCharsets;
 @RequiredArgsConstructor
 public class LoginAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
-    private static final String ERROR_MESSAGE = "Invalid Username or Password";
-
     private final ObjectMapper objectMapper;
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
         setAuthenticationFailureHeader(response);
-        BaseResponse<Void> baseResponse = new BaseResponse<>(HttpStatus.BAD_REQUEST.value(), ERROR_MESSAGE, null);
+
+        String errorMessage = "Invalid Username or Password";
+        if (exception instanceof BadCredentialsException) {
+            errorMessage = exception.getMessage();
+        }
+
+        BaseResponse<Void> baseResponse = new BaseResponse<>(HttpStatus.BAD_REQUEST.value(), errorMessage, null);
         objectMapper.writeValue(response.getWriter(), baseResponse);
     }
 

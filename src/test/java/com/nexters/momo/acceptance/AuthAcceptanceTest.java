@@ -102,6 +102,25 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         var 로그인_요청_응답 = 로그인_요청("user@email.com", "invalid_password", "device_uuid");
 
         // then
-        로그인_응답_실패_확인(로그인_요청_응답, HttpStatus.BAD_REQUEST, "Invalid Username or Password");
+        로그인_응답_실패_확인(로그인_요청_응답, HttpStatus.BAD_REQUEST, "Invalid Password");
+    }
+
+    /**
+     * Given 해당 이메일로 생성된 계정이 존재한다.
+     * When 잘못된 device Id 를 통해 로그인 한다.
+     * Then 로그인 실패
+     */
+    @DisplayName("잘못된 device id로 로그인을 시도한다")
+    @Test
+    void invalid_device_id_login_test() {
+        // given
+        사용자_가입_요청(new MemberRegisterRequest("user@email.com",
+                "password", "shine", 22, "developer", "device_uuid"));
+
+        // when
+        var 로그인_요청_응답 = 로그인_요청("user@email.com", "password", "invalid_device_uuid");
+
+        // then
+        로그인_응답_실패_확인(로그인_요청_응답, HttpStatus.BAD_REQUEST, "Invalid Device Id");
     }
 }
