@@ -103,7 +103,6 @@ public class Session {
         this.sessionEndTime = dto.getEndAt();
         this.sessionAddress = dto.getSessionAddress();
         this.attendanceStartTime = dto.getAttendanceStartAt();
-        this.sessionEndTime = dto.getAttendanceEndAt();
     }
 
     /**

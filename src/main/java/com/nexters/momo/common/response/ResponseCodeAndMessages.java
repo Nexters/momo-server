@@ -8,9 +8,6 @@ public enum ResponseCodeAndMessages {
     MEMBER_CREATE_SUCCESS(HttpStatus.CREATED.value(), "유저 생성에 성공했습니다"),
     USER_LOGIN_SUCCESS(HttpStatus.OK.value(), "로그인에 성공했습니다."),
 
-    /* USER */
-    USER_CREATE_SUCCESS(HttpStatus.CREATED.value(), "유저 생성에 성공했습니다."),
-
     /* SESSION */
     SESSION_SINGLE_READ_SUCCESS(HttpStatus.OK.value(), "단일 세션 조회에 성공했습니다."),
     SESSION_CREATE_SUCCESS(HttpStatus.CREATED.value(), "세션 생성에 성공했습니다."),

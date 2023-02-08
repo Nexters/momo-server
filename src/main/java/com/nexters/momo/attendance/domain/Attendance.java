@@ -55,7 +55,6 @@ public class Attendance extends BaseTimeEntity {
      */
     public static Attendance createAttendance(Session session, Long memberId, Integer attendanceCode) {
         if (!session.isSameAttendanceCode(attendanceCode)) {
-            // 출석 코드 불일치
             throw new InvalidAttendanceCodeException();
         }
 
