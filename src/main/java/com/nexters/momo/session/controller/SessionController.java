@@ -31,7 +31,7 @@ public class SessionController {
      * @param id 조회하려는 세션 ID
      * @return 조회한 세션
      */
-    @GetMapping("/session/{id}")
+    @GetMapping("/sessions/{id}")
     public BaseResponse<SingleSessionResDto> getSingleSession(@PathVariable("id") Long id) {
         return new BaseResponse<>(SESSION_SINGLE_READ_SUCCESS, sessionService.getSingleSession(id));
     }
@@ -40,7 +40,7 @@ public class SessionController {
      * 모든 세션을 조회하는 API 입니다.
      * @return 조회한 세션 리스트
      */
-    @GetMapping("/session/all")
+    @GetMapping("/sessions")
     public BaseResponse<List<MultipleSessionResDto>> getAllSessions() {
         return new BaseResponse<>(SESSION_LIST_READ_SUCCESS, sessionService.getSessionList());
     }
@@ -50,7 +50,7 @@ public class SessionController {
      * @param dto 생성하려는 세션 정보
      * @return 생성된 세션의 ID
      */
-    @PostMapping("/session/new")
+    @PostMapping("/sessions/new")
     public BaseResponse<Long> createNewSession(@Valid PostSessionReqDto dto) {
         return new BaseResponse<>(SESSION_CREATE_SUCCESS, sessionService.createSession(dto));
     }
@@ -61,7 +61,7 @@ public class SessionController {
      * @param dto 수정하려는 세션 정보
      * @return 수정된 세션 ID
      */
-    @PutMapping("session/{id}")
+    @PutMapping("/sessions/{id}")
     public BaseResponse<Long> updateSingleSession(@PathVariable("id") Long id, @Valid UpdateSessionReqDto dto) {
         return new BaseResponse<>(SESSION_UPDATE_SUCCESS, sessionService.updateSession(dto));
     }
