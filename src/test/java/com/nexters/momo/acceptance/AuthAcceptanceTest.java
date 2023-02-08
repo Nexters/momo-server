@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import static com.nexters.momo.acceptance.AuthStep.로그인_요청;
+import static com.nexters.momo.acceptance.AuthStep.로그인_응답_실패_확인;
 import static com.nexters.momo.acceptance.AuthStep.로그인_응답_확인;
 import static com.nexters.momo.acceptance.AuthStep.사용자_가입_요청;
 import static com.nexters.momo.acceptance.AuthStep.사용자_가입_응답_확인;
@@ -79,9 +80,28 @@ public class AuthAcceptanceTest extends AcceptanceTest {
                 "password", "shine", 22, "developer", "device_uuid"));
 
         // when
-        var response = 로그인_요청("user@email.com", "password", "device_uuid");
+        var 로그인_요청_응답 = 로그인_요청("user@email.com", "password", "device_uuid");
 
         // then
-        로그인_응답_확인(response, HttpStatus.OK);
+        로그인_응답_확인(로그인_요청_응답, HttpStatus.OK);
+    }
+
+    /**
+     * Given 해당 이메일로 생성된 계정이 존재한다.
+     * When 잘못된 비밀번호를 통해 로그인 한다.
+     * Then 로그인 실패
+     */
+    @DisplayName("잘못된 비밀번호로 로그인을 시도한다")
+    @Test
+    void invalid_password_login_test() {
+        // given
+        사용자_가입_요청(new MemberRegisterRequest("user@email.com",
+                "password", "shine", 22, "developer", "device_uuid"));
+
+        // when
+        var 로그인_요청_응답 = 로그인_요청("user@email.com", "invalid_password", "device_uuid");
+
+        // then
+        로그인_응답_실패_확인(로그인_요청_응답, HttpStatus.BAD_REQUEST, "Invalid Username or Password");
     }
 }

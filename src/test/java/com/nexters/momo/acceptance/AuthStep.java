@@ -55,4 +55,13 @@ public class AuthStep {
                 .then().log().all()
                 .extract();
     }
+
+    public static void 로그인_응답_실패_확인(ExtractableResponse<Response> response, HttpStatus status, String message) {
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(status.value()),
+                () -> assertThat(response.jsonPath().getInt("code")).isEqualTo(status.value()),
+                () -> assertThat(response.jsonPath().getString("message")).isEqualTo(message),
+                () -> assertThat(response.jsonPath().getString("data")).isNull()
+        );
+    }
 }
