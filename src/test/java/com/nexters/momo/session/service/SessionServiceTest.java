@@ -11,7 +11,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.testcontainers.junit.jupiter.Testcontainers;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -26,7 +25,6 @@ import static org.assertj.core.api.Assertions.*;
  *
  * @author CHO Min Ho
  */
-@Testcontainers
 @SpringBootTest
 @Transactional
 @DisplayName("세션 서비스 테스트")
