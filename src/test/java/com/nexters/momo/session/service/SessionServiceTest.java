@@ -1,10 +1,7 @@
 package com.nexters.momo.session.service;
 
 import com.nexters.momo.session.domain.Session;
-import com.nexters.momo.session.dto.MultipleSessionResDto;
-import com.nexters.momo.session.dto.PostSessionReqDto;
-import com.nexters.momo.session.dto.SingleSessionResDto;
-import com.nexters.momo.session.dto.UpdateSessionReqDto;
+import com.nexters.momo.session.dto.*;
 import com.nexters.momo.session.exception.InvalidSessionIdException;
 import com.nexters.momo.session.repository.SessionRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -39,9 +36,9 @@ class SessionServiceTest {
     @Test
     void create_session() {
         // when
-        Long sessionId = sessionService.createSession(new PostSessionReqDto("세션 키워드", "세션 내용",
+        Long sessionId = sessionService.createSession(new SessionDto("세션 타이틀", 1, "세션 내용",
                 LocalDateTime.now().minusMinutes(100), LocalDateTime.now().plusMinutes(100), "세션 주소",
-                LocalDateTime.now().minusMinutes(120), LocalDateTime.now().plusMinutes(100)));
+                LocalDateTime.now().minusMinutes(120), LocalDateTime.now().plusMinutes(100)), 1L);
 
         // then
         Optional<Session> findSession = sessionRepository.findById(sessionId);
@@ -53,51 +50,51 @@ class SessionServiceTest {
     @Test
     void update_session() {
         // given
-        Long sessionId = sessionService.createSession(new PostSessionReqDto("세션 키워드", "세션 내용",
+        Long sessionId = sessionService.createSession(new SessionDto("세션 타이틀", 1, "세션 내용",
                 LocalDateTime.now().minusMinutes(100), LocalDateTime.now().plusMinutes(100), "세션 주소",
-                LocalDateTime.now().minusMinutes(120), LocalDateTime.now().plusMinutes(100)));
+                LocalDateTime.now().minusMinutes(120), LocalDateTime.now().plusMinutes(100)), 1L);
 
         // when
-        sessionService.updateSession(new UpdateSessionReqDto(sessionId, "새로운 세션 키워드", "세션 내용",
+        sessionService.updateSession(sessionId, new SessionDto("새로운 세션 타이틀", 1, "세션 내용",
                 LocalDateTime.now().minusMinutes(100), LocalDateTime.now().plusMinutes(100), "세션 주소",
                 LocalDateTime.now().minusMinutes(120), LocalDateTime.now().plusMinutes(100)));
 
         // then
         Optional<Session> findSession = sessionRepository.findById(sessionId);
-        assertThat(findSession.get().getSessionKeyword()).isEqualTo("새로운 세션 키워드");
+        assertThat(findSession.get().getTitle()).isEqualTo("새로운 세션 타이틀");
     }
 
     @DisplayName("단일 세션 조회 테스트")
     @Test
     void read_single_session() {
         // given
-        Long sessionId = sessionService.createSession(new PostSessionReqDto("세션 키워드", "세션 내용",
+        Long sessionId = sessionService.createSession(new SessionDto("세션 타이틀", 1,  "세션 내용",
                 LocalDateTime.now().minusMinutes(100), LocalDateTime.now().plusMinutes(100), "세션 주소",
-                LocalDateTime.now().minusMinutes(120), LocalDateTime.now().plusMinutes(100)));
+                LocalDateTime.now().minusMinutes(120), LocalDateTime.now().plusMinutes(100)), 1L);
 
         // when
-        SingleSessionResDto dto = sessionService.getSingleSession(sessionId);
+        SessionRes res = sessionService.getSingleSession(sessionId);
 
         // then
-        assertThat(dto.getKeyword()).isEqualTo("세션 키워드");
+        assertThat(res.getSession().getTitle()).isEqualTo("세션 타이틀");
     }
 
     @DisplayName("세션 리스트 조회 테스트")
     @Test
     void read_multiple_session_list() {
         // given
-        sessionService.createSession(new PostSessionReqDto("첫번째 세션 키워드", "세션 내용",
+        sessionService.createSession(new SessionDto("첫번째 세션 타이틀", 1, "세션 내용",
                 LocalDateTime.now().minusMinutes(100), LocalDateTime.now().plusMinutes(100), "세션 주소",
-                LocalDateTime.now().minusMinutes(120), LocalDateTime.now().plusMinutes(100)));
-        sessionService.createSession(new PostSessionReqDto("두번째 세션 키워드", "세션 내용",
+                LocalDateTime.now().minusMinutes(120), LocalDateTime.now().plusMinutes(100)), 1L);
+        sessionService.createSession(new SessionDto("두번째 세션 타이틀", 1, "세션 내용",
                 LocalDateTime.now().minusMinutes(100), LocalDateTime.now().plusMinutes(100), "세션 주소",
-                LocalDateTime.now().minusMinutes(120), LocalDateTime.now().plusMinutes(100)));
+                LocalDateTime.now().minusMinutes(120), LocalDateTime.now().plusMinutes(100)), 1L);
 
         // when
-        List<MultipleSessionResDto> sessionList = sessionService.getSessionList();
+        List<SessionRes> sessionList = sessionService.getSessionList(1L);
         Set<String> keywordSet = new HashSet<>();
-        for (MultipleSessionResDto dto : sessionList) {
-            keywordSet.add(dto.getKeyword());
+        for (SessionRes res : sessionList) {
+            keywordSet.add(res.getSession().getTitle());
         }
 
         // then
@@ -109,9 +106,9 @@ class SessionServiceTest {
     @Test
     void delete_session() {
         // given
-        Long sessionId = sessionService.createSession(new PostSessionReqDto("첫번째 세션 키워드", "세션 내용",
+        Long sessionId = sessionService.createSession(new SessionDto("첫번째 세션 타이틀", 1, "세션 내용",
                 LocalDateTime.now().minusMinutes(100), LocalDateTime.now().plusMinutes(100), "세션 주소",
-                LocalDateTime.now().minusMinutes(120), LocalDateTime.now().plusMinutes(100)));
+                LocalDateTime.now().minusMinutes(120), LocalDateTime.now().plusMinutes(100)), 1L);
 
         // when
         sessionService.deleteSession(sessionId);

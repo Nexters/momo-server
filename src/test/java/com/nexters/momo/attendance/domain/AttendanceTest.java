@@ -2,7 +2,6 @@ package com.nexters.momo.attendance.domain;
 
 import com.nexters.momo.attendance.exception.InvalidAttendanceCodeException;
 import com.nexters.momo.session.domain.Session;
-import com.nexters.momo.session.dto.PostSessionReqDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
@@ -34,8 +33,8 @@ class AttendanceTest {
         LocalDateTime attendanceStartTime = LocalDateTime.now().minusMinutes(10);
         LocalDateTime attendanceEndTime = sessionEndTime;
 
-        session = createSession(new PostSessionReqDto("세션 키워드", "세션 내용", sessionStartTime, sessionEndTime,
-                "서울시 강남구", attendanceStartTime, attendanceEndTime), 1, generationId);
+        session = createSession("세션 키워드", 1, "세션 내용", sessionStartTime, sessionEndTime,
+                "서울시 강남구", attendanceStartTime, attendanceEndTime, generationId);
 
         attendanceCode = session.getAttendanceCode();
 
@@ -56,8 +55,8 @@ class AttendanceTest {
         LocalDateTime attendanceStartTime = LocalDateTime.now().minusMinutes(10);
         LocalDateTime attendanceEndTime = sessionEndTime;
 
-        session = createSession(new PostSessionReqDto("세션 키워드", "세션 내용", sessionStartTime, sessionEndTime,
-                "서울시 강남구", attendanceStartTime, attendanceEndTime), 1, generationId);
+        session = createSession("세션 키워드", 1, "세션 내용", sessionStartTime, sessionEndTime,
+                "서울시 강남구", attendanceStartTime, attendanceEndTime, generationId);
 
         incorrectAttendanceCode = session.getAttendanceCode() + 1;
 
@@ -76,8 +75,8 @@ class AttendanceTest {
         LocalDateTime attendanceStartTime = LocalDateTime.now().minusMinutes(100);
         LocalDateTime attendanceEndTime = sessionEndTime;
 
-        session = createSession(new PostSessionReqDto("세션 키워드", "세션 내용", sessionStartTime, sessionEndTime,
-                "서울시 강남구", attendanceStartTime, attendanceEndTime), 1, generationId);
+        session = createSession("세션 키워드", 1, "세션 내용", sessionStartTime, sessionEndTime,
+                "서울시 강남구", attendanceStartTime, attendanceEndTime, generationId);
 
         attendanceCode = session.getAttendanceCode();
 
@@ -97,8 +96,8 @@ class AttendanceTest {
         LocalDateTime attendanceStartTime = LocalDateTime.now().minusMinutes(50);
         LocalDateTime attendanceEndTime = sessionEndTime;
 
-        session = createSession(new PostSessionReqDto("세션 키워드", "세션 내용", sessionStartTime, sessionEndTime,
-                "서울시 강남구", attendanceStartTime, attendanceEndTime), 1, generationId);
+        session = createSession("세션 키워드", 1, "세션 내용", sessionStartTime, sessionEndTime,
+                "서울시 강남구", attendanceStartTime, attendanceEndTime, generationId);
 
         attendanceCode = session.getAttendanceCode();
 
