@@ -3,8 +3,10 @@ package com.nexters.momo.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nexters.momo.member.auth.business.MemberDetailsService;
 import com.nexters.momo.member.auth.filter.LoginAuthenticationFilter;
+import com.nexters.momo.member.auth.handler.LoginAuthenticationEntryPoint;
 import com.nexters.momo.member.auth.handler.LoginAuthenticationFailureHandler;
 import com.nexters.momo.member.auth.handler.LoginAuthenticationSuccessHandler;
+import com.nexters.momo.member.auth.handler.LoginDeniedHandler;
 import com.nexters.momo.member.auth.jwt.JwtTokenFactory;
 import com.nexters.momo.member.auth.provider.LoginAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @RequiredArgsConstructor
@@ -48,6 +51,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .addFilterAt(loginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        http
+                .exceptionHandling()
+                .authenticationEntryPoint(loginAuthenticationEntryPoint())
+                .accessDeniedHandler(loginDeniedHandler());
     }
 
     @Bean
@@ -72,6 +80,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public LoginAuthenticationFailureHandler loginAuthenticationFailureHandler() {
         return new LoginAuthenticationFailureHandler(objectMapper);
+    }
+
+    @Bean
+    public LoginAuthenticationEntryPoint loginAuthenticationEntryPoint() {
+        return new LoginAuthenticationEntryPoint(objectMapper);
+    }
+
+    @Bean
+    public AccessDeniedHandler loginDeniedHandler() {
+        return new LoginDeniedHandler();
     }
 
     @Bean
