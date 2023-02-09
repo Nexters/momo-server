@@ -25,7 +25,7 @@ public class Team {
     @Embedded
     private TeamName teamName;
 
-    @Column(name = "generation_id", nullable = false)
+    @Column(nullable = false)
     private Long generationId;
 
     @Embedded
