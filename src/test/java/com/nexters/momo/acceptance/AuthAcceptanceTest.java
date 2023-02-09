@@ -15,7 +15,7 @@ import static com.nexters.momo.acceptance.AuthStep.사용자_가입_요청;
 import static com.nexters.momo.acceptance.AuthStep.사용자_가입_응답_확인;
 
 @DisplayName("인수 : 로그인")
-public class AuthAcceptanceTest extends AcceptanceTest {
+public class AuthAcceptanceTest extends RandomPortConfigure {
 
     @Autowired
     private MemberRepository memberRepository;
