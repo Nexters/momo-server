@@ -11,5 +11,5 @@ import java.util.List;
  * @author CHO Min Ho
  */
 public interface SessionRepository extends JpaRepository<Session, Long> {
-    List<Session> getSessionByGenerationId(Long generationId);
+    List<Session> findSessionByGenerationId(Long generationId);
 }
