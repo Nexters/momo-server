@@ -37,7 +37,7 @@ public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessH
 
         setAuthenticationSuccessHeader(response, refreshCookie.toString());
 
-        objectMapper.writeValue(response.getWriter(), new BaseResponse<>(ResponseCodeAndMessages.USER_LOGIN_SUCCESS, jwtToken));
+        objectMapper.writeValue(response.getWriter(), new BaseResponse<>(ResponseCodeAndMessages.MEMBER_LOGIN_SUCCESS, jwtToken));
     }
 
     private static List<String> convertAuthorities(Member member) {

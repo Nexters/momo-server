@@ -43,9 +43,8 @@ public class Member {
     private Password password;
 
     @Embedded
-    private MemberName name;
+    private Name name;
 
-    @Column(name = "device_unique_id")
     private String deviceUniqueId;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
@@ -66,7 +65,7 @@ public class Member {
     public Member(String email, String password, String name, String deviceUniqueId, Role role, Occupation occupation) {
         this.email = new Email(email);
         this.password = new Password(password);
-        this.name = new MemberName(name);
+        this.name = new Name(name);
         this.deviceUniqueId = deviceUniqueId;
         this.memberRoles.add(new Authority(role));
         this.occupation = occupation;
