@@ -1,7 +1,5 @@
 package com.nexters.momo.session.domain;
 
-import com.nexters.momo.session.dto.PostSessionReqDto;
-import com.nexters.momo.session.dto.UpdateSessionReqDto;
 import com.nexters.momo.session.exception.InvalidSessionTimeException;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -28,56 +26,56 @@ public class Session {
     @Column(name = "generation_id", nullable = false)
     private Long generationId;
 
-    @Column(name = "session_keyword")
-    private String sessionKeyword;
+    @Column
+    private String title;
 
-    @Column(name = "session_order", nullable = false)
-    private int sessionOrder;
+    @Column(nullable = false)
+    private int week;
 
-    @Column(name = "session_content", columnDefinition = "TEXT")
-    private String sessionContent;
+    @Column(columnDefinition = "TEXT")
+    private String content;
 
-    @Column(name = "start_at", nullable = false)
-    private LocalDateTime sessionStartTime;
+    @Column(nullable = false)
+    private LocalDateTime startAt;
 
-    @Column(name = "end_at", nullable = false)
-    private LocalDateTime sessionEndTime;
+    @Column(nullable = false)
+    private LocalDateTime endAt;
 
-    @Column(name = "attendance_code", nullable = false)
+    @Column(nullable = false)
     private Integer attendanceCode;
 
-    @Column(name = "publish_at")
-    private LocalDateTime sessionPublishTime;
+    @Column
+    private LocalDateTime publishAt;
 
-    @Column(name = "session_status", nullable = false)
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private SessionStatus sessionStatus;
+    private SessionStatus status;
 
-    @Column(name = "session_address", columnDefinition = "TEXT")
-    private String sessionAddress;
+    @Column(columnDefinition = "TEXT")
+    private String address;
 
-    @Column(name = "attendance_started_at", nullable = false)
-    private LocalDateTime attendanceStartTime;
+    @Column(nullable = false)
+    private LocalDateTime attendanceStartedAt;
 
-    @Column(name = "attendance_closed_at", nullable = false)
-    private LocalDateTime attendanceEndTime;
+    @Column(nullable = false)
+    private LocalDateTime attendanceClosedAt;
 
-    private Session(Long generationId, String sessionKeyword, int sessionOrder,
-                    String sessionContent, LocalDateTime sessionStartTime, LocalDateTime sessionEndTime,
-                    String sessionAddress, LocalDateTime attendanceStartTime,
-                    LocalDateTime attendanceEndTime) {
+    private Session(Long generationId, String title, int week,
+                    String content, LocalDateTime startAt, LocalDateTime endAt,
+                    String address, LocalDateTime attendanceStartedAt,
+                    LocalDateTime attendanceClosedAt) {
         this.generationId = generationId;
-        this.sessionKeyword = sessionKeyword;
-        this.sessionOrder = sessionOrder;
-        this.sessionContent = sessionContent;
-        this.sessionStartTime = sessionStartTime;
-        this.sessionEndTime = sessionEndTime;
+        this.title = title;
+        this.week = week;
+        this.content = content;
+        this.startAt = startAt;
+        this.endAt = endAt;
         this.attendanceCode = generateAttendanceCode();
-        this.sessionPublishTime = LocalDateTime.now();
-        this.sessionStatus = SessionStatus.BEFORE;
-        this.sessionAddress = sessionAddress;
-        this.attendanceStartTime = attendanceStartTime;
-        this.attendanceEndTime = attendanceEndTime;
+        this.publishAt = LocalDateTime.now();
+        this.status = SessionStatus.BEFORE;
+        this.address = address;
+        this.attendanceStartedAt = attendanceStartedAt;
+        this.attendanceClosedAt = attendanceClosedAt;
     }
 
     /**
@@ -86,23 +84,21 @@ public class Session {
      * @return 해당 세션의 출석 코드와의 일치 여부
      */
     public boolean isSameAttendanceCode(int attendanceCode) {
-        if (this.attendanceCode != attendanceCode) {
-            return false;
-        }
-        return true;
+        return this.attendanceCode == attendanceCode;
     }
 
     /**
      * Session 을 수정하는 메서드입니다.
-     * @param dto 수정할 정보
      */
-    public void updateSession(UpdateSessionReqDto dto) {
-        this.sessionKeyword = dto.getKeyword();
-        this.sessionContent = dto.getContent();
-        this.sessionStartTime = dto.getStartAt();
-        this.sessionEndTime = dto.getEndAt();
-        this.sessionAddress = dto.getSessionAddress();
-        this.attendanceStartTime = dto.getAttendanceStartAt();
+    public void updateSession(String title, String content, LocalDateTime startAt, LocalDateTime endAt,
+                              String address, LocalDateTime attendanceStartedAt, LocalDateTime attendanceClosedAt) {
+        this.title = title;
+        this.content = content;
+        this.startAt = startAt;
+        this.endAt = endAt;
+        this.address = address;
+        this.attendanceStartedAt = attendanceStartedAt;
+        this.attendanceClosedAt = attendanceClosedAt;
     }
 
     /**
@@ -110,14 +106,15 @@ public class Session {
      * Session 엔티티는 해당 메서드를 이용해서만 생성됩니다.
      * @return 생성된 session 엔티티
      */
-    public static Session createSession(PostSessionReqDto dto, int sessionOrder, Long generationId) {
-        if (dto.getStartAt().isAfter(dto.getEndAt())) {
+    public static Session createSession(String title, Integer week, String content, LocalDateTime startAt, LocalDateTime endAt,
+                                        String address, LocalDateTime attendanceStartedAt,
+                                        LocalDateTime attendanceClosedAt, Long generationId) {
+        if (startAt.isAfter(endAt)) {
             // 세션 종료 시각이 세션 시작 시각보다 앞설 경우
             throw new InvalidSessionTimeException();
         }
-        return new Session(generationId, dto.getKeyword(), sessionOrder, dto.getContent(),
-                dto.getStartAt(), dto.getEndAt(), dto.getSessionAddress(),
-                dto.getAttendanceStartAt(), dto.getAttendanceEndAt());
+        return new Session(generationId, title, week, content,
+                startAt, endAt, address, attendanceStartedAt, attendanceClosedAt);
     }
 
     /**

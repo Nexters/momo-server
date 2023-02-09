@@ -70,17 +70,17 @@ public class Attendance extends BaseTimeEntity {
         LocalDateTime currentTime = LocalDateTime.now();
 
         // 1. 아직 출석할 수 없는 시간일 경우
-        if (session.getAttendanceStartTime().isAfter(currentTime)) {
+        if (session.getAttendanceStartedAt().isAfter(currentTime)) {
             throw new TooFastAttendanceTimeException();
         }
 
         // 2. 출석 마감 시간 이후 출석을 시도하는 경우 - 결석
-        if (currentTime.isAfter(session.getAttendanceEndTime())) {
+        if (currentTime.isAfter(session.getAttendanceClosedAt())) {
             return ABSENT;
         }
 
         // 3. 지각
-        if (currentTime.isAfter(session.getSessionStartTime())) {
+        if (currentTime.isAfter(session.getStartAt())) {
             return LATE;
         }
 
