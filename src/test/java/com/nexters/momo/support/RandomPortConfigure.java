@@ -1,4 +1,4 @@
-package com.nexters.momo.acceptance;
+package com.nexters.momo.support;
 
 import com.nexters.momo.common.TestRedisContainer;
 import io.restassured.RestAssured;
