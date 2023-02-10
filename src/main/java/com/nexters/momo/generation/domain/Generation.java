@@ -29,6 +29,14 @@ public class Generation {
     private boolean active;
 
     public static Generation of(
+            int number,
+            SignupCode signupCode,
+            boolean active
+    ) {
+        return of(null, number, signupCode, active);
+    }
+
+    public static Generation of(
             Long id,
             int number,
             SignupCode signupCode,
@@ -37,6 +45,10 @@ public class Generation {
         Assert.notNull(signupCode, "signupCode must not be null");
 
         return new Generation(id, number, signupCode, active);
+    }
+
+    public void deactivate() {
+        this.active = false;
     }
 
     public boolean isActive() {
