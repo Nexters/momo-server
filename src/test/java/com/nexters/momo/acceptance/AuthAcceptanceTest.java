@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
+import static com.nexters.momo.acceptance.AuthStep.로그아웃_요청;
+import static com.nexters.momo.acceptance.AuthStep.로그아웃_응답_확인;
+import static com.nexters.momo.acceptance.AuthStep.로그인_되어_있음;
 import static com.nexters.momo.acceptance.AuthStep.로그인_요청;
 import static com.nexters.momo.acceptance.AuthStep.로그인_응답_실패_확인;
 import static com.nexters.momo.acceptance.AuthStep.로그인_응답_확인;
@@ -122,5 +125,26 @@ public class AuthAcceptanceTest extends RandomPortConfigure {
 
         // then
         로그인_응답_실패_확인(로그인_요청_응답, HttpStatus.BAD_REQUEST, "Invalid Device Id");
+    }
+
+    /**
+     * Given 가입한 사용자가 로그인을 한 상태이다
+     * When “로그아웃”을 버튼을 누르면
+     * Then 성공적으로 로그아웃되어 Guest상태가 된다.
+     */
+    @DisplayName("Bearer Token 인증방식의 로그아웃")
+    @Test
+    void bearer_token_logout() {
+        // given
+        사용자_가입_요청(new MemberRegisterRequest("shine@naver.com",
+                "password", "Shine", 22, "developer", "uuid"));
+
+        String accessToken = 로그인_되어_있음("user@email.com", "password", "uuid");
+
+        // when
+        var 로그아웃_응답 = 로그아웃_요청(accessToken);
+
+        // then
+        로그아웃_응답_확인(로그아웃_응답);
     }
 }

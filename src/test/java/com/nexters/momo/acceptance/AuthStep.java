@@ -56,6 +56,25 @@ public class AuthStep {
                 .extract();
     }
 
+    public static String 로그인_되어_있음(String email, String password, String uuid) {
+        ExtractableResponse<Response> response = 로그인_요청(email, password, uuid);
+        return response.jsonPath().getString("data.accessToken");
+    }
+
+    public static ExtractableResponse<Response> 로그아웃_요청(String accessToken) {
+        return RestAssured.given().log().all()
+                .auth().oauth2(accessToken)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/api/auth/logout")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract();
+    }
+
+    public static void 로그아웃_응답_확인(ExtractableResponse<Response> response) {
+        assertThat(response.jsonPath().getInt("code")).isEqualTo(200);
+    }
+
     public static void 로그인_응답_실패_확인(ExtractableResponse<Response> response, HttpStatus status, String message) {
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(status.value()),
