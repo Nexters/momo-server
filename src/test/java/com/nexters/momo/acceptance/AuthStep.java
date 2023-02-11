@@ -15,11 +15,11 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class AuthStep {
 
-    public static void 사용자_가입_응답_확인(ExtractableResponse<Response> response, HttpStatus status) {
+    public static void 사용자_가입_응답_확인(ExtractableResponse<Response> response, HttpStatus status, String message) {
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(status.value()),
                 () -> assertThat(response.jsonPath().getInt("code")).isEqualTo(status.value()),
-                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("유저 생성에 성공했습니다")
+                () -> assertThat(response.jsonPath().getString("message")).isEqualTo(message)
         );
     }
 
@@ -54,5 +54,14 @@ public class AuthStep {
                 .when().post("/api/auth/login")
                 .then().log().all()
                 .extract();
+    }
+
+    public static void 로그인_응답_실패_확인(ExtractableResponse<Response> response, HttpStatus status, String message) {
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(status.value()),
+                () -> assertThat(response.jsonPath().getInt("code")).isEqualTo(status.value()),
+                () -> assertThat(response.jsonPath().getString("message")).isEqualTo(message),
+                () -> assertThat(response.jsonPath().getString("data")).isNull()
+        );
     }
 }
