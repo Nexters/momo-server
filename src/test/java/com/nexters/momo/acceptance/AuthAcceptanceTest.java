@@ -75,7 +75,7 @@ public class AuthAcceptanceTest extends RandomPortConfigure {
      * When 로그인을 시도하면
      * Then 성공적으로 로그인하고 jwt token을 반환한다
      */
-    @DisplayName("사용자 로그인 테스트")
+    @DisplayName("Bearer Token 인증방식의 로그인")
     @Test
     void bearer_token_login() {
         // given
@@ -139,7 +139,7 @@ public class AuthAcceptanceTest extends RandomPortConfigure {
         사용자_가입_요청(new MemberRegisterRequest("shine@naver.com",
                 "password", "Shine", 22, "developer", "uuid"));
 
-        String accessToken = 로그인_되어_있음("user@email.com", "password", "uuid");
+        String accessToken = 로그인_되어_있음("shine@naver.com", "password", "uuid");
 
         // when
         var 로그아웃_응답 = 로그아웃_요청(accessToken);
