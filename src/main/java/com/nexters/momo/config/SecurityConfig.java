@@ -1,7 +1,7 @@
 package com.nexters.momo.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nexters.momo.member.auth.business.MemberDetailsService;
+import com.nexters.momo.member.auth.application.MemberDetailsService;
 import com.nexters.momo.member.auth.filter.LoginAuthenticationFilter;
 import com.nexters.momo.member.auth.handler.LoginAuthenticationEntryPoint;
 import com.nexters.momo.member.auth.handler.LoginAuthenticationFailureHandler;

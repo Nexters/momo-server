@@ -1,7 +1,7 @@
 package com.nexters.momo.member.auth.presentation;
 
 import com.nexters.momo.common.response.BaseResponse;
-import com.nexters.momo.member.auth.business.MemberService;
+import com.nexters.momo.member.auth.application.MemberService;
 import com.nexters.momo.member.auth.presentation.dto.MemberRegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

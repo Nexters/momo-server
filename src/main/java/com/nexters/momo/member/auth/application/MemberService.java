@@ -1,4 +1,4 @@
-package com.nexters.momo.member.auth.business;
+package com.nexters.momo.member.auth.application;
 
 import com.nexters.momo.member.auth.domain.Member;
 import com.nexters.momo.member.auth.domain.MemberRepository;
