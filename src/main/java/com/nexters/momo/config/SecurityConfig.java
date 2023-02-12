@@ -3,6 +3,7 @@ package com.nexters.momo.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nexters.momo.member.auth.application.MemberDetailsService;
 import com.nexters.momo.member.auth.application.RedisCachingService;
+import com.nexters.momo.member.auth.filter.JwtAuthenticationFilter;
 import com.nexters.momo.member.auth.filter.LoginAuthenticationFilter;
 import com.nexters.momo.member.auth.handler.JwtLogoutHandler;
 import com.nexters.momo.member.auth.handler.JwtLogoutSuccessHandler;
@@ -56,7 +57,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll();
 
         http
-                .addFilterAt(loginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterAt(loginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter(), LoginAuthenticationFilter.class);
 
         http
                 .exceptionHandling()
@@ -78,6 +80,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public JwtLogoutSuccessHandler jwtLogoutSuccessHandler() {
         return new JwtLogoutSuccessHandler(objectMapper);
+    }
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter(jwtTokenFactory, memberDetailsService, redisCachingService);
     }
 
     @Bean

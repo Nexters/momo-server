@@ -38,7 +38,7 @@ public class JwtLogoutHandler implements LogoutHandler {
             return;
         }
 
-        String userIdFromToken = jwtTokenFactory.getUserIdFromToken(accessToken);
+        String userIdFromToken = jwtTokenFactory.getUserEmailFromToken(accessToken);
         if (StringUtils.hasText(userIdFromToken) && isHasRefreshToken(userIdFromToken)) {
             // delete refresh token
             redisCachingService.deleteValues(userIdFromToken);

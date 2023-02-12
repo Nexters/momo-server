@@ -16,7 +16,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -66,16 +65,12 @@ public class JwtTokenFactory {
         Date createdDate = new Date();
         Date expirationDate = new Date(createdDate.getTime() + refreshExpirationMillis);
 
-        String refreshToken = Jwts.builder()
+        return Jwts.builder()
                 .setSubject(userEmail)
                 .setIssuedAt(createdDate)
                 .setExpiration(expirationDate)
                 .signWith(refreshPrivateKey)
                 .compact();
-
-        redisCachingService.setValuesWithDuration(userEmail, refreshToken, Duration.ofMillis(refreshExpirationMillis));
-
-        return refreshToken;
     }
 
     public ResponseCookie createRefreshCookie(String refreshToken) {
@@ -88,11 +83,11 @@ public class JwtTokenFactory {
                 .build();
     }
 
-    public String getUserIdFromToken(String accessToken) {
+    public String getUserEmailFromToken(String accessToken) {
         return (String) Jwts.parserBuilder()
                 .setSigningKey(accessPrivateKey)
                 .build()
-                .parseClaimsJws(accessToken).getBody().get("userId");
+                .parseClaimsJws(accessToken).getBody().get("userEmail");
     }
 
     public Collection<GrantedAuthority> getRolesFromToken(String accessToken) {

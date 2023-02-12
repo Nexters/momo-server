@@ -7,6 +7,7 @@ import com.nexters.momo.member.auth.domain.Member;
 import com.nexters.momo.member.auth.jwt.JwtToken;
 import com.nexters.momo.member.auth.jwt.JwtTokenFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseCookie;
@@ -51,6 +52,6 @@ public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessH
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setHeader("Set-Cookie", cookie);
+        response.setHeader(HttpHeaders.SET_COOKIE, cookie);
     }
 }
