@@ -5,6 +5,7 @@ import com.nexters.momo.member.auth.application.MemberDetailsService;
 import com.nexters.momo.member.auth.application.RedisCachingService;
 import com.nexters.momo.member.auth.filter.LoginAuthenticationFilter;
 import com.nexters.momo.member.auth.handler.JwtLogoutHandler;
+import com.nexters.momo.member.auth.handler.JwtLogoutSuccessHandler;
 import com.nexters.momo.member.auth.handler.LoginAuthenticationEntryPoint;
 import com.nexters.momo.member.auth.handler.LoginAuthenticationFailureHandler;
 import com.nexters.momo.member.auth.handler.LoginAuthenticationSuccessHandler;
@@ -65,12 +66,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .logout()
                 .logoutUrl("/api/auth/logout")
-                .addLogoutHandler(jwtLogoutHandler());
+                .addLogoutHandler(jwtLogoutHandler())
+                .logoutSuccessHandler(jwtLogoutSuccessHandler());
     }
 
     @Bean
     public JwtLogoutHandler jwtLogoutHandler() {
         return new JwtLogoutHandler(jwtProperties, jwtTokenFactory, redisCachingService);
+    }
+
+    @Bean
+    public JwtLogoutSuccessHandler jwtLogoutSuccessHandler() {
+        return new JwtLogoutSuccessHandler(objectMapper);
     }
 
     @Bean
