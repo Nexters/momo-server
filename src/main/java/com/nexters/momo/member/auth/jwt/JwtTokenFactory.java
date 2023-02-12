@@ -1,5 +1,6 @@
 package com.nexters.momo.member.auth.jwt;
 
+import com.nexters.momo.member.auth.application.RedisCachingService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -15,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,12 +27,14 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenFactory {
 
+    private final RedisCachingService redisCachingService;
     private final Key accessPrivateKey;
     private final Key refreshPrivateKey;
     private final Long accessExpirationMillis;
     private final Long refreshExpirationMillis;
 
-    public JwtTokenFactory(JwtProperties jwtProperties) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public JwtTokenFactory(RedisCachingService redisCachingService, JwtProperties jwtProperties) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        this.redisCachingService = redisCachingService;
         this.accessPrivateKey = getPrivateKey(jwtProperties.getAccessKey());
         this.refreshPrivateKey = getPrivateKey(jwtProperties.getRefreshKey());
         this.accessExpirationMillis = jwtProperties.getAccessLength();
@@ -62,12 +66,16 @@ public class JwtTokenFactory {
         Date createdDate = new Date();
         Date expirationDate = new Date(createdDate.getTime() + refreshExpirationMillis);
 
-        return Jwts.builder()
+        String refreshToken = Jwts.builder()
                 .setSubject(userEmail)
                 .setIssuedAt(createdDate)
                 .setExpiration(expirationDate)
                 .signWith(refreshPrivateKey)
                 .compact();
+
+        redisCachingService.setValuesWithDuration(userEmail, refreshToken, Duration.ofMillis(refreshExpirationMillis));
+
+        return refreshToken;
     }
 
     public ResponseCookie createRefreshCookie(String refreshToken) {

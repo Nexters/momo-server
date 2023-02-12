@@ -2,11 +2,14 @@ package com.nexters.momo.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nexters.momo.member.auth.application.MemberDetailsService;
+import com.nexters.momo.member.auth.application.RedisCachingService;
 import com.nexters.momo.member.auth.filter.LoginAuthenticationFilter;
+import com.nexters.momo.member.auth.handler.JwtLogoutHandler;
 import com.nexters.momo.member.auth.handler.LoginAuthenticationEntryPoint;
 import com.nexters.momo.member.auth.handler.LoginAuthenticationFailureHandler;
 import com.nexters.momo.member.auth.handler.LoginAuthenticationSuccessHandler;
 import com.nexters.momo.member.auth.handler.LoginDeniedHandler;
+import com.nexters.momo.member.auth.jwt.JwtProperties;
 import com.nexters.momo.member.auth.jwt.JwtTokenFactory;
 import com.nexters.momo.member.auth.provider.LoginAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final MemberDetailsService memberDetailsService;
     private final ObjectMapper objectMapper;
     private final JwtTokenFactory jwtTokenFactory;
+    private final RedisCachingService redisCachingService;
+    private final JwtProperties jwtProperties;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -56,6 +61,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                 .authenticationEntryPoint(loginAuthenticationEntryPoint())
                 .accessDeniedHandler(loginDeniedHandler());
+
+        http
+                .logout()
+                .logoutUrl("/api/auth/logout")
+                .addLogoutHandler(jwtLogoutHandler());
+    }
+
+    @Bean
+    public JwtLogoutHandler jwtLogoutHandler() {
+        return new JwtLogoutHandler(jwtProperties, jwtTokenFactory, redisCachingService);
     }
 
     @Bean
