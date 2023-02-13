@@ -53,7 +53,7 @@ public class SessionController {
      * TODO : Generation Service 의존성 주입 및 현재 기수를 반환하는 메서드를 createSession 의 두번째 인자로 삽입
      */
     @PostMapping
-    public BaseResponse<Long> createNewSession(@Valid SessionReq req) {
+    public BaseResponse<Long> createNewSession(@RequestBody @Valid SessionReq req) {
         return new BaseResponse<>(SESSION_CREATE_SUCCESS, sessionService.createSession(req.getSession(), 1L));
     }
 
@@ -64,7 +64,7 @@ public class SessionController {
      * @return 수정된 세션 ID
      */
     @PutMapping("/{id}")
-    public BaseResponse<Long> updateSingleSession(@PathVariable("id") Long id, @Valid SessionReq req) {
+    public BaseResponse<Long> updateSingleSession(@PathVariable("id") Long id, @RequestBody @Valid SessionReq req) {
         return new BaseResponse<>(SESSION_UPDATE_SUCCESS, sessionService.updateSession(id, req.getSession()));
     }
 }
