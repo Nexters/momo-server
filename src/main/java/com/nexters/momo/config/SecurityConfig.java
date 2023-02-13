@@ -89,7 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public LoginAuthenticationFilter loginAuthenticationFilter() throws Exception {
-        LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter();
+        LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter(objectMapper);
         loginAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
         loginAuthenticationFilter.setAuthenticationSuccessHandler(loginAuthenticationSuccessHandler());
         loginAuthenticationFilter.setAuthenticationFailureHandler(loginAuthenticationFailureHandler());

@@ -3,7 +3,6 @@ package com.nexters.momo.member.auth.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nexters.momo.member.auth.filter.dto.MemberLoginDto;
 import com.nexters.momo.member.auth.token.LoginAuthenticationToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -18,11 +17,11 @@ import java.io.IOException;
 
 public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
-    public LoginAuthenticationFilter() {
+    public LoginAuthenticationFilter(ObjectMapper objectMapper) {
         super(new AntPathRequestMatcher("/api/auth/login"));
+        this.objectMapper = objectMapper;
     }
 
     @Override
