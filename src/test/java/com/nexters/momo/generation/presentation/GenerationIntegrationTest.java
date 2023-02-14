@@ -1,6 +1,5 @@
 package com.nexters.momo.generation.presentation;
 
-import com.nexters.momo.generation.application.dto.GenerationDto;
 import com.nexters.momo.generation.domain.Generation;
 import com.nexters.momo.generation.domain.GenerationRepository;
 import com.nexters.momo.generation.domain.SignupCode;
@@ -38,7 +37,7 @@ public class GenerationIntegrationTest extends RandomPortConfigure {
     @Test
     void generation_create_test() {
         // given
-        GenerationRequest request = new GenerationRequest(new GenerationDto(22, "signupCode"));
+        GenerationRequest request = new GenerationRequest(22, "signupCode");
 
         // when
         ExtractableResponse<Response> response = 기수_생성_요청(request);

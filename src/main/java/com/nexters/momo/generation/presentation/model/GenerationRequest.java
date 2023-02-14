@@ -1,13 +1,17 @@
 package com.nexters.momo.generation.presentation.model;
 
-import com.nexters.momo.generation.application.dto.GenerationDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class GenerationRequest {
-    private GenerationDto generation;
+    private int number;
+
+    @NotNull
+    private String signupCode;
 }

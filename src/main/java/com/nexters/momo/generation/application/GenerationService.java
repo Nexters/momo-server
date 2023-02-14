@@ -1,6 +1,5 @@
 package com.nexters.momo.generation.application;
 
-import com.nexters.momo.generation.application.dto.GenerationDto;
 import com.nexters.momo.generation.domain.Generation;
 import com.nexters.momo.generation.domain.GenerationRepository;
 import com.nexters.momo.generation.domain.SignupCode;
@@ -15,9 +14,9 @@ public class GenerationService {
     private final GenerationRepository generationRepository;
 
     @Transactional
-    public void create(GenerationDto generation) {
-        SignupCode code = SignupCode.from(generation.getSignupCode());
-        generationRepository.save(Generation.of(generation.getNumber(), code, true));
+    public void create(String signupCode, int number) {
+        SignupCode code = SignupCode.from(signupCode);
+        generationRepository.save(Generation.of(number, code, true));
     }
 
     @Transactional

@@ -3,7 +3,6 @@ package com.nexters.momo.generation.domain;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.springframework.util.Assert;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
