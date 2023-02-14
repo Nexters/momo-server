@@ -1,17 +1,20 @@
 package com.nexters.momo.member.auth.filter;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nexters.momo.common.response.BaseResponse;
 import com.nexters.momo.member.auth.application.MemberContext;
 import com.nexters.momo.member.auth.application.MemberDetailsService;
 import com.nexters.momo.member.auth.application.RedisCachingService;
 import com.nexters.momo.member.auth.domain.Member;
 import com.nexters.momo.member.auth.domain.Role;
+import com.nexters.momo.member.auth.jwt.JwtToken;
 import com.nexters.momo.member.auth.jwt.JwtTokenFactory;
 import com.nexters.momo.member.auth.utils.AuthorizationExtractor;
 import com.nexters.momo.member.auth.utils.AuthorizationType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AccountExpiredException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,20 +31,28 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Collection;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final String MEMBER_UNAUTHORIZED_MESSAGE = "해당 유저는 인증되지 않았습니다.";
-    private static final String MEMBER_ACCESS_TOKEN_EXPIRED_MESSAGE = "해당 유저의 토큰이 만료 되었습니다.";
+    private static final String MEMBER_ACCESS_TOKEN_EXPIRED_MESSAGE = "해당 유저의 Access 토큰이 만료 되었습니다.";
+    private static final String MEMBER_REFRESH_TOKEN_EXPIRED_MESSAGE = "해당 유저의 Refresh 토큰이 만료 되었습니다.";
+    private static final String COOKIE_NAME = "refreshToken";
 
     private final JwtTokenFactory jwtTokenFactory;
 
     private final MemberDetailsService memberDetailsService;
 
     private final RedisCachingService redisCachingService;
+
+    private final ObjectMapper objectMapper;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -52,20 +63,38 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         log.info("[AccessToken] : {}", accessToken);
 
         if (isAlreadyLogout(accessToken)) {
-            throw new AccountExpiredException(MEMBER_UNAUTHORIZED_MESSAGE);
+            log.info("[JwtAuthenticationFilter] : 로그아웃 처리된 Access Token입니다.");
+
+            setResponseHeader(response, HttpStatus.UNAUTHORIZED);
+            objectMapper.writeValue(response.getWriter(), new BaseResponse<>(HttpStatus.UNAUTHORIZED.value(), MEMBER_UNAUTHORIZED_MESSAGE, null));
+            wrappingResponse.copyBodyToResponse();
+            return;
         }
 
-        // 토큰은 없지만 로그인 페이지, 회원 가입 페이지에 접근하기 위해 익명 사용자 토큰을 발급한다.
-        if (!StringUtils.hasText(accessToken)) {
+        if (isAnonymousMember(accessToken)) {
+            log.info("[JwtAuthenticationFilter] : 익명 사용자의 접근 입니다.");
+
             SecurityContextHolder.getContext().setAuthentication(anonymousAuthentication());
             filterChain.doFilter(wrappingRequest, wrappingResponse);
             wrappingResponse.copyBodyToResponse();
             return;
         }
 
-        // TODO : 토큰이 만료된 경우 이를 Client측에 알려서 재발급 받도록 해야 한다
         if (isAccessTokenExpired(accessToken)) {
-            throw new CredentialsExpiredException(MEMBER_ACCESS_TOKEN_EXPIRED_MESSAGE);
+            log.info("[JwtAuthenticationFilter] : Access Token이 만료되었습니다.");
+
+            String refreshToken = getCookieValue(request);
+            if(!jwtTokenFactory.isValidRefreshToken(refreshToken)) {
+                throw new CredentialsExpiredException(MEMBER_REFRESH_TOKEN_EXPIRED_MESSAGE);
+            }
+
+            JwtToken newJwtToken = jwtTokenFactory.reIssue(accessToken, refreshToken);
+            log.info("[JwtAuthenticationFilter] : Access Token이 재발급 되었습니다.");
+
+            setResponseHeader(response, HttpStatus.UNAUTHORIZED);
+            objectMapper.writeValue(response.getWriter(), new BaseResponse<>(HttpStatus.UNAUTHORIZED.value(), MEMBER_ACCESS_TOKEN_EXPIRED_MESSAGE, newJwtToken));
+            wrappingResponse.copyBodyToResponse();
+            return;
         }
 
         SecurityContextHolder.getContext().setAuthentication(createAuthentication(accessToken));
@@ -73,6 +102,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(wrappingRequest, wrappingResponse);
         wrappingResponse.copyBodyToResponse();
+    }
+
+    private static boolean isAnonymousMember(String accessToken) {
+        return !StringUtils.hasText(accessToken);
+    }
+
+    private static void setResponseHeader(HttpServletResponse response, HttpStatus status) {
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.setStatus(status.value());
+        response.setContentType(APPLICATION_JSON_VALUE);
     }
 
     private boolean isAccessTokenExpired(String accessToken) {
@@ -101,5 +140,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected Authentication anonymousAuthentication() {
         Member anonymousMember = new Member("anonymous@anonymous.com", "", "anonymous", "", Role.ANONYMOUS, null);
         return new AnonymousAuthenticationToken("anonymous", anonymousMember, anonymousMember.getAuthorities());
+    }
+
+    private static String getCookieValue(HttpServletRequest request) {
+        return Arrays.stream(request.getCookies())
+                .filter(cookie -> cookie.getName().equals(COOKIE_NAME))
+                .findFirst()
+                .orElseThrow(() -> new CredentialsExpiredException(MEMBER_REFRESH_TOKEN_EXPIRED_MESSAGE))
+                .getValue();
     }
 }

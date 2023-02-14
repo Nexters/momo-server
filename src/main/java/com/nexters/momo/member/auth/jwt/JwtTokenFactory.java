@@ -1,6 +1,5 @@
 package com.nexters.momo.member.auth.jwt;
 
-import com.nexters.momo.member.auth.application.RedisCachingService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -26,14 +25,12 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenFactory {
 
-    private final RedisCachingService redisCachingService;
     private final Key accessPrivateKey;
     private final Key refreshPrivateKey;
     private final Long accessExpirationMillis;
     private final Long refreshExpirationMillis;
 
-    public JwtTokenFactory(RedisCachingService redisCachingService, JwtProperties jwtProperties) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        this.redisCachingService = redisCachingService;
+    public JwtTokenFactory(JwtProperties jwtProperties) throws NoSuchAlgorithmException, InvalidKeySpecException {
         this.accessPrivateKey = getPrivateKey(jwtProperties.getAccessKey());
         this.refreshPrivateKey = getPrivateKey(jwtProperties.getRefreshKey());
         this.accessExpirationMillis = jwtProperties.getAccessLength();
@@ -42,6 +39,13 @@ public class JwtTokenFactory {
 
     public JwtToken issue(String userId, List<String> roles) {
         return new JwtToken(createAccessToken(userId, roles), createRefreshToken(userId));
+    }
+
+    public JwtToken reIssue(String accessToken, String refreshToken) {
+        String email = getUserEmailFromToken(accessToken);
+        List<String> roles = getRoleStrings(accessToken);
+
+        return new JwtToken(this.createAccessToken(email, roles), refreshToken);
     }
 
     public String createAccessToken(String userEmail, List<String> roles) {
@@ -91,14 +95,16 @@ public class JwtTokenFactory {
     }
 
     public Collection<GrantedAuthority> getRolesFromToken(String accessToken) {
-        List<String> roles = (List) Jwts.parserBuilder()
+        return getRoleStrings(accessToken).stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+    }
+
+    private List<String> getRoleStrings(String accessToken) {
+        return (List<String>) Jwts.parserBuilder()
                 .setSigningKey(accessPrivateKey)
                 .build()
                 .parseClaimsJws(accessToken).getBody().get("roles");
-
-        return roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
     }
 
     public boolean isValidAccessToken(String accessToken) {

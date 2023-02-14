@@ -84,7 +84,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter(jwtTokenFactory, memberDetailsService, redisCachingService);
+        return new JwtAuthenticationFilter(jwtTokenFactory, memberDetailsService, redisCachingService, objectMapper);
     }
 
     @Bean
