@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/momo?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
-    username: root
-    password: 1234
+    url: ${db.url}
+    username: ${db.username}
+    password: ${db.password}
     driver-class-name: com.mysql.jdbc.Driver
 
   jpa:
@@ -15,8 +15,8 @@ spring:
         use_sql_comments: true
 
   redis:
-    host: localhost
-    port: 6379
+    host: ${redis.host}
+    port: ${redis.port}
 
   messages:
     basename: i18n/exception
@@ -27,9 +27,7 @@ logging.level:
 # org.hibernate.type: trace
 
 jwt:
-  access-length: 1800000 # 30min
-  refresh-length: 259200000 # 30day
-  access-key:
-    testAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKey
-  refresh-key:
-    testPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKey
+  access-length: ${jwt.access.length}
+  refresh-token: ${jwt.refresh.token}
+  access-key: ${jwt.access.key}
+  refresh-key: ${jwt.refresh.key}
