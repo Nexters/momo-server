@@ -1,0 +1,69 @@
+server:
+  servlet:
+    encoding:
+      charset: utf-8
+
+spring:
+  datasource:
+    url: jdbc:mysql://${rds.hostname}:${rds.port}/${rds.db.name}
+    driver-class-name: com.mysql.jdbc.Driver
+    username: ${rds.username}
+    password: ${rds.password}
+
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: none
+
+  redis:
+    host: ${redis.hostname}
+    port: ${redis.port}
+
+  messages:
+    basename: i18n/exception
+    encoding: UTF-8
+
+  # S3 File Upload
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+
+logging.level:
+  org.hibernate.SQL: INFO
+
+# AWS S3 관련 설정
+cloud:
+  aws:
+    credentials:
+      access-key: ${iam.access.key}
+      secret-key: ${iam.secret.key}
+    region:
+      static: ap-northeast-2
+    s3:
+      bucket: ${s3.bucket.name}
+    stack:
+      auto: false
+
+jwt:
+  access-length: ${jwt.access.length}
+  refresh-length: ${jwt.refresh.length}
+  access-key: ${jwt.access.key}
+  refresh-key: ${jwt.refresh.key}
+
+
+# TODO : Swagger
+#springdoc:
+#  swagger-ui:
+#    path: /swagger-ui.html
+#    groups-order: DESC
+#    operationsSorter: method
+#    disable-swagger-default-url: true
+#    display-request-duration: true
+#  api-docs:
+#    path: /api-docs
+#  show-actuator: true
+#  default-consumes-media-type: application/json
+#  default-produces-media-type: application/json
+#  paths-to-match:
+#    - /**

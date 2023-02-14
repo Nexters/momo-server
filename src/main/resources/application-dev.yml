@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: ${db.url}
+    username: ${db.username}
+    password: ${db.password}
+    driver-class-name: com.mysql.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+
+  redis:
+    host: ${redis.host}
+    port: ${redis.port}
+
+  messages:
+    basename: i18n/exception
+    encoding: UTF-8
+
+logging.level:
+  org.hibernate.SQL: debug
+# org.hibernate.type: trace
+
+jwt:
+  access-length: ${jwt.access.length}
+  refresh-token: ${jwt.refresh.token}
+  access-key: ${jwt.access.key}
+  refresh-key: ${jwt.refresh.key}
