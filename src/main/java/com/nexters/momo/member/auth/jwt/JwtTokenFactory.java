@@ -41,6 +41,13 @@ public class JwtTokenFactory {
         return new JwtToken(createAccessToken(userId, roles), createRefreshToken(userId));
     }
 
+    public JwtToken reIssue(String accessToken, String refreshToken) {
+        String email = getUserEmailFromToken(accessToken);
+        List<String> roles = getRoleStrings(accessToken);
+
+        return new JwtToken(this.createAccessToken(email, roles), refreshToken);
+    }
+
     public String createAccessToken(String userEmail, List<String> roles) {
         Date createdDate = new Date();
         Date expirationDate = new Date(createdDate.getTime() + accessExpirationMillis);
@@ -80,22 +87,24 @@ public class JwtTokenFactory {
                 .build();
     }
 
-    public String getUserIdFromToken(String accessToken) {
+    public String getUserEmailFromToken(String accessToken) {
         return (String) Jwts.parserBuilder()
                 .setSigningKey(accessPrivateKey)
                 .build()
-                .parseClaimsJws(accessToken).getBody().get("userId");
+                .parseClaimsJws(accessToken).getBody().get("userEmail");
     }
 
     public Collection<GrantedAuthority> getRolesFromToken(String accessToken) {
-        List<String> roles = (List) Jwts.parserBuilder()
+        return getRoleStrings(accessToken).stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+    }
+
+    private List<String> getRoleStrings(String accessToken) {
+        return (List<String>) Jwts.parserBuilder()
                 .setSigningKey(accessPrivateKey)
                 .build()
                 .parseClaimsJws(accessToken).getBody().get("roles");
-
-        return roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
     }
 
     public boolean isValidAccessToken(String accessToken) {

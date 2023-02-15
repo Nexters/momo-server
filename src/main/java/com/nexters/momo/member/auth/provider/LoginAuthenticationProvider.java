@@ -1,7 +1,7 @@
 package com.nexters.momo.member.auth.provider;
 
-import com.nexters.momo.member.auth.business.MemberContext;
-import com.nexters.momo.member.auth.business.MemberDetailsService;
+import com.nexters.momo.member.auth.application.MemberContext;
+import com.nexters.momo.member.auth.application.MemberDetailsService;
 import com.nexters.momo.member.auth.filter.dto.MemberLoginDto;
 import com.nexters.momo.member.auth.token.LoginAuthenticationToken;
 import lombok.RequiredArgsConstructor;
