@@ -1,11 +1,11 @@
 package com.nexters.momo.session.dto;
 
 import com.nexters.momo.session.domain.Session;
-import com.nexters.momo.session.domain.SessionStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -19,6 +19,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SessionDto {
+
+    private Long id;
 
     private String title;
 
@@ -48,12 +50,20 @@ public class SessionDto {
 
     /**
      * Session Dto 클래스를 Session으로부터 만드는 메서드입니다.
+     *
      * @param session session 엔티티
      * @return 생성된 dto 클래스
      */
     public static SessionDto from(Session session) {
-        return new SessionDto(session.getTitle(), session.getWeek(), session.getContent(), session.getStartAt(),
-                session.getEndAt(), session.getAddress(), session.getAttendanceStartedAt(),
+        return new SessionDto(
+                session.getId(),
+                session.getTitle(),
+                session.getWeek(),
+                session.getContent(),
+                session.getStartAt(),
+                session.getEndAt(),
+                session.getAddress(),
+                session.getAttendanceStartedAt(),
                 session.getAttendanceClosedAt());
     }
 

@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SessionReq {
 
+    // TODO - session 생성 시 필요한 데이터 확인
     private SessionDto session;
 
 }
