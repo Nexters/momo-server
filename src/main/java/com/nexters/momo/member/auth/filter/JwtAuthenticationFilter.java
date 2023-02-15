@@ -35,14 +35,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
 
+import static com.nexters.momo.common.response.ResponseCodeAndMessages.MEMBER_TOKEN_EXPIRED;
+import static com.nexters.momo.common.response.ResponseCodeAndMessages.MEMBER_UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private static final String MEMBER_UNAUTHORIZED_MESSAGE = "해당 유저는 인증되지 않았습니다.";
-    private static final String MEMBER_ACCESS_TOKEN_EXPIRED_MESSAGE = "해당 유저의 Access 토큰이 만료 되었습니다.";
     private static final String MEMBER_REFRESH_TOKEN_EXPIRED_MESSAGE = "해당 유저의 Refresh 토큰이 만료 되었습니다.";
     private static final String COOKIE_NAME = "refreshToken";
 
@@ -66,7 +66,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             log.info("[JwtAuthenticationFilter] : 로그아웃 처리된 Access Token입니다.");
 
             setResponseHeader(response, HttpStatus.UNAUTHORIZED);
-            objectMapper.writeValue(response.getWriter(), new BaseResponse<>(HttpStatus.UNAUTHORIZED.value(), MEMBER_UNAUTHORIZED_MESSAGE, null));
+            objectMapper.writeValue(response.getWriter(), new BaseResponse<>(MEMBER_UNAUTHORIZED));
             wrappingResponse.copyBodyToResponse();
             return;
         }
@@ -92,7 +92,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             log.info("[JwtAuthenticationFilter] : Access Token이 재발급 되었습니다.");
 
             setResponseHeader(response, HttpStatus.UNAUTHORIZED);
-            objectMapper.writeValue(response.getWriter(), new BaseResponse<>(HttpStatus.UNAUTHORIZED.value(), MEMBER_ACCESS_TOKEN_EXPIRED_MESSAGE, newJwtToken));
+            objectMapper.writeValue(response.getWriter(), new BaseResponse<>(MEMBER_TOKEN_EXPIRED, newJwtToken));
             wrappingResponse.copyBodyToResponse();
             return;
         }
