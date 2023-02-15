@@ -3,7 +3,6 @@ package com.nexters.momo.generation.domain;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.springframework.util.Assert;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -13,11 +12,21 @@ import javax.persistence.Embeddable;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class SignupCode {
 
+    private static final int MIN_LENGTH = 6;
+    private static final int MAX_LENGTH = 12;
+
     @Column(name = "signup_code", nullable = false)
     private String value;
 
+    // FIXME - validation 문구 추가
     public static SignupCode from(String value) {
-        Assert.hasText(value, "signupCode value must not be null");
+        if (value.length() < MIN_LENGTH) {
+            throw new IllegalArgumentException("");
+        }
+
+        if (value.length() > MAX_LENGTH) {
+            throw new IllegalArgumentException((""));
+        }
 
         return new SignupCode(value);
     }
