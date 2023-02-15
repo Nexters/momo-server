@@ -39,7 +39,7 @@ public class JwtLogoutHandler implements LogoutHandler {
         }
 
         String userIdFromToken = jwtTokenFactory.getUserEmailFromToken(accessToken);
-        if (StringUtils.hasText(userIdFromToken) && isHasRefreshToken(userIdFromToken)) {
+        if (StringUtils.hasText(userIdFromToken) && hasRefreshToken(userIdFromToken)) {
             // delete refresh token
             redisCachingService.deleteValues(userIdFromToken);
 
@@ -50,7 +50,7 @@ public class JwtLogoutHandler implements LogoutHandler {
         }
     }
 
-    private boolean isHasRefreshToken(String userIdFromToken) {
+    private boolean hasRefreshToken(String userIdFromToken) {
         return StringUtils.hasText(redisCachingService.getValues(userIdFromToken));
     }
 
