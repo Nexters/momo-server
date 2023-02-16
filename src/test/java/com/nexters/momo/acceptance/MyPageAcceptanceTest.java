@@ -1,6 +1,7 @@
 package com.nexters.momo.acceptance;
 
 import com.nexters.momo.member.auth.presentation.dto.MemberRegisterRequest;
+import com.nexters.momo.support.RandomPortConfigure;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
