@@ -14,19 +14,21 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(exclude = {"parentName", "roleHierarchy"})
-public class RoleHierarchy {
+public class RoleHierarchy implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_hierarchy_id")
     private Long id;
 
+    @Column(name = "child_name")
     private String childName;
 
     @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
