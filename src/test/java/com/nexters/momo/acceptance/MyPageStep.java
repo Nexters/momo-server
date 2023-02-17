@@ -23,9 +23,9 @@ public class MyPageStep {
 
     public static void 회원_정보_조회_확인(ExtractableResponse<Response> response, String email, String name) {
         assertAll(
-                () -> assertThat(response.jsonPath().getBoolean("data.active")).isFalse(),
-                () -> assertThat(response.jsonPath().getString("data.name")).isEqualTo(name),
-                () -> assertThat(response.jsonPath().getString("data.email")).isEqualTo(email)
+                () -> assertThat(response.jsonPath().getBoolean("active")).isFalse(),
+                () -> assertThat(response.jsonPath().getString("name")).isEqualTo(name),
+                () -> assertThat(response.jsonPath().getString("email")).isEqualTo(email)
         );
     }
 }
