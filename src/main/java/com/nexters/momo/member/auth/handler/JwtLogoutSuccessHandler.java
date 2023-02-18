@@ -1,8 +1,6 @@
 package com.nexters.momo.member.auth.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nexters.momo.common.response.BaseResponse;
-import com.nexters.momo.common.response.ResponseCodeAndMessages;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -25,10 +23,7 @@ public class JwtLogoutSuccessHandler implements LogoutSuccessHandler {
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         setLogoutHeader(response);
-
-        BaseResponse<Void> logoutResponse = new BaseResponse<>(ResponseCodeAndMessages.MEMBER_LOGOUT_SUCCESS);
-
-        objectMapper.writeValue(response.getWriter(), logoutResponse);
+        objectMapper.writeValue(response.getWriter(), response);
     }
 
     private static void setLogoutHeader(HttpServletResponse response) {

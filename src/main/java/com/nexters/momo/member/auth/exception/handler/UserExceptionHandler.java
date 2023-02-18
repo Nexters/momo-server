@@ -1,6 +1,6 @@
 package com.nexters.momo.member.auth.exception.handler;
 
-import com.nexters.momo.common.response.BaseResponse;
+import com.nexters.momo.common.response.ErrorResponse;
 import com.nexters.momo.common.response.ResponseCodeAndMessages;
 import com.nexters.momo.member.auth.exception.DuplicatedUserDeviceIdException;
 import com.nexters.momo.member.auth.exception.DuplicatedUserEmailException;
@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class UserExceptionHandler {
 
     @ExceptionHandler({InvalidUserEmailException.class, DuplicatedUserEmailException.class, DuplicatedUserDeviceIdException.class})
-    public ResponseEntity<BaseResponse<Void>> invalidUserRegisterExceptionHandler(Exception exception) {
-        log.info("[InvalidUserRegisterException] Handler calling");
-        return new ResponseEntity<>(new BaseResponse<>(ResponseCodeAndMessages.MEMBER_CREATE_FAIL), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ErrorResponse> invalidUserRegisterExceptionHandler(Exception exception) {
+        log.error("[InvalidUserRegisterException] Handler calling", exception);
+        return new ResponseEntity<>(ErrorResponse.from(ResponseCodeAndMessages.MEMBER_CREATE_FAIL), HttpStatus.BAD_REQUEST);
     }
 }
