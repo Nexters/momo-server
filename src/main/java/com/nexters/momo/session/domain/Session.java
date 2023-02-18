@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 /**
  * 각 주차 세션을 나타내는 Session 엔티티입니다.
  * TODO : 타임라인 이미지 추가
+ * TODO : 위치 좌표 추가
  *
  * @author CHO Min Ho
  */
