@@ -67,4 +67,22 @@ public class SessionDto {
                 session.getAttendanceClosedAt());
     }
 
+    public static SessionDto of(
+            Long id, String title, int week, String content,
+            LocalDateTime startAt, LocalDateTime endAt, String address,
+            LocalDateTime attendanceStartedAt, LocalDateTime attendanceClosedAt
+    ) {
+        return new SessionDto(
+                id,
+                title,
+                week,
+                content,
+                startAt,
+                endAt,
+                address,
+                attendanceStartedAt,
+                attendanceClosedAt
+        );
+    }
+
 }

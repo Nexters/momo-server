@@ -9,8 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Session 관련 서비스 클래스입니다.
@@ -58,14 +58,10 @@ public class SessionService {
      */
     @Transactional(readOnly = true)
     public List<SessionDto> getSessionList(Long generationId) {
-        List<Session> findSessions = sessionRepository.findSessionByGenerationId(generationId);
-        List<SessionDto> resultSessions = new ArrayList<>();
-
-        for (Session session : findSessions) {
-            resultSessions.add(SessionDto.from(session));
-        }
-
-        return resultSessions;
+        return sessionRepository.findSessionByGenerationId(generationId)
+                .stream()
+                .map(SessionDto::from)
+                .collect(Collectors.toList());
     }
 
     /**
