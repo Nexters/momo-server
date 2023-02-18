@@ -28,7 +28,7 @@ public class LoginAuthenticationFailureHandler implements AuthenticationFailureH
             errorMessage = exception.getMessage();
         }
 
-        ErrorResponse errorResponse = ErrorResponse.of(HttpStatus.BAD_REQUEST.value(), errorMessage);
+        ErrorResponse errorResponse = ErrorResponse.of(HttpStatus.BAD_REQUEST, errorMessage);
         objectMapper.writeValue(response.getWriter(), errorResponse);
     }
 

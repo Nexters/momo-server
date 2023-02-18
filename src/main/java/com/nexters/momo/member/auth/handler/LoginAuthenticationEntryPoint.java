@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import static com.nexters.momo.common.response.ResponseCodeAndMessages.MEMBER_UNAUTHORIZED;
+import static com.nexters.momo.common.response.ErrorCodeAndMessages.MEMBER_UNAUTHORIZED;
 
 @RequiredArgsConstructor
 public class LoginAuthenticationEntryPoint implements AuthenticationEntryPoint {

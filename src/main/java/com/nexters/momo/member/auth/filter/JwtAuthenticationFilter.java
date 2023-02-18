@@ -35,8 +35,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static com.nexters.momo.common.response.ResponseCodeAndMessages.MEMBER_TOKEN_EXPIRED;
-import static com.nexters.momo.common.response.ResponseCodeAndMessages.MEMBER_UNAUTHORIZED;
+import static com.nexters.momo.common.response.ErrorCodeAndMessages.MEMBER_TOKEN_EXPIRED;
+import static com.nexters.momo.common.response.ErrorCodeAndMessages.MEMBER_UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
