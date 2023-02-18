@@ -1,4 +1,4 @@
-package com.nexters.momo.session.controller.model;
+package com.nexters.momo.session.presentation.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

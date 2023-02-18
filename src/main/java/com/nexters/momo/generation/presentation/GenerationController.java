@@ -1,7 +1,7 @@
 package com.nexters.momo.generation.presentation;
 
 import com.nexters.momo.generation.application.GenerationService;
-import com.nexters.momo.generation.presentation.model.GenerationRequest;
+import com.nexters.momo.generation.presentation.dto.GenerationRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,9 +1,9 @@
-package com.nexters.momo.session.service;
+package com.nexters.momo.session.application;
 
 import com.nexters.momo.session.domain.Session;
-import com.nexters.momo.session.dto.SessionDto;
+import com.nexters.momo.session.application.dto.SessionDto;
 import com.nexters.momo.session.exception.InvalidSessionIdException;
-import com.nexters.momo.session.repository.SessionRepository;
+import com.nexters.momo.session.domain.SessionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

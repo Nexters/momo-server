@@ -1,6 +1,6 @@
 package com.nexters.momo.generation.presentation;
 
-import com.nexters.momo.generation.presentation.model.GenerationRequest;
+import com.nexters.momo.generation.presentation.dto.GenerationRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;

@@ -1,4 +1,4 @@
-package com.nexters.momo.generation.presentation.model;
+package com.nexters.momo.generation.presentation.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

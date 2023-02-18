@@ -1,4 +1,4 @@
-package com.nexters.momo.session.dto;
+package com.nexters.momo.session.application.dto;
 
 import com.nexters.momo.session.domain.Session;
 import lombok.AllArgsConstructor;

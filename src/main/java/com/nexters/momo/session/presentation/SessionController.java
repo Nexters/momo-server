@@ -1,8 +1,8 @@
-package com.nexters.momo.session.controller;
+package com.nexters.momo.session.presentation;
 
-import com.nexters.momo.session.dto.SessionDto;
-import com.nexters.momo.session.controller.model.SessionRequest;
-import com.nexters.momo.session.service.SessionService;
+import com.nexters.momo.session.application.dto.SessionDto;
+import com.nexters.momo.session.presentation.dto.SessionRequest;
+import com.nexters.momo.session.application.SessionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
