@@ -1,6 +1,7 @@
 package com.nexters.momo.member.mypage.common.dto.response;
 
 import com.nexters.momo.attendance.domain.AttendanceStatus;
+import com.nexters.momo.member.auth.domain.Member;
 import com.nexters.momo.member.auth.domain.Occupation;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,7 +39,7 @@ public class MemberLookUpResponse {
         this.attendanceHistories = attendanceHistories;
     }
 
-    public static MemberLookUpResponse of(MemberInfoDto info, List<AttendanceDto> attendanceList) {
+    public static MemberLookUpResponse of(Member member, List<AttendanceDto> attendanceList) {
         long absentCnt = 0;
         long attendanceCnt = 0;
         long lateCnt = 0;
@@ -53,6 +54,6 @@ public class MemberLookUpResponse {
             }
         }
 
-        return new MemberLookUpResponse(info.isActive(), info.getName(), info.getEmail(), info.getOccupation(), absentCnt, attendanceCnt, lateCnt, attendanceList);
+        return new MemberLookUpResponse(member.isActive(), member.getName(), member.getEmail(), member.getOccupation(), absentCnt, attendanceCnt, lateCnt, attendanceList);
     }
 }

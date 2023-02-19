@@ -85,10 +85,6 @@ public class Member {
         return deleted;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public void changeActive(boolean active) {
         this.active = active;
     }
@@ -101,8 +97,16 @@ public class Member {
         memberRoles.add(new Authority(role));
     }
 
+    public boolean isSameDeviceId(String uuid) {
+        return this.deviceUniqueId.equals(uuid);
+    }
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return new ArrayList<>(memberRoles);
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getPassword() {
@@ -113,8 +117,12 @@ public class Member {
         return this.email.getValue();
     }
 
-    public boolean isSameDeviceId(String uuid) {
-        return this.deviceUniqueId.equals(uuid);
+    public String getName() {
+        return name.getValue();
+    }
+
+    public Occupation getOccupation() {
+        return occupation;
     }
 
     @Override

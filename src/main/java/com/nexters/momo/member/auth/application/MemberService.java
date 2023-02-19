@@ -4,10 +4,8 @@ import com.nexters.momo.member.auth.domain.Member;
 import com.nexters.momo.member.auth.domain.MemberRepository;
 import com.nexters.momo.member.auth.exception.DuplicatedUserDeviceIdException;
 import com.nexters.momo.member.auth.exception.DuplicatedUserEmailException;
-import com.nexters.momo.member.auth.exception.UserNotFoundException;
 import com.nexters.momo.member.auth.presentation.dto.MemberRegisterRequest;
 import com.nexters.momo.member.mypage.common.dto.response.AttendanceDto;
-import com.nexters.momo.member.mypage.common.dto.response.MemberInfoDto;
 import com.nexters.momo.member.mypage.common.dto.response.MemberLookUpResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,13 +29,10 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public MemberLookUpResponse findUserWithDetailInfo(Long memberId) {
-        MemberInfoDto findMemberInfoDto = memberRepository.findMemberInfoById(memberId)
-                .orElseThrow(UserNotFoundException::new);
+    public MemberLookUpResponse findUserWithDetailInfo(Member member) {
+        List<AttendanceDto> attendanceDtoList = memberRepository.findMemberAttendanceInfoById(member.getId());
 
-        List<AttendanceDto> attendanceDtoList = memberRepository.findMemberAttendanceInfoById(memberId);
-
-        return MemberLookUpResponse.of(findMemberInfoDto, attendanceDtoList);
+        return MemberLookUpResponse.of(member, attendanceDtoList);
     }
 
     private Member createMember(MemberRegisterRequest request) {

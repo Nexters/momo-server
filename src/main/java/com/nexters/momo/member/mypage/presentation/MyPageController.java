@@ -19,7 +19,7 @@ public class MyPageController {
 
     @GetMapping("/me")
     public ResponseEntity<MemberLookUpResponse> searchMe(@AuthenticationPrincipal Member member) {
-        MemberLookUpResponse memberLookUpResponse = memberService.findUserWithDetailInfo(member.getId());
+        MemberLookUpResponse memberLookUpResponse = memberService.findUserWithDetailInfo(member);
         return ResponseEntity.ok().body(memberLookUpResponse);
     }
 }
