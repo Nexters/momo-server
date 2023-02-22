@@ -102,7 +102,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public JwtLogoutSuccessHandler jwtLogoutSuccessHandler() {
-        return new JwtLogoutSuccessHandler(objectMapper);
+        return new JwtLogoutSuccessHandler();
     }
 
     @Bean
