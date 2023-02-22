@@ -35,7 +35,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static com.nexters.momo.common.response.ErrorCodeAndMessages.MEMBER_TOKEN_EXPIRED;
 import static com.nexters.momo.common.response.ErrorCodeAndMessages.MEMBER_UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -91,10 +90,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             JwtToken newJwtToken = jwtTokenFactory.reIssue(accessToken, refreshToken);
             log.info("[JwtAuthenticationFilter] : Access Token이 재발급 되었습니다.");
 
-            setResponseHeader(response, HttpStatus.UNAUTHORIZED);
-            // FIXME - 요기 논의가 필요할 것 같아요..!
-//            objectMapper.writeValue(response.getWriter(), new BaseResponse<>(MEMBER_TOKEN_EXPIRED, newJwtToken));
-            objectMapper.writeValue(response.getWriter(), ErrorResponse.from(MEMBER_TOKEN_EXPIRED));
+            setResponseHeader(response, HttpStatus.OK);
+            objectMapper.writeValue(response.getWriter(), newJwtToken);
             wrappingResponse.copyBodyToResponse();
             return;
         }
