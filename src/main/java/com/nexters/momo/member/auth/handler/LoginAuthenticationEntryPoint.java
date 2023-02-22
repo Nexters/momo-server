@@ -1,7 +1,7 @@
 package com.nexters.momo.member.auth.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nexters.momo.common.response.BaseResponse;
+import com.nexters.momo.common.response.ErrorResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import static com.nexters.momo.common.response.ResponseCodeAndMessages.MEMBER_UNAUTHORIZED;
+import static com.nexters.momo.common.response.ErrorCodeAndMessages.MEMBER_UNAUTHORIZED;
 
 @RequiredArgsConstructor
 public class LoginAuthenticationEntryPoint implements AuthenticationEntryPoint {
@@ -23,8 +23,8 @@ public class LoginAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         setUnauthorizedHeader(response);
-        BaseResponse<Void> baseResponse = new BaseResponse<>(MEMBER_UNAUTHORIZED);
-        objectMapper.writeValue(response.getWriter(), baseResponse);
+        ErrorResponse errorResponse = ErrorResponse.from(MEMBER_UNAUTHORIZED);
+        objectMapper.writeValue(response.getWriter(), errorResponse);
     }
 
     private static void setUnauthorizedHeader(HttpServletResponse response) {

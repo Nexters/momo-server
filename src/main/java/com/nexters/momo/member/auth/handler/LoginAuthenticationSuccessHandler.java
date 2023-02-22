@@ -1,16 +1,11 @@
 package com.nexters.momo.member.auth.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nexters.momo.common.response.BaseResponse;
-import com.nexters.momo.common.response.ResponseCodeAndMessages;
 import com.nexters.momo.member.auth.domain.Member;
 import com.nexters.momo.member.auth.jwt.JwtToken;
 import com.nexters.momo.member.auth.jwt.JwtTokenFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseCookie;
+import org.springframework.http.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -38,7 +33,7 @@ public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessH
 
         setAuthenticationSuccessHeader(response, refreshCookie.toString());
 
-        objectMapper.writeValue(response.getWriter(), new BaseResponse<>(ResponseCodeAndMessages.MEMBER_LOGIN_SUCCESS, jwtToken));
+        objectMapper.writeValue(response.getWriter(), ResponseEntity.ok(jwtToken));
     }
 
     private static List<String> convertAuthorities(Member member) {

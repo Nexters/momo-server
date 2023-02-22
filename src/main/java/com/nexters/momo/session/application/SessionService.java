@@ -1,15 +1,16 @@
-package com.nexters.momo.session.service;
+package com.nexters.momo.session.application;
 
 import com.nexters.momo.session.domain.Session;
-import com.nexters.momo.session.dto.*;
+import com.nexters.momo.session.application.dto.SessionDto;
 import com.nexters.momo.session.exception.InvalidSessionIdException;
-import com.nexters.momo.session.repository.SessionRepository;
+import com.nexters.momo.session.domain.SessionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.ArrayList;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Session 관련 서비스 클래스입니다.
@@ -56,15 +57,11 @@ public class SessionService {
      * @return 세션 리스트
      */
     @Transactional(readOnly = true)
-    public List<SessionRes> getSessionList(Long generationId) {
-        List<Session> findSessions = sessionRepository.findSessionByGenerationId(generationId);
-        List<SessionRes> resultSessions = new ArrayList<>();
-
-        for (Session session : findSessions) {
-            resultSessions.add(new SessionRes(SessionDto.from(session), session.getId(), session.getWeek()));
-        }
-
-        return resultSessions;
+    public List<SessionDto> getSessionList(Long generationId) {
+        return sessionRepository.findSessionByGenerationId(generationId)
+                .stream()
+                .map(SessionDto::from)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -73,11 +70,11 @@ public class SessionService {
      * @return 해당 세션의 정보
      */
     @Transactional(readOnly = true)
-    public SessionRes getSingleSession(Long sessionId) {
+    public SessionDto getSingleSession(Long sessionId) {
         Session findSession =
                 sessionRepository.findById(sessionId).orElseThrow(InvalidSessionIdException::new);
 
-        return new SessionRes(SessionDto.from(findSession), findSession.getId(), findSession.getWeek());
+        return SessionDto.from(findSession);
     }
 
     /**

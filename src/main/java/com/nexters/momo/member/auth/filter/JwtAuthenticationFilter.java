@@ -2,7 +2,7 @@ package com.nexters.momo.member.auth.filter;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nexters.momo.common.response.BaseResponse;
+import com.nexters.momo.common.response.ErrorResponse;
 import com.nexters.momo.member.auth.application.MemberContext;
 import com.nexters.momo.member.auth.application.MemberDetailsService;
 import com.nexters.momo.member.auth.application.RedisCachingService;
@@ -35,8 +35,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static com.nexters.momo.common.response.ResponseCodeAndMessages.MEMBER_TOKEN_EXPIRED;
-import static com.nexters.momo.common.response.ResponseCodeAndMessages.MEMBER_UNAUTHORIZED;
+import static com.nexters.momo.common.response.ErrorCodeAndMessages.MEMBER_UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
@@ -66,7 +65,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             log.info("[JwtAuthenticationFilter] : 로그아웃 처리된 Access Token입니다.");
 
             setResponseHeader(response, HttpStatus.UNAUTHORIZED);
-            objectMapper.writeValue(response.getWriter(), new BaseResponse<>(MEMBER_UNAUTHORIZED));
+            objectMapper.writeValue(response.getWriter(), ErrorResponse.from(MEMBER_UNAUTHORIZED));
             wrappingResponse.copyBodyToResponse();
             return;
         }
@@ -91,8 +90,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             JwtToken newJwtToken = jwtTokenFactory.reIssue(accessToken, refreshToken);
             log.info("[JwtAuthenticationFilter] : Access Token이 재발급 되었습니다.");
 
-            setResponseHeader(response, HttpStatus.UNAUTHORIZED);
-            objectMapper.writeValue(response.getWriter(), new BaseResponse<>(MEMBER_TOKEN_EXPIRED, newJwtToken));
+            setResponseHeader(response, HttpStatus.OK);
+            objectMapper.writeValue(response.getWriter(), newJwtToken);
             wrappingResponse.copyBodyToResponse();
             return;
         }

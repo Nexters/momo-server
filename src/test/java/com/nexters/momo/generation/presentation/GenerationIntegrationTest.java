@@ -3,7 +3,7 @@ package com.nexters.momo.generation.presentation;
 import com.nexters.momo.generation.domain.Generation;
 import com.nexters.momo.generation.domain.GenerationRepository;
 import com.nexters.momo.generation.domain.SignupCode;
-import com.nexters.momo.generation.presentation.model.GenerationRequest;
+import com.nexters.momo.generation.presentation.dto.GenerationRequest;
 import com.nexters.momo.support.RandomPortConfigure;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;

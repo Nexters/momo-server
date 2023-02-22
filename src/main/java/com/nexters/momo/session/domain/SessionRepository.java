@@ -1,4 +1,4 @@
-package com.nexters.momo.session.repository;
+package com.nexters.momo.session.domain;
 
 import com.nexters.momo.session.domain.Session;
 import org.springframework.data.jpa.repository.JpaRepository;

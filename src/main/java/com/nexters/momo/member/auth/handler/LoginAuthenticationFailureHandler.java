@@ -1,7 +1,7 @@
 package com.nexters.momo.member.auth.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nexters.momo.common.response.BaseResponse;
+import com.nexters.momo.common.response.ErrorResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,8 +28,8 @@ public class LoginAuthenticationFailureHandler implements AuthenticationFailureH
             errorMessage = exception.getMessage();
         }
 
-        BaseResponse<Void> baseResponse = new BaseResponse<>(HttpStatus.BAD_REQUEST.value(), errorMessage, null);
-        objectMapper.writeValue(response.getWriter(), baseResponse);
+        ErrorResponse errorResponse = ErrorResponse.of(HttpStatus.BAD_REQUEST, errorMessage);
+        objectMapper.writeValue(response.getWriter(), errorResponse);
     }
 
     private static void setAuthenticationFailureHeader(HttpServletResponse response) {
