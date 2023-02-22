@@ -3,7 +3,6 @@ package com.nexters.momo.session.service;
 import com.nexters.momo.session.application.SessionService;
 import com.nexters.momo.session.application.dto.SessionDto;
 import com.nexters.momo.session.domain.Session;
-import com.nexters.momo.session.dto.*;
 import com.nexters.momo.session.exception.InvalidSessionIdException;
 import com.nexters.momo.session.domain.SessionRepository;
 import org.junit.jupiter.api.DisplayName;
