@@ -26,3 +26,15 @@ jwt:
     testAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKeytestAccessKey
   refresh-key:
     testPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKey
+
+springdoc:
+  version: v.1.0.0
+  packages-to-scan: com.nexters.momo
+  swagger-ui:
+    path: /swagger-ui
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v1/api-docs
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
