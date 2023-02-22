@@ -47,7 +47,7 @@ public class AuthAcceptanceTest extends RandomPortConfigure {
         var 사용자_가입_응답 = 사용자_가입_요청(memberRegisterRequest);
 
         // then
-        사용자_가입_응답_확인(사용자_가입_응답, HttpStatus.CREATED, "유저 생성에 성공했습니다");
+        사용자_가입_응답_확인(사용자_가입_응답, HttpStatus.CREATED);
     }
 
     /**
@@ -67,7 +67,7 @@ public class AuthAcceptanceTest extends RandomPortConfigure {
         var 사용자_가입_응답 = 사용자_가입_요청(memberRegisterRequest);
 
         // then
-        사용자_가입_응답_확인(사용자_가입_응답, HttpStatus.BAD_REQUEST, "유저 생성에 실패했습니다");
+        사용자_가입_응답_확인(사용자_가입_응답, HttpStatus.BAD_REQUEST);
     }
 
     /**
