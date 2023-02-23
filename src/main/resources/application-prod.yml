@@ -51,19 +51,14 @@ jwt:
   access-key: ${jwt.access.key}
   refresh-key: ${jwt.refresh.key}
 
-
-# TODO : Swagger
-#springdoc:
-#  swagger-ui:
-#    path: /swagger-ui.html
-#    groups-order: DESC
-#    operationsSorter: method
-#    disable-swagger-default-url: true
-#    display-request-duration: true
-#  api-docs:
-#    path: /api-docs
-#  show-actuator: true
-#  default-consumes-media-type: application/json
-#  default-produces-media-type: application/json
-#  paths-to-match:
-#    - /**
+springdoc:
+  version: v.1.0.0
+  packages-to-scan: com.nexters.momo
+  swagger-ui:
+    path: /swagger-ui
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v1/api-docs
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
