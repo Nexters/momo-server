@@ -52,9 +52,12 @@ dependencies {
     compile 'io.jsonwebtoken:jjwt-api:0.11.5'
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-
+    
     // swagger
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.7'
+
+    // Spring Cloud AWS
+    implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.2'
 
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
