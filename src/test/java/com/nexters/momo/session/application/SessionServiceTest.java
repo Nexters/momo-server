@@ -1,4 +1,4 @@
-package com.nexters.momo.session.service;
+package com.nexters.momo.session.application;
 
 import com.nexters.momo.session.application.SessionService;
 import com.nexters.momo.session.application.dto.SessionDto;
