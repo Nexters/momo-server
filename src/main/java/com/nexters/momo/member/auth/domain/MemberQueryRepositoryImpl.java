@@ -1,9 +1,9 @@
 package com.nexters.momo.member.auth.domain;
 
-import com.nexters.momo.member.mypage.common.dto.response.AttendanceDto;
-import com.nexters.momo.member.mypage.common.dto.response.MemberInfoDto;
-import com.nexters.momo.member.mypage.common.dto.response.QAttendanceDto;
-import com.nexters.momo.member.mypage.common.dto.response.QMemberInfoDto;
+import com.nexters.momo.member.dto.AttendanceDto;
+import com.nexters.momo.member.dto.MemberInfoDto;
+import com.nexters.momo.member.dto.QAttendanceDto;
+import com.nexters.momo.member.dto.QMemberInfoDto;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 

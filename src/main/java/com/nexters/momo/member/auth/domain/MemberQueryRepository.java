@@ -1,7 +1,7 @@
 package com.nexters.momo.member.auth.domain;
 
-import com.nexters.momo.member.mypage.common.dto.response.AttendanceDto;
-import com.nexters.momo.member.mypage.common.dto.response.MemberInfoDto;
+import com.nexters.momo.member.dto.AttendanceDto;
+import com.nexters.momo.member.dto.MemberInfoDto;
 
 import java.util.List;
 import java.util.Optional;

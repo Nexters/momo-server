@@ -21,6 +21,14 @@ public class GenerationService {
         return GenerationDto.from(current);
     }
 
+    public boolean isPresentActive() {
+        try {
+            return getActiveGeneration() != null;
+        } catch (IllegalStateException ex) {
+            return false;
+        }
+    }
+
     public void create(String signupCode, int number) {
         SignupCode code = SignupCode.from(signupCode);
         generationRepository.save(Generation.of(number, code, true));
