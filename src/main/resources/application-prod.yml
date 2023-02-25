@@ -2,6 +2,7 @@ server:
   servlet:
     encoding:
       charset: utf-8
+  port: 5000
 
 spring:
   datasource:
