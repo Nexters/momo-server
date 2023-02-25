@@ -1,5 +1,6 @@
 package com.nexters.momo.session.application.dto;
 
+import com.nexters.momo.session.domain.Point;
 import com.nexters.momo.session.domain.Session;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -41,6 +42,12 @@ public class SessionDto {
     @NotEmpty(message = "세션 주소를 적어주세요!")
     private String address;
 
+    @NotEmpty(message = "세션 상세 주소를 적어주세요!")
+    private String addressDetail;
+
+    @NotEmpty
+    private Point point;
+
     @NotNull(message = "출석 가능 시작 시간을 적어주세요!")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime attendanceStartedAt;
@@ -64,13 +71,15 @@ public class SessionDto {
                 session.getStartAt(),
                 session.getEndAt(),
                 session.getAddress(),
+                session.getAddressDetail(),
+                session.getPoint(),
                 session.getAttendanceStartedAt(),
                 session.getAttendanceClosedAt());
     }
 
     public static SessionDto of(
             Long id, String title, int week, String content,
-            LocalDateTime startAt, LocalDateTime endAt, String address,
+            LocalDateTime startAt, LocalDateTime endAt, String address, String addressDetail, Point point,
             LocalDateTime attendanceStartedAt, LocalDateTime attendanceClosedAt
     ) {
         return new SessionDto(
@@ -81,6 +90,8 @@ public class SessionDto {
                 startAt,
                 endAt,
                 address,
+                addressDetail,
+                point,
                 attendanceStartedAt,
                 attendanceClosedAt
         );
