@@ -12,7 +12,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/generations")
 @RequiredArgsConstructor
-public class GenerationController {
+public class GenerationController implements GenerationApiSpec {
 
     private final GenerationService generationService;
 
