@@ -1,8 +1,8 @@
-package com.nexters.momo.member.mypage.presentation;
+package com.nexters.momo.member.presentation;
 
 import com.nexters.momo.member.auth.application.MemberService;
 import com.nexters.momo.member.auth.domain.Member;
-import com.nexters.momo.member.mypage.common.dto.response.MemberLookUpResponse;
+import com.nexters.momo.member.dto.MemberLookUpResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

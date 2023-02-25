@@ -1,4 +1,4 @@
-package com.nexters.momo.member.mypage.common.dto.response;
+package com.nexters.momo.member.dto;
 
 import com.nexters.momo.attendance.domain.AttendanceStatus;
 import com.querydsl.core.annotations.QueryProjection;

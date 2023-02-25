@@ -1,8 +1,8 @@
-package com.nexters.momo.member.mypage.presentation;
+package com.nexters.momo.member.presentation;
 
 import com.nexters.momo.common.response.ErrorResponse;
 import com.nexters.momo.member.auth.domain.Member;
-import com.nexters.momo.member.mypage.common.dto.response.MemberLookUpResponse;
+import com.nexters.momo.member.dto.MemberLookUpResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
