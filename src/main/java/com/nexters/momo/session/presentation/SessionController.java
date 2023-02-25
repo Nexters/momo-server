@@ -1,13 +1,16 @@
 package com.nexters.momo.session.presentation;
 
+import com.nexters.momo.session.application.SessionImageService;
 import com.nexters.momo.session.application.dto.SessionDto;
 import com.nexters.momo.session.presentation.dto.SessionRequest;
 import com.nexters.momo.session.application.SessionService;
+import com.nexters.momo.session.presentation.dto.SessionResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -24,6 +27,7 @@ import java.util.List;
 public class SessionController implements SessionApiSpec {
 
     private final SessionService sessionService;
+    private final SessionImageService sessionImageService;
 
     /**
      * 단일 세션을 조회하는 API 입니다.
@@ -32,8 +36,9 @@ public class SessionController implements SessionApiSpec {
      * @return 조회한 세션
      */
     @GetMapping("/{id}")
-    public ResponseEntity<SessionDto> getSingleSession(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(sessionService.getSingleSession(id));
+    public ResponseEntity<SessionResponse> getSingleSession(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(toResponse(sessionService.getSingleSession(id),
+                sessionImageService.getSessionImageList(id)));
     }
 
     /**
@@ -52,14 +57,17 @@ public class SessionController implements SessionApiSpec {
      * 세션을 생성하는 API 입니다.
      *
      * @param request 생성하려는 세션 정보
+     * @param files 세션 상세 이미지 리스트
      * @return 생성된 세션의 ID
      * <p>
      * TODO : Generation Service 의존성 주입 및 현재 기수를 반환하는 메서드를 createSession 의 두번째 인자로 삽입
      */
     @PostMapping
-    public ResponseEntity<Long> createNewSession(@RequestBody @Valid SessionRequest request) {
+    public ResponseEntity<Long> createNewSession(@RequestPart @Valid SessionRequest request,
+                                                 @RequestPart List<MultipartFile> files) {
         SessionDto session = toDto(request);
         Long id = sessionService.createSession(session, 1L);
+        sessionImageService.createSessionImage(id, files);
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 
@@ -71,7 +79,11 @@ public class SessionController implements SessionApiSpec {
      * @return 수정된 세션 ID
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Long> updateSingleSession(@PathVariable("id") Long id, @RequestBody @Valid SessionRequest request) {
+    public ResponseEntity<Long> updateSingleSession(@PathVariable("id") Long id,
+                                                    @RequestPart @Valid SessionRequest request,
+                                                    @RequestPart List<MultipartFile> files) {
+        sessionImageService.deleteSessionImage(id);
+        sessionImageService.createSessionImage(id, files);
         SessionDto session = toDto(request);
         return ResponseEntity.ok(sessionService.updateSession(id, session));
     }
@@ -88,5 +100,9 @@ public class SessionController implements SessionApiSpec {
                 request.getAttendanceClosedAt(),
                 request.getAttendanceClosedAt()
         );
+    }
+
+    private SessionResponse toResponse(SessionDto dto, List<String> files) {
+        return new SessionResponse(dto, files);
     }
 }

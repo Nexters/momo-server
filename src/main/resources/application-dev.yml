@@ -32,6 +32,19 @@ jwt:
   access-key: ${jwt.access.key}
   refresh-key: ${jwt.refresh.key}
 
+# AWS S3 관련 설정
+cloud:
+  aws:
+    credentials:
+      access-key: ${iam.access.key}
+      secret-key: ${iam.secret.key}
+    region:
+      static: ap-northeast-2
+    s3:
+      bucket: ${s3.bucket.name}
+    stack:
+      auto: false
+
 springdoc:
   version: v.1.0.0
   packages-to-scan: com.nexters.momo
