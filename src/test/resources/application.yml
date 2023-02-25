@@ -27,6 +27,19 @@ jwt:
   refresh-key:
     testPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKeytestPrivateKey
 
+# AWS S3 관련 설정
+cloud:
+  aws:
+    credentials:
+      access-key: test_access_key
+      secret-key: test_secret_key
+    region:
+      static: ap-northeast-2
+    s3:
+      bucket: test_bucket_name
+    stack:
+      auto: false
+
 springdoc:
   version: v.1.0.0
   packages-to-scan: com.nexters.momo
