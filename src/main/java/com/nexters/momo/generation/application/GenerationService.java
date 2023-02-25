@@ -1,5 +1,6 @@
 package com.nexters.momo.generation.application;
 
+import com.nexters.momo.generation.application.dto.GenerationDto;
 import com.nexters.momo.generation.domain.Generation;
 import com.nexters.momo.generation.domain.GenerationRepository;
 import com.nexters.momo.generation.domain.SignupCode;
@@ -13,7 +14,13 @@ public class GenerationService {
 
     private final GenerationRepository generationRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
+    public GenerationDto getActiveGeneration() {
+        Generation current = generationRepository.findByActiveIsTrue()
+                .orElseThrow(() -> new IllegalStateException("can not found active generation"));
+        return GenerationDto.from(current);
+    }
+
     public void create(String signupCode, int number) {
         SignupCode code = SignupCode.from(signupCode);
         generationRepository.save(Generation.of(number, code, true));
