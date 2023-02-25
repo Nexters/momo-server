@@ -12,10 +12,8 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Tag(name = "세션", description = "세션 API 목록")
@@ -45,6 +43,12 @@ public interface SessionApiSpec {
                                     array = @ArraySchema(schema = @Schema(implementation = SessionDto.class))
                             )
                     ),
+                    @ApiResponse(responseCode = "404",
+                            description = "현재 활성화된 기수가 없음",
+                            content = @Content(
+                                    array = @ArraySchema(schema = @Schema(implementation = ErrorResponse.class))
+                            )
+                    ),
                     @ApiResponse(responseCode = "500",
                             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
                     ),
@@ -55,30 +59,27 @@ public interface SessionApiSpec {
     @Operation(
             summary = "세션 생성",
             responses = {
-                    @ApiResponse(responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = Long.class))
+                    @ApiResponse(responseCode = "201",
+                            content = @Content(schema = @Schema())
                     ),
                     @ApiResponse(responseCode = "500",
                             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
                     ),
             }
     )
-    ResponseEntity<Long> createNewSession(@RequestPart SessionRequest request,
-                                          @RequestPart List<MultipartFile> files);
+    ResponseEntity<Void> createNewSession(SessionRequest request, List<MultipartFile> files);
 
     @Operation(
             summary = "세션 수정",
             responses = {
                     @ApiResponse(responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = Long.class))
+                            content = @Content(schema = @Schema())
                     ),
                     @ApiResponse(responseCode = "500",
                             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
                     ),
             }
     )
-    ResponseEntity<Long> updateSingleSession(Long id,
-                                             @RequestPart SessionRequest request,
-                                             @RequestPart List<MultipartFile> files);
+    ResponseEntity<Void> updateSingleSession(Long id, @RequestBody SessionRequest request, List<MultipartFile> files);
 }
 

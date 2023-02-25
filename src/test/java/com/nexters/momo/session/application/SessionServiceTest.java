@@ -1,6 +1,5 @@
 package com.nexters.momo.session.application;
 
-import com.nexters.momo.session.application.SessionService;
 import com.nexters.momo.session.application.dto.SessionDto;
 import com.nexters.momo.session.domain.Session;
 import com.nexters.momo.session.exception.InvalidSessionIdException;

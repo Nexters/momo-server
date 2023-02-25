@@ -1,5 +1,6 @@
 package com.nexters.momo.session.presentation.dto;
 
+import com.nexters.momo.session.domain.Point;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,9 +37,14 @@ public class SessionRequest {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime endAt;
 
-    // FIXME - 주소를 위도,경도로 관리
     @NotEmpty(message = "세션 주소를 적어주세요!")
     private String address;
+
+    @NotEmpty(message = "세션 상세 주소를 적어주세요!")
+    private String addressDetail;
+
+    @NotEmpty
+    private Point point;
 
     @NotNull(message = "출석 가능 시작 시간을 적어주세요!")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")

@@ -1,12 +1,12 @@
 package com.nexters.momo.session.presentation;
 
+import com.nexters.momo.generation.application.GenerationService;
 import com.nexters.momo.session.application.SessionImageService;
+import com.nexters.momo.session.application.SessionService;
 import com.nexters.momo.session.application.dto.SessionDto;
 import com.nexters.momo.session.presentation.dto.SessionRequest;
-import com.nexters.momo.session.application.SessionService;
 import com.nexters.momo.session.presentation.dto.SessionResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,11 +23,13 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/sessions")
-@Slf4j
 public class SessionController implements SessionApiSpec {
 
     private final SessionService sessionService;
+
     private final SessionImageService sessionImageService;
+
+    private final GenerationService generationService;
 
     /**
      * 단일 세션을 조회하는 API 입니다.
@@ -41,34 +43,37 @@ public class SessionController implements SessionApiSpec {
                 sessionImageService.getSessionImageList(id)));
     }
 
+    @GetMapping("/active")
+    public ResponseEntity<SessionDto> getActiveSession() {
+        long currentGenerationId = generationService.getActiveGeneration().getId();
+        return ResponseEntity.ok(sessionService.getActiveSession(currentGenerationId));
+    }
+
     /**
      * 모든 세션을 조회하는 API 입니다.
      *
      * @return 조회한 세션 리스트
-     * <p>
-     * TODO : generation service 의존성 주입 및 현재 기수를 반환하는 메서드를 getSessionList 메서드의 파라미터로 삽입
      */
-    @GetMapping("/active")
+    @GetMapping("/active/all")
     public ResponseEntity<List<SessionDto>> getAllSessions() {
-        return ResponseEntity.ok(sessionService.getSessionList(1L));
+        long currentGenerationId = generationService.getActiveGeneration().getId();
+        return ResponseEntity.ok(sessionService.getSessionList(currentGenerationId));
     }
 
     /**
      * 세션을 생성하는 API 입니다.
      *
      * @param request 생성하려는 세션 정보
-     * @param files 세션 상세 이미지 리스트
+     * @param files   세션 상세 이미지 리스트
      * @return 생성된 세션의 ID
-     * <p>
-     * TODO : Generation Service 의존성 주입 및 현재 기수를 반환하는 메서드를 createSession 의 두번째 인자로 삽입
      */
     @PostMapping
-    public ResponseEntity<Long> createNewSession(@RequestPart @Valid SessionRequest request,
+    public ResponseEntity<Void> createNewSession(@RequestPart @Valid SessionRequest request,
                                                  @RequestPart List<MultipartFile> files) {
         SessionDto session = toDto(request);
-        Long id = sessionService.createSession(session, 1L);
-        sessionImageService.createSessionImage(id, files);
-        return ResponseEntity.status(HttpStatus.CREATED).body(id);
+        long currentGenerationId = generationService.getActiveGeneration().getId();
+        sessionService.createSession(session, currentGenerationId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     /**
@@ -79,13 +84,19 @@ public class SessionController implements SessionApiSpec {
      * @return 수정된 세션 ID
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Long> updateSingleSession(@PathVariable("id") Long id,
+    public ResponseEntity<Void> updateSingleSession(@PathVariable("id") Long id,
                                                     @RequestPart @Valid SessionRequest request,
                                                     @RequestPart List<MultipartFile> files) {
+        SessionDto session = toDto(request);
         sessionImageService.deleteSessionImage(id);
         sessionImageService.createSessionImage(id, files);
-        SessionDto session = toDto(request);
-        return ResponseEntity.ok(sessionService.updateSession(id, session));
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSession(@PathVariable("id") Long id) {
+        sessionService.deleteSession(id);
+        return ResponseEntity.noContent().build();
     }
 
     private SessionDto toDto(SessionRequest request) {
@@ -97,6 +108,8 @@ public class SessionController implements SessionApiSpec {
                 request.getStartAt(),
                 request.getEndAt(),
                 request.getAddress(),
+                request.getAddressDetail(),
+                request.getPoint(),
                 request.getAttendanceClosedAt(),
                 request.getAttendanceClosedAt()
         );
