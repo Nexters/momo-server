@@ -1,14 +1,14 @@
 package com.nexters.momo.member.auth.presentation;
 
+import com.nexters.momo.generation.application.GenerationService;
 import com.nexters.momo.member.auth.application.MemberService;
+import com.nexters.momo.member.auth.domain.Member;
 import com.nexters.momo.member.auth.presentation.dto.MemberRegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -18,6 +18,21 @@ import javax.validation.Valid;
 public class AuthController implements AuthApiSpec {
 
     private final MemberService memberService;
+
+    private final GenerationService generationService;
+
+    @GetMapping
+    public ResponseEntity<Void> getAccess(@AuthenticationPrincipal Member member) {
+        if (canAccess(member)) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+    }
+
+    private boolean canAccess(Member member) {
+        return member.isActive() && generationService.isPresentActive();
+    }
 
     @PostMapping("/register")
     public ResponseEntity<Void> registerUser(@Valid @RequestBody MemberRegisterRequest memberRegisterRequest) {
