@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/mypages")
-public class MyPageController {
+public class MyPageController implements UserApiSpec {
 
     private final MemberService memberService;
 

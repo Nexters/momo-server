@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/sessions")
 @Slf4j
-public class SessionController {
+public class SessionController implements SessionApiSpec {
 
     private final SessionService sessionService;
 
