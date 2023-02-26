@@ -31,4 +31,10 @@ public class SignupCode {
         return new SignupCode(value);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof SignupCode)) return false;
+        SignupCode other = (SignupCode) obj;
+        return this.value.equals(other.value);
+    }
 }

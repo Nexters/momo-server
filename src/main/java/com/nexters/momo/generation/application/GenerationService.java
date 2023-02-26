@@ -1,5 +1,6 @@
 package com.nexters.momo.generation.application;
 
+import com.nexters.momo.common.response.ErrorCodeAndMessages;
 import com.nexters.momo.generation.application.dto.GenerationDto;
 import com.nexters.momo.generation.domain.Generation;
 import com.nexters.momo.generation.domain.GenerationRepository;
@@ -27,6 +28,18 @@ public class GenerationService {
         } catch (IllegalStateException ex) {
             return false;
         }
+    }
+
+    public void validGenerationCode(String codeValue) {
+        SignupCode code = SignupCode.from(codeValue);
+        SignupCode activeCode = getActiveGeneration().getSignupCode();
+        if (!isSame(code, activeCode)) {
+            throw new IllegalArgumentException(ErrorCodeAndMessages.INVALID_GENERATION_CODE.getMessage());
+        }
+    }
+
+    private boolean isSame(SignupCode code1, SignupCode code2) {
+        return code1.equals(code2);
     }
 
     public void create(String signupCode, int number) {
