@@ -1,16 +1,17 @@
 package com.nexters.momo.attendance.domain;
 
-import com.nexters.momo.attendance.exception.InvalidAttendanceCodeException;
-import com.nexters.momo.attendance.exception.TooFastAttendanceTimeException;
 import com.nexters.momo.common.BaseTimeEntity;
-import com.nexters.momo.session.domain.Session;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import javax.persistence.*;
-import java.time.LocalDateTime;
 
-import static com.nexters.momo.attendance.domain.AttendanceStatus.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  * 각 세션의 출석을 나타내는 Attendance 엔티티입니다.
@@ -49,42 +50,9 @@ public class Attendance extends BaseTimeEntity {
     /**
      * Attendance 엔티티를 생성하는 메서드입니다.
      * Attendance 엔티티는 해당 메서드로만 생성됩니다.
-     * @param session 해당 주차의 세션
-     * @param attendanceCode 출석 코드
      * @return 생성된 Attendance 엔티티
      */
-    public static Attendance createAttendance(Session session, Long memberId, Integer attendanceCode) {
-        if (!session.isSameAttendanceCode(attendanceCode)) {
-            throw new InvalidAttendanceCodeException();
-        }
-
-        return new Attendance(judgeAttendanceStatus(session), memberId, session.getId());
-    }
-
-    /**
-     * 세션 출석 시간과 비교하여 지각, 결석 여부 등을 반환합니다.
-     * @param session 비교하고자 하는 세션
-     * @return 현재 시간에서의 출석 상태
-     */
-    private static AttendanceStatus judgeAttendanceStatus(Session session) {
-        LocalDateTime currentTime = LocalDateTime.now();
-
-        // 1. 아직 출석할 수 없는 시간일 경우
-        if (session.getAttendanceStartedAt().isAfter(currentTime)) {
-            throw new TooFastAttendanceTimeException();
-        }
-
-        // 2. 출석 마감 시간 이후 출석을 시도하는 경우 - 결석
-        if (currentTime.isAfter(session.getAttendanceClosedAt())) {
-            return ABSENT;
-        }
-
-        // 3. 지각
-        if (currentTime.isAfter(session.getStartAt())) {
-            return LATE;
-        }
-
-        // 4. 정상 출석
-        return ATTENDANCE;
+    public static Attendance createAttendance(Long memberId, Long sessionId, AttendanceStatus attendanceStatus) {
+        return new Attendance(attendanceStatus, memberId, sessionId);
     }
 }

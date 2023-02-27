@@ -6,6 +6,7 @@ import com.nexters.momo.attendance.presentation.dto.MemberAttendanceRequest;
 import com.nexters.momo.member.auth.domain.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,15 +20,16 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/attendances")
-public class AttendanceController {
+public class AttendanceController implements AttendanceApiSpec {
 
     private final AttendanceService attendanceService;
 
+    @Override
     @PostMapping
     public ResponseEntity attendSession(@Valid @RequestBody MemberAttendanceRequest request, @AuthenticationPrincipal Member member) {
         AttendanceDto attendanceDto = toDto(request);
-        attendanceService.attend(member, attendanceDto);
-        return ResponseEntity.ok().build();
+        attendanceService.attend(member.getId(), attendanceDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     private AttendanceDto toDto(MemberAttendanceRequest request) {
