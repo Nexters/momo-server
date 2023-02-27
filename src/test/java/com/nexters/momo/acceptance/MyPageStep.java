@@ -15,7 +15,7 @@ public class MyPageStep {
         return RestAssured.given().log().all()
                 .auth().oauth2(accessToken)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/api/mypages/me")
+                .when().get("/api/members/me")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
                 .extract();
