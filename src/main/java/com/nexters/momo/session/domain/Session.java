@@ -1,5 +1,7 @@
 package com.nexters.momo.session.domain;
 
+import com.nexters.momo.attendance.domain.AttendanceStatus;
+import com.nexters.momo.attendance.exception.TooFastAttendanceTimeException;
 import com.nexters.momo.session.exception.InvalidSessionTimeException;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -7,6 +9,10 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+
+import static com.nexters.momo.attendance.domain.AttendanceStatus.ABSENT;
+import static com.nexters.momo.attendance.domain.AttendanceStatus.ATTENDANCE;
+import static com.nexters.momo.attendance.domain.AttendanceStatus.LATE;
 
 
 /**
@@ -137,5 +143,32 @@ public class Session {
      */
     private int generateAttendanceCode() {
         return (int) (Math.random() * (999 - 100 + 1)) + 100;
+    }
+
+    /**
+     * 세션 출석 시간과 비교하여 지각, 결석 여부 등을 반환합니다.
+     * @param session 비교하고자 하는 세션
+     * @return 현재 시간에서의 출석 상태
+     */
+    public AttendanceStatus judgeAttendanceStatus() {
+        LocalDateTime currentTime = LocalDateTime.now();
+
+        // 1. 아직 출석할 수 없는 시간일 경우
+        if (this.attendanceStartedAt.isAfter(currentTime)) {
+            throw new TooFastAttendanceTimeException();
+        }
+
+        // 2. 출석 마감 시간 이후 출석을 시도하는 경우 - 결석
+        if (currentTime.isAfter(this.attendanceClosedAt)) {
+            return ABSENT;
+        }
+
+        // 3. 지각
+        if (currentTime.isAfter(this.startAt)) {
+            return LATE;
+        }
+
+        // 4. 정상 출석
+        return ATTENDANCE;
     }
 }

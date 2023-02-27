@@ -26,7 +26,7 @@ public class AttendanceController {
     @PostMapping
     public ResponseEntity attendSession(@Valid @RequestBody MemberAttendanceRequest request, @AuthenticationPrincipal Member member) {
         AttendanceDto attendanceDto = toDto(request);
-        attendanceService.attend(member, attendanceDto);
+        attendanceService.attend(member.getId(), attendanceDto);
         return ResponseEntity.ok().build();
     }
 
