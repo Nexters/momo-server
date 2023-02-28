@@ -1,6 +1,5 @@
 package com.nexters.momo.session.domain;
 
-import com.nexters.momo.session.domain.Session;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -11,5 +10,6 @@ import java.util.List;
  * @author CHO Min Ho
  */
 public interface SessionRepository extends JpaRepository<Session, Long> {
-    List<Session> findSessionByGenerationId(Long generationId);
+
+    List<Session> findAllByGenerationId(Long generationId);
 }
