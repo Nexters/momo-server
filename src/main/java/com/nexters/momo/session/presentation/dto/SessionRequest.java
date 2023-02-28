@@ -43,7 +43,7 @@ public class SessionRequest {
     @NotEmpty(message = "세션 상세 주소를 적어주세요!")
     private String addressDetail;
 
-    @NotEmpty
+    @NotNull
     private Point point;
 
     @NotNull(message = "출석 가능 시작 시간을 적어주세요!")

@@ -154,7 +154,7 @@ public class Session {
         LocalDateTime currentTime = LocalDateTime.now();
 
         // 1. 아직 출석할 수 없는 시간일 경우
-        if (this.attendanceStartedAt.isAfter(currentTime)) {
+        if (this.attendanceStartedAt.isAfter(attendanceStartedAt.plusMinutes(5))) {
             throw new TooFastAttendanceTimeException();
         }
 

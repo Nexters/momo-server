@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
@@ -17,10 +16,10 @@ public class MemberAttendanceRequest {
     @NotNull
     private Long sessionId;
 
-    @NotBlank
+    @NotNull
     private Integer attendanceCode;
 
-    @NotBlank
+    @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime attendanceAt;
 }
