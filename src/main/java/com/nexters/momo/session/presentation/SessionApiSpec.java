@@ -2,6 +2,7 @@ package com.nexters.momo.session.presentation;
 
 import com.nexters.momo.common.response.ErrorResponse;
 import com.nexters.momo.session.application.dto.SessionDto;
+import com.nexters.momo.session.presentation.dto.SessionAttendanceCodeResponse;
 import com.nexters.momo.session.presentation.dto.SessionRequest;
 import com.nexters.momo.session.presentation.dto.SessionResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -81,5 +83,18 @@ public interface SessionApiSpec {
             }
     )
     ResponseEntity<Void> updateSingleSession(Long id, @RequestBody SessionRequest request, List<MultipartFile> files);
+
+    @Operation(
+            summary = "세션 참여 코드 조회",
+            responses = {
+                    @ApiResponse(responseCode = "200",
+                            content = @Content(schema = @Schema())
+                    ),
+                    @ApiResponse(responseCode = "500",
+                            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+                    ),
+            }
+    )
+    public ResponseEntity<SessionAttendanceCodeResponse> getActiveSessionAttendanceCode(@PathVariable Long id);
 }
 
