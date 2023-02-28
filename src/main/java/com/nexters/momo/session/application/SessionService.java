@@ -72,7 +72,7 @@ public class SessionService {
      */
     @Transactional(readOnly = true)
     public List<SessionDto> getSessionList(Long generationId) {
-        return sessionRepository.findSessionByGenerationId(generationId)
+        return sessionRepository.findAllByGenerationId(generationId)
                 .stream()
                 .map(SessionDto::from)
                 .collect(Collectors.toList());
