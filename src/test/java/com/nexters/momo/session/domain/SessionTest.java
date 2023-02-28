@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
+import static com.nexters.momo.session.domain.Session.createSession;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
 /**
@@ -37,4 +38,20 @@ class SessionTest {
                 .isInstanceOf(InvalidSessionTimeException.class);
     }
 
+    @DisplayName("출석 코드 불일치 테스트")
+    @Test
+    void invalid_attendanceCode_test() {
+        // given
+        LocalDateTime sessionStartTime = LocalDateTime.now().plusMinutes(10);
+        LocalDateTime sessionEndTime = LocalDateTime.now().plusMinutes(100);
+        LocalDateTime attendanceStartTime = LocalDateTime.now().minusMinutes(10);
+        LocalDateTime attendanceEndTime = sessionEndTime;
+
+        Session session = createSession("세션 키워드", 1, "세션 내용", sessionStartTime, sessionEndTime,
+                "서울시 강남구", "세부 주소", Point.of(20.002, 142.01), attendanceStartTime, attendanceEndTime, TEST_GENERATION_ID);
+
+        // when, then
+        int incorrectAttendanceCode = session.getAttendanceCode() + 1;
+        Assertions.assertThat(session.isSameAttendanceCode(incorrectAttendanceCode)).isFalse();
+    }
 }
