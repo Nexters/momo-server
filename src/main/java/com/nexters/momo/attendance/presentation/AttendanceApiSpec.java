@@ -10,10 +10,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import javax.validation.Valid;
 
 @Tag(name = "참여", description = "참여 API 목록")
 public interface AttendanceApiSpec {
@@ -29,5 +25,5 @@ public interface AttendanceApiSpec {
                     ),
             }
     )
-    ResponseEntity<Void> attendSession(@Parameter(description = "참여 요청 데이터", required = true) @Valid @RequestBody MemberAttendanceRequest request, @Parameter(hidden = true) @AuthenticationPrincipal Member member);
+    ResponseEntity<Void> attendSession(@Parameter(description = "참여 요청 데이터", required = true) MemberAttendanceRequest request, @Parameter(hidden = true) Member member);
 }

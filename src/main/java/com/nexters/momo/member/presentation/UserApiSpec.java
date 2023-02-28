@@ -4,6 +4,7 @@ import com.nexters.momo.common.response.ErrorResponse;
 import com.nexters.momo.member.auth.domain.Member;
 import com.nexters.momo.member.dto.MemberLookUpResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -27,5 +28,5 @@ public interface UserApiSpec {
                     ),
             }
     )
-    ResponseEntity<MemberLookUpResponse> searchMe(Member member);
+    ResponseEntity<MemberLookUpResponse> searchMe(@Parameter(hidden = true) Member member);
 }
