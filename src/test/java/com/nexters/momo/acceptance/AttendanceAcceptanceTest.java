@@ -48,7 +48,7 @@ public class AttendanceAcceptanceTest extends RandomPortConfigure {
                 "password", "Shine", 22, "developer", "uuid"));
 
         // and
-        String accessToken = 로그인_되어_있음("shine@naver.com", "password", "uuid");
+        var accessToken = 로그인_되어_있음("shine@naver.com", "password", "uuid");
 
         // and
         기수_생성_요청(accessToken);
@@ -57,10 +57,10 @@ public class AttendanceAcceptanceTest extends RandomPortConfigure {
         파일_전송과_함께_세션_생성_요청(accessToken);
 
         // and
-        Long 활성화된_세션_아이디 = 활성화된_세션_조회_요청(accessToken);
+        var 활성화된_세션_아이디 = 활성화된_세션_조회_요청(accessToken);
 
         // and
-        Integer 세션_인증코드 = 활성회된_세션_인증코드_조회(accessToken, 활성화된_세션_아이디);
+        var 세션_인증코드 = 활성회된_세션_인증코드_조회(accessToken, 활성화된_세션_아이디);
 
         // when
         var 출석_체크_요청_응답 = 출석_체크_요청(accessToken, 활성화된_세션_아이디, 세션_인증코드);
