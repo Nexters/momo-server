@@ -4,12 +4,20 @@ import com.nexters.momo.generation.application.GenerationService;
 import com.nexters.momo.session.application.SessionImageService;
 import com.nexters.momo.session.application.SessionService;
 import com.nexters.momo.session.application.dto.SessionDto;
+import com.nexters.momo.session.presentation.dto.SessionAttendanceCodeResponse;
 import com.nexters.momo.session.presentation.dto.SessionRequest;
 import com.nexters.momo.session.presentation.dto.SessionResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -38,9 +46,15 @@ public class SessionController implements SessionApiSpec {
      * @return 조회한 세션
      */
     @GetMapping("/{id}")
-    public ResponseEntity<SessionResponse> getSingleSession(@PathVariable("id") Long id) {
+    public ResponseEntity<SessionResponse> getSingleSession(@PathVariable Long id) {
         return ResponseEntity.ok(toResponse(sessionService.getSingleSession(id),
                 sessionImageService.getSessionImageList(id)));
+    }
+
+    @GetMapping("/{id}/code")
+    public ResponseEntity<SessionAttendanceCodeResponse> getActiveSessionAttendanceCode(@PathVariable Long id) {
+        Integer attendanceCode = sessionService.getAttendanceCode(id);
+        return ResponseEntity.ok().body(new SessionAttendanceCodeResponse(attendanceCode));
     }
 
     @GetMapping("/active")

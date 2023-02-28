@@ -99,6 +99,10 @@ public class SessionService {
         });
     }
 
+    public Integer getAttendanceCode(Long sessionId) {
+        return sessionRepository.findAttendanceCodeById(sessionId);
+    }
+
     /**
      * Session 1개를 삭제하는 메서드입니다.
      *
@@ -118,5 +122,4 @@ public class SessionService {
     private boolean isToday(LocalDateTime current, LocalDateTime time) {
         return Duration.between(current, time).toDays() == 0;
     }
-
 }
