@@ -20,9 +20,10 @@ public class AttendanceQueryRepositoryImpl implements AttendanceQueryRepository 
     public List<MemberAttendanceDto> searchAttendanceListByWeek(Integer week) {
         return queryFactory
                 .select(new QMemberAttendanceDto(member.name.value, member.occupation, attendance.status))
-                .from(attendance).join(member)
-                .on((attendance.memberId.eq(member.id)))
-                .where(session.week.eq(week))
+                .from(attendance)
+                .join(session).on(attendance.sessionId.eq(session.id))
+                .join(member).on(attendance.memberId.eq(member.id))
+                .where((session.week.eq(week)))
                 .fetch();
     }
 }
