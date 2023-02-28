@@ -6,6 +6,7 @@ import com.nexters.momo.session.presentation.dto.SessionAttendanceCodeResponse;
 import com.nexters.momo.session.presentation.dto.SessionRequest;
 import com.nexters.momo.session.presentation.dto.SessionResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -95,6 +96,6 @@ public interface SessionApiSpec {
                     ),
             }
     )
-    public ResponseEntity<SessionAttendanceCodeResponse> getActiveSessionAttendanceCode(@PathVariable Long id);
+    ResponseEntity<SessionAttendanceCodeResponse> getActiveSessionAttendanceCode(@Parameter(description = "해당 세션 아이디", required = true) @PathVariable Long id);
 }
 

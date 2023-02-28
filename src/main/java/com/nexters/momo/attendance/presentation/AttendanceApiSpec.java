@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Tag(name = "참여", description = "참여 API 목록")
 public interface AttendanceApiSpec {
@@ -26,4 +27,17 @@ public interface AttendanceApiSpec {
             }
     )
     ResponseEntity<Void> attendSession(@Parameter(description = "참여 요청 데이터", required = true) MemberAttendanceRequest request, @Parameter(hidden = true) Member member);
+
+    @Operation(
+            summary = "참여자 목록 조회",
+            responses = {
+                    @ApiResponse(responseCode = "200",
+                            content = @Content(schema = @Schema())
+                    ),
+                    @ApiResponse(responseCode = "500",
+                            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+                    ),
+            }
+    )
+    ResponseEntity searchAttendanceList(@Parameter(description = "참여 주차", required = true) @PathVariable Integer week);
 }

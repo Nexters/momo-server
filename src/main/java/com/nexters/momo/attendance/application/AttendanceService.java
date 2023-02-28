@@ -4,12 +4,15 @@ import com.nexters.momo.attendance.application.dto.AttendanceDto;
 import com.nexters.momo.attendance.domain.Attendance;
 import com.nexters.momo.attendance.domain.AttendanceRepository;
 import com.nexters.momo.attendance.exception.InvalidAttendanceCodeException;
+import com.nexters.momo.attendance.presentation.dto.MemberAttendanceDto;
 import com.nexters.momo.session.domain.Session;
 import com.nexters.momo.session.domain.SessionRepository;
 import com.nexters.momo.session.exception.InvalidSessionIdException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -22,6 +25,10 @@ public class AttendanceService {
     public void attend(Long memberId, AttendanceDto attendanceDto) {
         Attendance attendance = createAttendance(memberId, attendanceDto);
         attendanceRepository.save(attendance);
+    }
+
+    public List<MemberAttendanceDto> searchAttendanceListByWeek(Integer week) {
+        return attendanceRepository.searchAttendanceListByWeek(week);
     }
 
     private Attendance createAttendance(Long memberId, AttendanceDto attendanceDto) {
