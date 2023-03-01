@@ -38,8 +38,10 @@ public class GenerationService {
     }
 
     public void create(String signupCode, int number) {
-        SignupCode code = SignupCode.from(signupCode);
-        generationRepository.save(Generation.of(number, code, true));
+        if(!isPresentActive()) {
+            SignupCode code = SignupCode.from(signupCode);
+            generationRepository.save(Generation.of(number, code, true));
+        }
     }
 
     @Transactional
