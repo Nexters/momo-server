@@ -78,6 +78,25 @@ public class AuthAcceptanceTest extends TestSetup {
     }
 
     /**
+     * Given 해당 서비스에 회원가입이 되어있지 않은 이메일이 있다.
+     * When 잘못된 가입코드를 통해 회원가입을 한다.
+     * Then 사용자의 회원 가입이 실패한다.
+     */
+    @DisplayName("잘못된 사용자 가입코드로 회원 가입 테스트")
+    @Test
+    void user_register_fail_because_invalid_signup_code() {
+        // given
+        MemberRegisterRequest memberRegisterRequest = new MemberRegisterRequest("user@email.com",
+                "password", "Shine", 22, "developer", "uuid", "invalid_signup_code");
+
+        // when
+        var 사용자_가입_응답 = 사용자_가입_요청(memberRegisterRequest);
+
+        // then
+        사용자_가입_응답_확인(사용자_가입_응답, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
      * Given 이미 가입된 사용자가 있고
      * And 아직 로그인하지 않은 상태일때
      * When 로그인을 시도하면
