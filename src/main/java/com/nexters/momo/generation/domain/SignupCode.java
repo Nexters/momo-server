@@ -31,4 +31,7 @@ public class SignupCode {
         return new SignupCode(value);
     }
 
+    public boolean isSameValue(String signupCode) {
+        return this.value.equals(signupCode);
+    }
 }

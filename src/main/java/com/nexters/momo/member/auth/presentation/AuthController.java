@@ -36,6 +36,7 @@ public class AuthController implements AuthApiSpec {
 
     @PostMapping("/register")
     public ResponseEntity<Void> registerUser(@Valid @RequestBody MemberRegisterRequest memberRegisterRequest) {
+        generationService.signupCodeValidation(memberRegisterRequest.getSignupCode());
         memberService.register(memberRegisterRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

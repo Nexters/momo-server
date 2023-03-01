@@ -54,4 +54,7 @@ public class Generation {
         return active;
     }
 
+    public boolean isSameSignupCode(String signupCode) {
+        return this.signupCode.isSameValue(signupCode);
+    }
 }

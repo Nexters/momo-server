@@ -15,10 +15,18 @@ public class GenerationService {
     private final GenerationRepository generationRepository;
 
     @Transactional(readOnly = true)
+    public void signupCodeValidation(String signupCode) {
+        Generation currentGeneration = findCurrentGeneration();
+
+        if(!currentGeneration.isSameSignupCode(signupCode)) {
+            throw new IllegalArgumentException("signup code doesn't match");
+        }
+    }
+
+    @Transactional(readOnly = true)
     public GenerationDto getActiveGeneration() {
-        Generation current = generationRepository.findByActiveIsTrue()
-                .orElseThrow(() -> new IllegalStateException("can not found active generation"));
-        return GenerationDto.from(current);
+        Generation currentGeneration = findCurrentGeneration();
+        return GenerationDto.from(currentGeneration);
     }
 
     public boolean isPresentActive() {
@@ -38,5 +46,10 @@ public class GenerationService {
     public void deactivate(Long id) {
         generationRepository.findById(id)
                 .ifPresent(Generation::deactivate);
+    }
+
+    private Generation findCurrentGeneration() {
+        return generationRepository.findByActiveIsTrue()
+                .orElseThrow(() -> new IllegalStateException("can not found active generation"));
     }
 }

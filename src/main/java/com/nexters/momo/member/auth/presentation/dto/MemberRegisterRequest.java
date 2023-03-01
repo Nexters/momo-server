@@ -29,4 +29,7 @@ public class MemberRegisterRequest {
 
         @NotBlank
         private String uuid;
+
+        @NotBlank
+        private String signupCode;
 }
