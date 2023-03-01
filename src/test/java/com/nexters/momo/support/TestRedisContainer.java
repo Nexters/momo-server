@@ -1,4 +1,4 @@
-package com.nexters.momo.common;
+package com.nexters.momo.support;
 
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
