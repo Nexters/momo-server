@@ -38,7 +38,7 @@ public class AttendanceController implements AttendanceApiSpec {
     }
 
     @GetMapping("{week}")
-    public ResponseEntity searchAttendanceList(@PathVariable Integer week) {
+    public ResponseEntity<MemberAttendanceResponse> searchAttendanceList(@PathVariable Integer week) {
         List<MemberAttendanceDto> attendanceDtoList = attendanceService.searchAttendanceListByWeek(week);
         return ResponseEntity.ok().body(new MemberAttendanceResponse(attendanceDtoList));
     }

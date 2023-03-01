@@ -1,6 +1,7 @@
 package com.nexters.momo.attendance.presentation;
 
 import com.nexters.momo.attendance.presentation.dto.MemberAttendanceRequest;
+import com.nexters.momo.attendance.presentation.dto.MemberAttendanceResponse;
 import com.nexters.momo.common.response.ErrorResponse;
 import com.nexters.momo.member.auth.domain.Member;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,5 +40,5 @@ public interface AttendanceApiSpec {
                     ),
             }
     )
-    ResponseEntity searchAttendanceList(@Parameter(description = "참여 주차", required = true) @PathVariable Integer week);
+    ResponseEntity<MemberAttendanceResponse> searchAttendanceList(@Parameter(description = "참여 주차", required = true) @PathVariable Integer week);
 }
