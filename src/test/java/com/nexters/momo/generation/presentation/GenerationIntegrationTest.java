@@ -4,7 +4,7 @@ import com.nexters.momo.generation.domain.Generation;
 import com.nexters.momo.generation.domain.GenerationRepository;
 import com.nexters.momo.generation.domain.SignupCode;
 import com.nexters.momo.generation.presentation.dto.GenerationRequest;
-import com.nexters.momo.support.RandomPortConfigure;
+import com.nexters.momo.support.TestSetup;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +16,7 @@ import org.springframework.http.HttpStatus;
 import static com.nexters.momo.generation.presentation.GenerationStep.*;
 
 @DisplayName("기수 통합 테스트")
-public class GenerationIntegrationTest extends RandomPortConfigure {
+public class GenerationIntegrationTest extends TestSetup {
 
     @Autowired
     private GenerationRepository generationRepository;

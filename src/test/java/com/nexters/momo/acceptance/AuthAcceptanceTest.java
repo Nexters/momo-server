@@ -6,7 +6,7 @@ import com.nexters.momo.member.auth.domain.MemberRepository;
 import com.nexters.momo.member.auth.domain.Occupation;
 import com.nexters.momo.member.auth.domain.Role;
 import com.nexters.momo.member.auth.presentation.dto.MemberRegisterRequest;
-import com.nexters.momo.support.RandomPortConfigure;
+import com.nexters.momo.support.TestSetup;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +26,7 @@ import static com.nexters.momo.acceptance.AuthStep.사용자_가입_응답_확�
 import static com.nexters.momo.acceptance.GenerationStep.기수_생성_요청;
 
 @DisplayName("인수 : 로그인")
-public class AuthAcceptanceTest extends RandomPortConfigure {
+public class AuthAcceptanceTest extends TestSetup {
 
     @Autowired
     MemberRepository memberRepository;

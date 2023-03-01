@@ -6,7 +6,7 @@ import com.nexters.momo.member.auth.domain.MemberRepository;
 import com.nexters.momo.member.auth.domain.Occupation;
 import com.nexters.momo.member.auth.domain.Role;
 import com.nexters.momo.member.auth.presentation.dto.MemberRegisterRequest;
-import com.nexters.momo.support.RandomPortConfigure;
+import com.nexters.momo.support.TestSetup;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +21,7 @@ import static com.nexters.momo.acceptance.MyPageStep.베어러_인증으로_내_
 import static com.nexters.momo.acceptance.MyPageStep.회원_정보_조회_확인;
 
 @DisplayName("인수 : 사용자 정보")
-public class MyPageAcceptanceTest extends RandomPortConfigure {
+public class MyPageAcceptanceTest extends TestSetup {
 
     @Autowired
     MemberRepository memberRepository;
