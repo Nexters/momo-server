@@ -55,7 +55,7 @@ public class GenerationIntegrationTest extends TestSetup {
     @Test
     void generation_deactivate_test() {
         // given
-        SignupCode code = SignupCode.from("signup_code");
+        SignupCode code = SignupCode.from(SIGNUP_CODE);
         Generation generation = Generation.of(22, code, true);
         Generation expected = generationRepository.save(generation);
 
