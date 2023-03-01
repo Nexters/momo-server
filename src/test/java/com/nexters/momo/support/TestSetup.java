@@ -1,6 +1,5 @@
 package com.nexters.momo.support;
 
-import com.nexters.momo.common.TestRedisContainer;
 import com.nexters.momo.member.auth.domain.Member;
 import com.nexters.momo.member.auth.domain.MemberRepository;
 import com.nexters.momo.member.auth.domain.Occupation;
