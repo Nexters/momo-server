@@ -6,7 +6,7 @@ import com.nexters.momo.member.auth.domain.MemberRepository;
 import com.nexters.momo.member.auth.domain.Occupation;
 import com.nexters.momo.member.auth.domain.Role;
 import com.nexters.momo.member.auth.presentation.dto.MemberRegisterRequest;
-import com.nexters.momo.support.RandomPortConfigure;
+import com.nexters.momo.support.TestSetup;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +26,7 @@ import static com.nexters.momo.acceptance.SessionStep.활성회된_세션_인증
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("인수 : 참여")
-public class AttendanceAcceptanceTest extends RandomPortConfigure {
+public class AttendanceAcceptanceTest extends TestSetup {
 
     @Autowired
     MemberRepository memberRepository;
