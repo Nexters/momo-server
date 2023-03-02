@@ -117,7 +117,7 @@ class SessionServiceTest {
     @Test
     void read_multiple_session_list() {
         // given
-        int expected = 2;
+        int expected = 8;
         for (int i = 0; i < expected; i++) {
             sessionRepository.save(
                     Session.createSession("세션", 1, "세션 내용",
