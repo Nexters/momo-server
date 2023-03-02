@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -72,10 +73,17 @@ public class SessionService {
      */
     @Transactional(readOnly = true)
     public List<SessionDto> getSessionList(Long generationId) {
-        return sessionRepository.findAllByGenerationId(generationId)
+        List<SessionDto> result = sessionRepository.findAllByGenerationId(generationId)
                 .stream()
                 .map(SessionDto::from)
                 .collect(Collectors.toList());
+
+        for (int i = result.size() + 1; i <= 8; i++) {
+            result.add(SessionDto.of(null, null, i, null, null, null, null,
+                    null, null, null, null));
+        }
+
+        return result;
     }
 
     /**
@@ -93,7 +101,7 @@ public class SessionService {
     }
 
     public SessionDto getActiveSession(long generationId) {
-        List<SessionDto> sessions = getSessionList(generationId);
+        List<SessionDto> sessions = getValidSessions(getSessionList(generationId));
         return getSoonOrToday(sessions).orElseThrow(() -> {
             throw new IllegalArgumentException("can not found active session");
         });
@@ -110,6 +118,16 @@ public class SessionService {
      */
     public void deleteSession(long sessionId) {
         sessionRepository.deleteById(sessionId);
+    }
+
+    private List<SessionDto> getValidSessions(List<SessionDto> sessions) {
+        List<SessionDto> result = new ArrayList<>();
+        for (SessionDto sessionDto : sessions) {
+            if (sessionDto.getId() != null) {
+                result.add(sessionDto);
+            }
+        }
+        return result;
     }
 
     private Optional<SessionDto> getSoonOrToday(List<SessionDto> sessions) {
